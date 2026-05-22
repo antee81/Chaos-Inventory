@@ -7,24 +7,24 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
-public class DiamondsEvent implements ChaosEvent {
+public class TntEvent implements ChaosEvent {
+
     @Override
     public String getName() {
-        return "Pioggia di Diamanti";
+        return "TNT Donated";
     }
 
     @Override
     public int getWeight() {
-        return 15; // RARO
+        return 25;
     }
 
     @Override
     public void execute(ServerPlayer player) {
-        ItemStack diamonds = new ItemStack(Items.DIAMOND, 5);
-        if (!player.getInventory().add(diamonds)) {
-            player.drop(diamonds, false);
-        }
-        player.sendSystemMessage(Component.literal("§b\uD83D\uDC8E Chaos just donated you 5 diamonds!"));
+        ItemStack tnt = new ItemStack(Items.TNT, 3);
+
+        if (!player.getInventory().add(tnt)) player.drop(tnt, false);
+
+        player.sendSystemMessage(Component.literal("§c\uD83D\uDCA5 Chaos donated you TNT.. used it with wisdom!"));
     }
 }
-

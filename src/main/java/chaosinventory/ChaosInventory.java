@@ -26,6 +26,7 @@ public class ChaosInventory
     private void commonSetup(final FMLCommonSetupEvent event)
     {
         LOGGER.info("\uD83C\uDF00 Chaos Inventory - Setup completed");
+        ChaosRegistry.registerAll();
     }
 
     @SubscribeEvent

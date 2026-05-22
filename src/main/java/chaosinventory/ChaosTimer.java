@@ -38,6 +38,7 @@ public class ChaosTimer {
 
     private static void triggerChaos(MinecraftServer server) {
         ChaosInventory.LOGGER.info("\uD83D\uDCA5 CHAOS HAS ARRIVED!");
+        ChaosRegistry.triggerRandomEventForAll(server);
     }
 
     public static int getTicksRemaining() {
