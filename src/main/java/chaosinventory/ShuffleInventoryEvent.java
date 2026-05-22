@@ -1,0 +1,30 @@
+package chaosinventory.events;
+
+import chaosinventory.ChaosEvent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class ShuffleInventoryEvent implements ChaosEvent {
+    @Override public String getName() { return "Inventario Mescolato"; }
+    @Override public int getWeight() { return 25; }
+
+    @Override
+    public void execute(ServerPlayer player) {
+        Inventory inv = player.getInventory();
+        List<ItemStack> items = new ArrayList<>();
+        for (int i = 0; i < inv.items.size(); i++) {
+            items.add(inv.items.get(i));
+        }
+        Collections.shuffle(items);
+        for (int i = 0; i < inv.items.size(); i++) {
+            inv.items.set(i, items.get(i));
+        }
+        player.sendSystemMessage(Component.literal("§5🎴 Il Caos ha mescolato il tuo inventario!"));
+    }
+}
