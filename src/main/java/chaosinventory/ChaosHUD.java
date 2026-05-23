@@ -11,6 +11,8 @@ import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.UUID;
+
 @Mod.EventBusSubscriber(modid = ChaosInventory.MODID, value = Dist.CLIENT)
 
 public class ChaosHUD {
@@ -20,14 +22,17 @@ public class ChaosHUD {
 
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null) return;
-        if (!ChaosTimer.isRunning()) return;
+
+        UUID uuid = mc.player.getUUID();
+
+        if (mc.player.isDeadOrDying()) return;
+        if (!ChaosTimer.isRunning(uuid)) return;
 
         GuiGraphics graphics = event.getGuiGraphics();
         Font font = mc.font;
 
         int ticksLeft = ChaosTimer.getTicksRemaining();
         int secondsLeft = ticksLeft / 20;
-
         String time = ChaosTimer.getTimeFormatted();
 
         int timerColor;
@@ -48,9 +53,8 @@ public class ChaosHUD {
         int screenHeight = mc.getWindow().getGuiScaledHeight();
         int totalWidth = font.width(time);
         int x = (screenWidth - totalWidth) / 2;
-        int y = screenHeight - 60;
+        int y = screenHeight - 75;
 
         graphics.drawString(font, time, x, y, timerColor, true);
-        graphics.fill(x - 4, y - 2, x + totalWidth + 4, y + 10, 0x88000000);
     }
 }

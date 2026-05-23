@@ -6,7 +6,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
-public class WithetSkeletonEggsEvent implements ChaosEvent {
+public class WitherSkeletonEggsEvent implements ChaosEvent {
     @Override public String getName() {  return "Wither Skeleton Eggs"; }
     @Override public int getWeight() { return 5; }
 

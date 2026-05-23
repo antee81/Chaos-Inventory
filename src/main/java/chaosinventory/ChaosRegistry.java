@@ -1,6 +1,7 @@
 package chaosinventory;
 
 import chaosinventory.events.*;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.ArrayList;
@@ -13,11 +14,68 @@ public class ChaosRegistry {
 
     public static void registerAll() {
         EVENTS.clear();
-        EVENTS.add(new DiamondsEvent());
-        EVENTS.add(new TntEvent());
-        EVENTS.add(new PoisonousPotatoEvent());
 
-        ChaosInventory.LOGGER.info("\uD83C\uDF00 Register " + EVENTS.size() + " eventi del Caos");
+        // === UTILI ===
+        EVENTS.add(new DiamondsEvent());
+        EVENTS.add(new GoldenAppleEvent());
+        EVENTS.add(new GoldenCarrotEvent());
+        EVENTS.add(new EnderPearlEvent());
+        EVENTS.add(new ShieldEvent());
+        EVENTS.add(new SpectralArrowsEvent());
+        EVENTS.add(new DiamondBlockEvent());
+        EVENTS.add(new StrengthPotionEvent());
+        EVENTS.add(new InvisibilityPotionEvent());
+        EVENTS.add(new NetheriteSwordEvent());
+        EVENTS.add(new TotemEvent());
+        EVENTS.add(new ElytraEvent());
+        EVENTS.add(new InfinityBowEvent());
+        EVENTS.add(new EfficiencyPickaxeEvent());
+        EVENTS.add(new NetheriteArmorEvent());
+
+        // === TROLL ===
+        EVENTS.add(new PoisonousPotatoEvent());
+        EVENTS.add(new DirtEvent());
+        EVENTS.add(new ButtonEvent());
+        EVENTS.add(new PumpkinSeedsEvent());
+        EVENTS.add(new TropicalFishEvent());
+        EVENTS.add(new EmptyMapEvent());
+        EVENTS.add(new BoatEvent());
+        EVENTS.add(new SaddleEvent());
+        EVENTS.add(new IceEvent());
+        EVENTS.add(new CakeEvent());
+        EVENTS.add(new BrokenCompassEvent());
+        EVENTS.add(new JukeboxEvent());
+        EVENTS.add(new CreeperHeadEvent());
+        EVENTS.add(new RunBookEvent());
+        EVENTS.add(new BehindYouBookEvent());
+
+        // === PERICOLOSI ===
+        EVENTS.add(new TntEvent());
+        EVENTS.add(new LavaBucketEvent());
+        EVENTS.add(new HungerEffectEvent());
+        EVENTS.add(new SlownessEffectEvent());
+        EVENTS.add(new BlindnessEffectEvent());
+        EVENTS.add(new DamagePotionEvent());
+        EVENTS.add(new RandomTeleportEvent());
+        EVENTS.add(new ShuffleInventoryEvent());
+        EVENTS.add(new ShuffleHotbarEvent());
+
+        // === SPAWN EGGS ===
+        EVENTS.add(new ZombieEggsEvent());
+        EVENTS.add(new EndermanEggsEvent());
+        EVENTS.add(new PhantomEggsEvent());
+        EVENTS.add(new CreeperEggsEvent());
+        EVENTS.add(new VexEggsEvent());
+        EVENTS.add(new WitherSkeletonEggsEvent());
+
+        // === EVENTI EPICI ===
+        EVENTS.add(new DiamondRainEvent());
+        EVENTS.add(new JackpotEvent());
+        EVENTS.add(new CowRainEvent());
+        EVENTS.add(new RandomExplosionEvent());
+        EVENTS.add(new EarthquakeEvent());
+
+        ChaosInventory.LOGGER.info("🌀 Registered " + EVENTS.size() + " Chaos events");
     }
 
     public static ChaosEvent getRandomEvent() {
@@ -40,14 +98,11 @@ public class ChaosRegistry {
         return EVENTS.get(0);
     }
 
-    public static void triggerRandomEventForAll(net.minecraft.server.MinecraftServer server) {
+    public static void triggerRandomEventForPlayer(ServerPlayer player) {
         ChaosEvent event = getRandomEvent();
         if (event == null) return;
 
-        ChaosInventory.LOGGER.info("\uD83D\uDCA5 CHAOS: " + event.getName());
-
-        for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-            event.execute(player);
-        }
+        ChaosInventory.LOGGER.info("\uD83D\uDCA5 CHAOS for " + player.getName().getString() + ": " + event.getName());
+        event.execute(player);
     }
 }

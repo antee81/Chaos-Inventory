@@ -25,6 +25,6 @@ public class ShuffleInventoryEvent implements ChaosEvent {
         for (int i = 0; i < inv.items.size(); i++) {
             inv.items.set(i, items.get(i));
         }
-        player.sendSystemMessage(Component.literal("§5🎴 Il Caos ha mescolato il tuo inventario!"));
+        player.sendSystemMessage(Component.literal("§5🎴 Chaos shuffled your inventory!"));
     }
 }

@@ -5,17 +5,15 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.fml.common.Mod;
-import org.apache.logging.log4j.core.jmx.Server;
 
-public class GoldenCarrotEvent implements ChaosEvent {
-    @Override public String getName() { return "Golden Carrot"; }
+public class ShieldEvent implements ChaosEvent {
+    @Override public String getName() { return "Shield"; }
     @Override public int getWeight() { return 40; }
 
     @Override
     public void execute(ServerPlayer player) {
-        ItemStack item = new ItemStack(Items.GOLDEN_CARROT, 5);
+        ItemStack item = new ItemStack(Items.SHIELD, 1);
         if (!player.getInventory().add(item)) player.drop(item, false);
-        player.sendSystemMessage(Component.literal("§6\uD83E\uDD55 Chaos donated you 5 golden carrots!"));
+        player.sendSystemMessage(Component.literal("§7\uD83D\uDEE1 Chaos donated you a shield!"));
     }
 }

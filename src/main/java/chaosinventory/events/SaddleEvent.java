@@ -5,16 +5,15 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import org.apache.logging.log4j.core.jmx.Server;
 
-public class TotemEvent implements ChaosEvent {
-    @Override public String getName() { return "Totem of Undying"; }
-    @Override public int getWeight() {  return 5; }
+public class SaddleEvent implements ChaosEvent {
+    @Override public String getName() { return "Saddle"; }
+    @Override public int getWeight() { return 25; }
 
     @Override
     public void execute(ServerPlayer player) {
-        ItemStack item = new ItemStack(Items.TOTEM_OF_UNDYING, 1);
+        ItemStack item = new ItemStack(Items.SADDLE, 1);
         if (!player.getInventory().add(item)) player.drop(item, false);
-        player.sendSystemMessage(Component.literal("§e✨ Chaos donated a Totem of Undying!"));
+        player.sendSystemMessage(Component.literal("§6\uD83D\uDC34 Chaos donated you a saddle!"));
     }
 }
