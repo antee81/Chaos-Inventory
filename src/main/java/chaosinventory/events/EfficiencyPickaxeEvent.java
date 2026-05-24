@@ -1,6 +1,7 @@
 package chaosinventory.events;
 
 import chaosinventory.ChaosEvent;
+import chaosinventory.utils.InventoryHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -15,7 +16,8 @@ public class EfficiencyPickaxeEvent implements ChaosEvent {
     public void execute(ServerPlayer player) {
         ItemStack pick = new ItemStack(Items.DIAMOND_PICKAXE, 1);
         pick.enchant(Enchantments.BLOCK_EFFICIENCY, 5);
-        if (!player.getInventory().add(pick)) player.drop(pick, false);
-        player.sendSystemMessage(Component.literal("§b⛏ Chaos just donated you a Diamond Pickaxe, keep his efficiency"));
+        if (InventoryHelper.tryAddItem(player, pick, "Efficiency V Pickaxe")) {
+            player.sendSystemMessage(Component.literal("§b⛏ Chaos just donated you a Diamond Pickaxe, keep his efficiency"));
+        }
     }
 }

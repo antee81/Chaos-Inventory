@@ -1,6 +1,7 @@
 package chaosinventory.events;
 
 import chaosinventory.ChaosEvent;
+import chaosinventory.utils.InventoryHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -13,7 +14,8 @@ public class EnderPearlEvent implements ChaosEvent {
     @Override
     public void execute(ServerPlayer player) {
         ItemStack item = new ItemStack(Items.ENDER_PEARL, 1);
-        if (!player.getInventory().add(item)) player.drop(item, false);
-        player.sendSystemMessage(Component.literal("§5\uD83D\uDFE3 Chaos donated you 1 Ender Pearl!"));
+        if (InventoryHelper.tryAddItem(player, item, "Ender Pearl")) {
+            player.sendSystemMessage(Component.literal("§5\uD83D\uDFE3 Chaos donated you 1 Ender Pearl!"));
+        }
     }
 }

@@ -1,6 +1,7 @@
 package chaosinventory.events;
 
 import chaosinventory.ChaosEvent;
+import chaosinventory.utils.InventoryHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -19,11 +20,9 @@ public class DiamondsEvent implements ChaosEvent {
 
     @Override
     public void execute(ServerPlayer player) {
-        ItemStack diamonds = new ItemStack(Items.DIAMOND, 5);
-        if (!player.getInventory().add(diamonds)) {
-            player.drop(diamonds, false);
+        ItemStack item = new ItemStack(Items.DIAMOND, 5);
+        if (InventoryHelper.tryAddItem(player, item, "5 Diamonds")) {
+            player.sendSystemMessage(Component.literal("§b\uD83D\uDC8E Chaos just donated you 5 diamonds!"));
         }
-        player.sendSystemMessage(Component.literal("§b\uD83D\uDC8E Chaos just donated you 5 diamonds!"));
     }
 }
-

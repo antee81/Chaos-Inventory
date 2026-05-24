@@ -1,7 +1,6 @@
 package chaosinventory;
 
 import chaosinventory.events.*;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.ArrayList;
@@ -75,6 +74,17 @@ public class ChaosRegistry {
         EVENTS.add(new RandomExplosionEvent());
         EVENTS.add(new EarthquakeEvent());
 
+        EVENTS.add(new GravityFlipEvent());
+        EVENTS.add(new ItemSwapperEvent());
+        EVENTS.add(new TimeWarpEvent());
+        EVENTS.add(new ChatSpamEvent());
+        EVENTS.add(new FakeDeathEvent());
+        EVENTS.add(new InvertControlsEvent());
+        EVENTS.add(new RandomPotionEvent());
+        EVENTS.add(new VillagerRainEvent());
+        EVENTS.add(new LightningStrikeEvent());
+        EVENTS.add(new InventoryVoidEvent());
+
         ChaosInventory.LOGGER.info("🌀 Registered " + EVENTS.size() + " Chaos events");
     }
 
@@ -101,6 +111,9 @@ public class ChaosRegistry {
     public static void triggerRandomEventForPlayer(ServerPlayer player) {
         ChaosEvent event = getRandomEvent();
         if (event == null) return;
+        if (server.isSingleplayer() && event.isMultiplayerOnly()) {
+            return;
+        }
 
         ChaosInventory.LOGGER.info("\uD83D\uDCA5 CHAOS for " + player.getName().getString() + ": " + event.getName());
         event.execute(player);

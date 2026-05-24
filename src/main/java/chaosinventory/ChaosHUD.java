@@ -1,7 +1,6 @@
 package chaosinventory;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.sun.jna.platform.win32.WinDef;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -31,9 +30,9 @@ public class ChaosHUD {
         GuiGraphics graphics = event.getGuiGraphics();
         Font font = mc.font;
 
-        int ticksLeft = ChaosTimer.getTicksRemaining();
+        int ticksLeft = ChaosTimer.getTicksRemaining(uuid);
         int secondsLeft = ticksLeft / 20;
-        String time = ChaosTimer.getTimeFormatted();
+        String time = ChaosTimer.getTimeFormatted(uuid);
 
         int timerColor;
         if (secondsLeft <= 10) {

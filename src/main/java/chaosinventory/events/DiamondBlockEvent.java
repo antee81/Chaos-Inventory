@@ -1,6 +1,7 @@
 package chaosinventory.events;
 
 import chaosinventory.ChaosEvent;
+import chaosinventory.utils.InventoryHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -13,7 +14,8 @@ public class DiamondBlockEvent implements ChaosEvent {
     @Override
     public void execute(ServerPlayer player) {
         ItemStack item = new ItemStack(Items.DIAMOND_BLOCK, 1);
-        if (!player.getInventory().add(item)) player.drop(item, false);
-        player.sendSystemMessage(Component.literal("§b\uD83D\uDC8E Chaos donated you a Diamond Block!!"));
+        if (InventoryHelper.tryAddItem(player, item, "Diamond Block")) {
+            player.sendSystemMessage(Component.literal("§b\uD83D\uDC8E Chaos donated you a Diamond Block!!"));
+        }
     }
 }

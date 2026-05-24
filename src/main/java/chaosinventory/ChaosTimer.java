@@ -102,7 +102,15 @@ public class ChaosTimer {
 
 
             if (remaining <= 0) {
-                ChaosRegistry.triggerRandomEventForPlayer(player);
+                ChaosEvent event = ChaosRegistry.getRandomEvent();
+
+                if (server.isSingleplayer() && event.isMultiplayerOnly()) {
+                    ChaosInventory.LOGGER.info("⏭\uFE0F Skipped multiplayer-only event in singleplayer: " + event.getName());
+                    resetPlayer(uuid);
+                    continue;
+                }
+
+                event.execute(player);
                 resetPlayer(uuid);
             }
         }

@@ -6,20 +6,21 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 
-public class BlindnessEffectEvent implements ChaosEvent {
+public class InvertControlsEvent implements ChaosEvent {
     @Override
     public String getName() {
-        return "Blindness";
+        return "Invert Controls";
     }
 
     @Override
     public int getWeight() {
-        return 25;
+        return 12;
     }
 
     @Override
     public void execute(ServerPlayer player) {
-        player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20 * 30, 0));
-        player.sendSystemMessage(Component.literal("§0\uD83D\uDC41 Chaos blinded you for 30 seconds!"));
+        player.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 20 * 15, 0));
+        player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20 * 15, 0));
+        player.sendSystemMessage(Component.literal("§7\uD83C\uDFAE Your controls have been inverted for 15 seconds"));
     }
 }
