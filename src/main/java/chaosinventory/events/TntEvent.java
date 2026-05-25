@@ -1,6 +1,8 @@
 package chaosinventory.events;
 
 import chaosinventory.ChaosEvent;
+import chaosinventory.utils.EffectHelper;
+import chaosinventory.utils.InventoryHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -21,9 +23,11 @@ public class TntEvent implements ChaosEvent {
     @Override
     public void execute(ServerPlayer player) {
         ItemStack tnt = new ItemStack(Items.TNT, 3);
-
         if (!player.getInventory().add(tnt)) player.drop(tnt, false);
-
-        player.sendSystemMessage(Component.literal("§c\uD83D\uDCA5 Chaos donated you TNT.. used it with wisdom!"));
+        if (InventoryHelper.tryAddItem(player, tnt, "3 TNT")) {
+            EffectHelper.playExplosionSound(player);
+            EffectHelper.spawnExplosionParticles(player);
+            player.sendSystemMessage(Component.literal("§c\uD83D\uDCA5 Chaos donated you TNT.. used it with wisdom!"));
+        }
     }
 }

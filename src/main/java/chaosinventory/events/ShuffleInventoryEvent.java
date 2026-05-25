@@ -1,6 +1,7 @@
 package chaosinventory.events;
 
 import chaosinventory.ChaosEvent;
+import chaosinventory.utils.EffectHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
@@ -25,6 +26,8 @@ public class ShuffleInventoryEvent implements ChaosEvent {
         for (int i = 0; i < inv.items.size(); i++) {
             inv.items.set(i, items.get(i));
         }
+        EffectHelper.playTrollSound(player);
+        EffectHelper.spawnTrollParticles(player);
         player.sendSystemMessage(Component.literal("§5🎴 Chaos shuffled your inventory!"));
     }
 }

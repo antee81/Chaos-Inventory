@@ -1,6 +1,7 @@
 package chaosinventory.events;
 
 import chaosinventory.ChaosEvent;
+import chaosinventory.utils.EffectHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
@@ -19,6 +20,8 @@ public class CowRainEvent implements ChaosEvent {
                 player.serverLevel().addFreshEntity(cow);
             }
         }
+        EffectHelper.playTrollSound(player);
+        EffectHelper.spawnTrollParticles(player);
         player.sendSystemMessage(Component.literal("§f\uD83D\uDC04 COW RAIN! Pay attention above your head!"));
     }
 }

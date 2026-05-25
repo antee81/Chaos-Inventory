@@ -1,6 +1,7 @@
 package chaosinventory.events;
 
 import chaosinventory.ChaosEvent;
+import chaosinventory.utils.EffectHelper;
 import chaosinventory.utils.InventoryHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -31,6 +32,8 @@ public class BehindYouBookEvent implements ChaosEvent {
         pages.add(StringTag.valueOf("{\"text\":\"§4§lBehind you...\"}"));
         tag.put("pages", pages);
         if (InventoryHelper.tryAddItem(player, book, "Mysterious Book")) {
+            EffectHelper.playTrollSound(player);
+            EffectHelper.spawnTrollParticles(player);
             player.sendSystemMessage(Component.literal("§4\uD83D\uDCD6 Chaos just donated you a mysterious book"));
         }
     }

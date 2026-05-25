@@ -1,6 +1,7 @@
 package chaosinventory.events;
 
 import chaosinventory.ChaosEvent;
+import chaosinventory.utils.EffectHelper;
 import chaosinventory.utils.InventoryHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -22,6 +23,8 @@ public class EmptyMapEvent implements ChaosEvent {
     public void execute(ServerPlayer player) {
         ItemStack item = new ItemStack(Items.MAP, 1);
         if (InventoryHelper.tryAddItem(player, item, "Tropical Fish")) {
+            EffectHelper.playTrollSound(player);
+            EffectHelper.spawnTrollParticles(player);
             player.sendSystemMessage(Component.literal("§e\uD83D\uDDFA Chaos just donated you an empty map. Completely useless."));
         }
     }

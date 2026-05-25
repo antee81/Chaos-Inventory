@@ -1,6 +1,7 @@
 package chaosinventory.events;
 
 import chaosinventory.ChaosEvent;
+import chaosinventory.utils.EffectHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -20,6 +21,8 @@ public class BlindnessEffectEvent implements ChaosEvent {
     @Override
     public void execute(ServerPlayer player) {
         player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 20 * 30, 0));
+        EffectHelper.playBadSound(player);
+        EffectHelper.spawnBadParticles(player);
         player.sendSystemMessage(Component.literal("§0\uD83D\uDC41 Chaos blinded you for 30 seconds!"));
     }
 }

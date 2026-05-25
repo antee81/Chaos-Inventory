@@ -1,6 +1,7 @@
 package chaosinventory.events;
 
 import chaosinventory.ChaosEvent;
+import chaosinventory.utils.EffectHelper;
 import chaosinventory.utils.InventoryHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -33,6 +34,8 @@ public class NetheriteArmorEvent implements ChaosEvent {
             }
         }
         if (allAdded) {
+            EffectHelper.playEpicSound(player);
+            EffectHelper.spawnEpicParticles(player);
             player.sendSystemMessage(Component.literal("§4🛡️ CHAOS JUST DONATED YOU A FULL NETHERITE ARMOR!"));
         }
     }

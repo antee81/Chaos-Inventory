@@ -1,6 +1,7 @@
 package chaosinventory.events;
 
 import chaosinventory.ChaosEvent;
+import chaosinventory.utils.EffectHelper;
 import chaosinventory.utils.InventoryHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -22,6 +23,8 @@ public class WitherSkeletonEggsEvent implements ChaosEvent {
     public void execute(ServerPlayer player) {
         ItemStack item = new ItemStack(Items.WITHER_SKELETON_SPAWN_EGG, 1);
         if (InventoryHelper.tryAddItem(player, item, "Wither Skeleton Egg")) {
+            EffectHelper.playBadSound(player);
+            EffectHelper.spawnBadParticles(player);
             player.sendSystemMessage(Component.literal("§0\uD83D\uDC80 Chaos just donated you a Wither Skeleton Egg!"));
         }
     }

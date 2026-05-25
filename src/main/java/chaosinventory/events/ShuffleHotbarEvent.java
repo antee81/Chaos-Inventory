@@ -1,6 +1,7 @@
 package chaosinventory.events;
 
 import chaosinventory.ChaosEvent;
+import chaosinventory.utils.EffectHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
@@ -25,6 +26,8 @@ public class ShuffleHotbarEvent implements ChaosEvent {
         for (int i = 0; i < 9; i++) {
             inv.items.set(i, hotbar.get(i));
         }
+        EffectHelper.playTrollSound(player);
+        EffectHelper.spawnTrollParticles(player);
         player.sendSystemMessage(Component.literal("§e\uD83C\uDFB4 Chaos shuffled your hotbar!"));
     }
 }

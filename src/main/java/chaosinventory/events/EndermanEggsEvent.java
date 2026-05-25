@@ -1,6 +1,7 @@
 package chaosinventory.events;
 
 import chaosinventory.ChaosEvent;
+import chaosinventory.utils.EffectHelper;
 import chaosinventory.utils.InventoryHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -22,6 +23,8 @@ public class EndermanEggsEvent implements ChaosEvent {
     public void execute(ServerPlayer player) {
         ItemStack item = new ItemStack(Items.ENDERMAN_SPAWN_EGG, 2);
         if (InventoryHelper.tryAddItem(player, item, "3 Enderman Eggs")) {
+            EffectHelper.playTrollSound(player);
+            EffectHelper.spawnTrollParticles(player);
             player.sendSystemMessage(Component.literal("§5\uD83D\uDC79 Chaos just donated you 2 Enderman Eggs!"));
         }
     }

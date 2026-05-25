@@ -1,6 +1,7 @@
 package chaosinventory.events;
 
 import chaosinventory.ChaosEvent;
+import chaosinventory.utils.EffectHelper;
 import chaosinventory.utils.InventoryHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -22,6 +23,8 @@ public class SaddleEvent implements ChaosEvent {
     public void execute(ServerPlayer player) {
         ItemStack item = new ItemStack(Items.SADDLE, 1);
         if (InventoryHelper.tryAddItem(player, item, "Saddle")) {
+            EffectHelper.playTrollSound(player);
+            EffectHelper.spawnTrollParticles(player);
             player.sendSystemMessage(Component.literal("§6\uD83D\uDC34 Chaos donated you a saddle!"));
         }
     }

@@ -1,6 +1,7 @@
 package chaosinventory.events;
 
 import chaosinventory.ChaosEvent;
+import chaosinventory.utils.EffectHelper;
 import chaosinventory.utils.InventoryHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -15,6 +16,8 @@ public class SpectralArrowsEvent implements ChaosEvent {
     public void execute(ServerPlayer player) {
         ItemStack item = new ItemStack(Items.SPECTRAL_ARROW, 8);
         if (InventoryHelper.tryAddItem(player, item, "8 Spectral Arrows")) {
+            EffectHelper.playGoodSound(player);
+            EffectHelper.spawnGoodParticles(player);
             player.sendSystemMessage(Component.literal("§f\uD83C\uDFF9 Chaos donated you 8 spectral arrows!"));
         }
     }

@@ -1,6 +1,7 @@
 package chaosinventory.events;
 
 import chaosinventory.ChaosEvent;
+import chaosinventory.utils.EffectHelper;
 import chaosinventory.utils.InventoryHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -15,6 +16,8 @@ public class ShieldEvent implements ChaosEvent {
     public void execute(ServerPlayer player) {
         ItemStack item = new ItemStack(Items.SHIELD, 1);
         if (InventoryHelper.tryAddItem(player, item, "Shield")) {
+            EffectHelper.playGoodSound(player);
+            EffectHelper.spawnGoodParticles(player);
             player.sendSystemMessage(Component.literal("§7\uD83D\uDEE1 Chaos donated you a shield!"));
         }
     }

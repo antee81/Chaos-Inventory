@@ -1,6 +1,7 @@
 package chaosinventory.events;
 
 import chaosinventory.ChaosEvent;
+import chaosinventory.utils.EffectHelper;
 import chaosinventory.utils.InventoryHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -23,6 +24,8 @@ public class BrokenCompassEvent implements ChaosEvent {
         ItemStack item = new ItemStack(Items.COMPASS, 1);
         item.setHoverName(Component.literal("§cBroken Compass"));
         if (InventoryHelper.tryAddItem(player, item, "Broken Compass")) {
+            EffectHelper.playTrollSound(player);
+            EffectHelper.spawnTrollParticles(player);
             player.sendSystemMessage(Component.literal("§7\uD83E\uDDED Chaos just donated you a compass... broken."));
         }
     }

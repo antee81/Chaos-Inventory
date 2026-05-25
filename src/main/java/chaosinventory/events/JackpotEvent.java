@@ -1,6 +1,7 @@
 package chaosinventory.events;
 
 import chaosinventory.ChaosEvent;
+import chaosinventory.utils.EffectHelper;
 import chaosinventory.utils.InventoryHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -22,6 +23,8 @@ public class JackpotEvent implements ChaosEvent {
     public void execute(ServerPlayer player) {
         ItemStack item = new ItemStack(Items.DIAMOND_BLOCK, 3);
         if (InventoryHelper.tryAddItem(player, item, "3 Diamond Blocks")) {
+            EffectHelper.playEpicSound(player);
+            EffectHelper.spawnEpicParticles(player);
             player.sendSystemMessage(Component.literal("§b§l🎰 JACKPOT! 3 DIAMOND BLOCKS"));
         }
     }

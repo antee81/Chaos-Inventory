@@ -1,6 +1,7 @@
 package chaosinventory.events;
 
 import chaosinventory.ChaosEvent;
+import chaosinventory.utils.EffectHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -26,6 +27,9 @@ public class RandomTeleportEvent implements ChaosEvent {
         level.getChunk(new BlockPos(x, y, z));
 
         player.teleportTo(x + 0.5, y + 1, z + 0.5);
+
+        EffectHelper.playTeleportSound(player);
+        EffectHelper.spawnTeleportParticles(player);
         player.sendSystemMessage(Component.literal("§5\uD83C\uDFB2 Chaos teleported you far away!"));
     }
 }

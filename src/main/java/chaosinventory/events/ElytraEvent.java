@@ -1,6 +1,7 @@
 package chaosinventory.events;
 
 import chaosinventory.ChaosEvent;
+import chaosinventory.utils.EffectHelper;
 import chaosinventory.utils.InventoryHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -15,6 +16,8 @@ public class ElytraEvent implements ChaosEvent {
     public void execute(ServerPlayer player) {
         ItemStack item = new ItemStack(Items.ELYTRA, 1);
         if (InventoryHelper.tryAddItem(player, item, "Elytra")) {
+            EffectHelper.playEpicSound(player);
+            EffectHelper.spawnEpicParticles(player);
             player.sendSystemMessage(Component.literal("§d\uD83E\uDEB6 CHAOS DONATED YOU AN ELYTRA!"));
         }
     }

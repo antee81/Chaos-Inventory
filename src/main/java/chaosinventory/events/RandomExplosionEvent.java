@@ -1,6 +1,7 @@
 package chaosinventory.events;
 
 import chaosinventory.ChaosEvent;
+import chaosinventory.utils.EffectHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
@@ -20,7 +21,8 @@ public class RandomExplosionEvent implements ChaosEvent {
         if (player.getHealth() < 2.0f) {
             player.setHealth(2.0f);
         }
-
+        EffectHelper.playExplosionSound(player);
+        EffectHelper.spawnExplosionParticles(player);
         player.sendSystemMessage(Component.literal("§c\uD83D\uDCA5 Chaos exploded something near you!"));
     }
 }

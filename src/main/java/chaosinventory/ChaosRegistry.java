@@ -1,5 +1,6 @@
 package chaosinventory;
 
+import chaosinventory.config.ChaosConfig;
 import chaosinventory.events.*;
 import net.minecraft.server.level.ServerPlayer;
 
@@ -13,6 +14,7 @@ public class ChaosRegistry {
 
     public static void registerAll() {
         EVENTS.clear();
+        ChaosConfig.load();
 
         // === UTILI ===
         EVENTS.add(new DiamondsEvent());
@@ -88,30 +90,57 @@ public class ChaosRegistry {
         ChaosInventory.LOGGER.info("🌀 Registered " + EVENTS.size() + " Chaos events");
     }
 
+    public static boolean triggerEventByName(ServerPlayer player, String eventName) {
+        for (ChaosEvent event : EVENTS) {
+            if (event.getName().equalsIgnoreCase(eventName)) {
+                event.execute(player);
+                ChaosInventory.LOGGER.info("\uD83D\uDCA5 Manual CHAOS for " + player.getName().getString() + ": " + event.getName());
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static int getEventCount() {
+        return EVENTS.size();
+    }
+
     public static ChaosEvent getRandomEvent() {
         if (EVENTS.isEmpty()) return null;
 
-        int totalWeight = 0;
+        List<ChaosEvent> enabledEvents = new ArrayList<>();
         for (ChaosEvent event : EVENTS) {
-            totalWeight += event.getWeight();
+            if (ChaosConfig.isEventEnabled(event.getName())) {
+                enabledEvents.add(event);
+            }
+        }
+
+        if (enabledEvents.isEmpty()) return null;
+
+        int totalWeight = 0;
+        for (ChaosEvent event : enabledEvents) {
+            int weight = ChaosConfig.getEventWeight(event.getName(), event.getWeight());
+            totalWeight += weight;
         }
 
         int random = RANDOM.nextInt(totalWeight);
-        int current = 0;
-        for (ChaosEvent event : EVENTS) {
-            current += event.getWeight();
+            int current = 0;
+            for (ChaosEvent event : enabledEvents) {
+            int weight = ChaosConfig.getEventWeight(event.getName(), event.getWeight());
+            current += weight;
             if (random < current) {
                 return event;
             }
         }
 
-        return EVENTS.get(0);
+        return enabledEvents.get(0);
     }
+
 
     public static void triggerRandomEventForPlayer(ServerPlayer player) {
         ChaosEvent event = getRandomEvent();
         if (event == null) return;
-        if (server.isSingleplayer() && event.isMultiplayerOnly()) {
+        if (player.server.isSingleplayer() && event.isMultiplayerOnly()) {
             return;
         }
 

@@ -1,5 +1,6 @@
 package chaosinventory;
 
+import chaosinventory.config.ChaosConfig;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 
@@ -11,26 +12,19 @@ public class ChaosTimer {
 
 
     public static final int CHAOS_DURATION_TICKS = 20 * 20;
-
-
     private static final int MIN_PLAYERS_MULTIPLAYER = 2;
 
 
     private static final Map<UUID, Integer> playerTimers = new HashMap<>();
-
-
     private static final Map<UUID, Boolean> playerActive = new HashMap<>();
 
-
-
     public static void initPlayer(UUID uuid) {
-        playerTimers.put(uuid, CHAOS_DURATION_TICKS);
+        playerTimers.put(uuid, getChaosDurationTicks());
         playerActive.put(uuid, true);
     }
 
     public static void removePlayer(UUID uuid) {
-        playerTimers.remove(uuid);
-        playerActive.remove(uuid);
+        playerTimers.put(uuid, getChaosDurationTicks());
     }
 
     public static void pausePlayer(UUID uuid) {
@@ -60,9 +54,27 @@ public class ChaosTimer {
         return String.format("%02d:%02d", minutes, seconds);
     }
 
+    public static int getChaosDurationTicks() {
+        return ChaosConfig.getChaosDurationSeconds();
+    }
 
+    private static boolean globalEnabled = true;
+
+    public static boolean isGlobalEnabled() {
+        return globalEnabled;
+    }
+    public static void setGlobalEnabled(boolean enabled) {
+        globalEnabled = enabled;
+        if (enabled) {
+            ChaosInventory.LOGGER.info("▶\uFE0F Chaos enabled");
+        } else {
+            ChaosInventory.LOGGER.info("⏸\uFE0F Chaos disabled");
+        }
+    }
 
     public static void tick(MinecraftServer server) {
+        if (!globalEnabled) return;
+
         int playerCount = server.getPlayerCount();
         boolean isSingleplayer = server.isSingleplayer();
 

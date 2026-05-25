@@ -1,6 +1,7 @@
 package chaosinventory.events;
 
 import chaosinventory.ChaosEvent;
+import chaosinventory.utils.EffectHelper;
 import chaosinventory.utils.InventoryHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,6 +18,8 @@ public class InvisibilityPotionEvent implements ChaosEvent {
     public void execute(ServerPlayer player) {
         ItemStack potion = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.INVISIBILITY);
         if (InventoryHelper.tryAddItem(player, potion, "Invisibility Potion")) {
+            EffectHelper.playGoodSound(player);
+            EffectHelper.spawnGoodParticles(player);
             player.sendSystemMessage(Component.literal("§7\uD83D\uDC7B Chaos just donated you an Invisibility Potion!"));
         }
     }

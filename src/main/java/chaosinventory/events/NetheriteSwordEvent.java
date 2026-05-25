@@ -1,6 +1,7 @@
 package chaosinventory.events;
 
 import chaosinventory.ChaosEvent;
+import chaosinventory.utils.EffectHelper;
 import chaosinventory.utils.InventoryHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,6 +18,8 @@ public class NetheriteSwordEvent implements ChaosEvent {
         ItemStack sword = new ItemStack(Items.NETHERITE_SWORD, 1);
         sword.enchant(Enchantments.SHARPNESS, 5);
         if (InventoryHelper.tryAddItem(player, sword, "Netherite Sword Sharp V")) {
+            EffectHelper.playEpicSound(player);
+            EffectHelper.spawnEpicParticles(player);
             player.sendSystemMessage(Component.literal("§c⚔ Chaos just donated you a Netherite Sword with Sharp V! You're so lucky."));
         }
     }

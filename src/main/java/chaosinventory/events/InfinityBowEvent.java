@@ -1,6 +1,7 @@
 package chaosinventory.events;
 
 import chaosinventory.ChaosEvent;
+import chaosinventory.utils.EffectHelper;
 import chaosinventory.utils.InventoryHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,6 +18,8 @@ public class InfinityBowEvent implements ChaosEvent {
         ItemStack bow = new ItemStack(Items.BOW, 1);
         bow.enchant(Enchantments.INFINITY_ARROWS, 1);
         if (InventoryHelper.tryAddItem(player, bow, "Infinity Bow")) {
+            EffectHelper.playGoodSound(player);
+            EffectHelper.spawnGoodParticles(player);
             player.sendSystemMessage(Component.literal("§a\uD83C\uDFF9 Chaos just donated a Bow with Infinity!! Congrats i will be very grateful for this if I was you."));
         }
     }

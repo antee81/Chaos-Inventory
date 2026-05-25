@@ -1,6 +1,7 @@
 package chaosinventory.events;
 
 import chaosinventory.ChaosEvent;
+import chaosinventory.utils.EffectHelper;
 import chaosinventory.utils.InventoryHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -22,6 +23,8 @@ public class CreeperEggsEvent implements ChaosEvent {
     public void execute(ServerPlayer player) {
         ItemStack item = new ItemStack(Items.CREEPER_SPAWN_EGG, 3);
         if (InventoryHelper.tryAddItem(player, item, "3 Creeper Eggs")) {
+            EffectHelper.playExplosionSound(player);
+            EffectHelper.spawnExplosionParticles(player);
             player.sendSystemMessage(Component.literal("§a\uD83D\uDCA5 Chaos just donated you 3 Creeper Eggs. BOOOM!"));
         }
     }
