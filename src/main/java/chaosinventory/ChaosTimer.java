@@ -10,21 +10,25 @@ import java.util.UUID;
 
 public class ChaosTimer {
 
-
-    public static final int CHAOS_DURATION_TICKS = 20 * 20;
-    private static final int MIN_PLAYERS_MULTIPLAYER = 2;
-
-
     private static final Map<UUID, Integer> playerTimers = new HashMap<>();
     private static final Map<UUID, Boolean> playerActive = new HashMap<>();
+    private static final int MIN_PLAYERS_MULTIPLAYER = 2;
+    private static boolean globalEnabled = true;
+    private static boolean globalPaused = false;
+
+    private static int getDurationTicks() {
+        return ChaosConfig.getChaosDurationTicks();
+    }
 
     public static void initPlayer(UUID uuid) {
-        playerTimers.put(uuid, getChaosDurationTicks());
+        playerTimers.put(uuid, getDurationTicks());
         playerActive.put(uuid, true);
+        ChaosInventory.LOGGER.info("✅ Timer initialized for player: " + uuid + " length: " + getDurationTicks() / 20 + " secondi");
     }
 
     public static void removePlayer(UUID uuid) {
-        playerTimers.put(uuid, getChaosDurationTicks());
+        playerTimers.remove(uuid);
+        playerActive.remove(uuid);
     }
 
     public static void pausePlayer(UUID uuid) {
@@ -36,11 +40,11 @@ public class ChaosTimer {
     }
 
     public static void resetPlayer(UUID uuid) {
-        playerTimers.put(uuid, CHAOS_DURATION_TICKS);
+        playerTimers.put(uuid, getDurationTicks());
     }
 
     public static int getTicksRemaining(UUID uuid) {
-        return playerTimers.getOrDefault(uuid, CHAOS_DURATION_TICKS);
+        return playerTimers.getOrDefault(uuid, getDurationTicks());
     }
 
     public static boolean isRunning(UUID uuid) {
@@ -54,26 +58,17 @@ public class ChaosTimer {
         return String.format("%02d:%02d", minutes, seconds);
     }
 
-    public static int getChaosDurationTicks() {
-        return ChaosConfig.getChaosDurationSeconds();
-    }
-
-    private static boolean globalEnabled = true;
-
     public static boolean isGlobalEnabled() {
         return globalEnabled;
     }
+
     public static void setGlobalEnabled(boolean enabled) {
         globalEnabled = enabled;
-        if (enabled) {
-            ChaosInventory.LOGGER.info("▶\uFE0F Chaos enabled");
-        } else {
-            ChaosInventory.LOGGER.info("⏸\uFE0F Chaos disabled");
-        }
     }
 
     public static void tick(MinecraftServer server) {
         if (!globalEnabled) return;
+        if (globalPaused) return;
 
         int playerCount = server.getPlayerCount();
         boolean isSingleplayer = server.isSingleplayer();
@@ -115,15 +110,8 @@ public class ChaosTimer {
 
             if (remaining <= 0) {
                 ChaosEvent event = ChaosRegistry.getRandomEvent();
-
-                if (server.isSingleplayer() && event.isMultiplayerOnly()) {
-                    ChaosInventory.LOGGER.info("⏭\uFE0F Skipped multiplayer-only event in singleplayer: " + event.getName());
-                    resetPlayer(uuid);
-                    continue;
-                }
-
-                event.execute(player);
                 resetPlayer(uuid);
+                ChaosInventory.LOGGER.info("⏰ Timer expired! New cycle of " + getDurationTicks() / 20 + " seconds for " + player.getName().getString());
             }
         }
     }

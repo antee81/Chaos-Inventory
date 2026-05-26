@@ -1,9 +1,12 @@
 package chaosinventory.commands;
 
+import chaosinventory.stats.ChaosStats;
+import chaosinventory.ChaosEvent;
 import chaosinventory.ChaosInventory;
 import chaosinventory.ChaosRegistry;
 import chaosinventory.ChaosTimer;
 import chaosinventory.config.ChaosConfig;
+import chaosinventory.stats.ChaosStats;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -66,6 +69,66 @@ public class ChaosCommands {
                         .executes(context -> {
                             context.getSource().sendSystemMessage(Component.literal("§6📋 Chaos Event available: §e" + ChaosRegistry.getEventCount()));
                             context.getSource().sendSystemMessage(Component.literal("§7Usa §f/chaos trigger <name> §7 to trigger an event"));
+                            return 1;
+                        })
+                )
+                .then(Commands.literal("stats")
+                        .executes(context -> {
+                            if (context.getSource().getEntity() instanceof ServerPlayer player) {
+                                int xp = ChaosStats.getPlayerXP(player);
+                                int level = ChaosStats.getPlayerLevel(player);
+                                int totalEvents = ChaosStats.getPlayerTotalEvents(player);
+                                int xpToNext = ChaosStats.getXPToNextLevel(player);
+                                int progress = ChaosStats.getProgressPercent(player);
+
+                                context.getSource().sendSystemMessage(Component.literal("§6§l\uD83D\uDCCA CHAOS STATISTICS"));
+                                context.getSource().sendSystemMessage(Component.literal("§7Level: §e" + level + " §7(§f" + progress + "%§7 to the next)"));
+                                context.getSource().sendSystemMessage(Component.literal("§7Total XP: §e" + xp));
+                                context.getSource().sendSystemMessage(Component.literal("§7Event you went through: §e" + totalEvents));
+                                context.getSource().sendSystemMessage(Component.literal("§7XP to the next level: §e" + xpToNext));
+
+                                var counts = ChaosStats.getEventCounts(player);
+                                context.getSource().sendSystemMessage(Component.literal("§7Most frequent events:"));
+                                counts.entrySet().stream()
+                                        .sorted((a, b) -> b.getValue().compareTo(a.getValue()))
+                                        .limit(3)
+                                        .forEach(e -> context.getSource().sendSystemMessage(
+                                                Component.literal("  §8- §f" + e.getKey() + "§7: §e" + e.getValue())
+                                        ));
+                            }
+                            return 1;
+                        })
+                )
+                .then(Commands.literal("rewards")
+                        .executes(context -> {
+                            if (context.getSource().getEntity() instanceof ServerPlayer player) {
+                                int level = ChaosStats.getPlayerLevel(player);
+                                var unlocked = ChaosStats.getUnlockedRewards(player);
+
+                                context.getSource().sendSystemMessage(Component.literal("§6§l\uD83C\uDF81 CHAOS REWARDS"));
+                                context.getSource().sendSystemMessage(Component.literal("§7Current Level: §e" + level));
+                                context.getSource().sendSystemMessage(Component.literal(""));
+                                context.getSource().sendSystemMessage(Component.literal("§7§lUnlocked:"));
+
+                                if (unlocked.isEmpty()) {
+                                    context.getSource().sendSystemMessage(Component.literal("  §8No rewards unlocked yet.."));
+                                } else {
+                                    for (String rewardLevel : unlocked) {
+                                        context.getSource().sendSystemMessage(Component.literal("  §a✓" + ChaosStats.getRewardDescription(Integer.parseInt(rewardLevel))));
+                                    }
+                                }
+
+                                context.getSource().sendSystemMessage(Component.literal(""));
+                                context.getSource().sendSystemMessage(Component.literal("§7§lNext reward:"));
+
+                                int nextMilestone = ((level / 5) + 1) * 5;
+                                while (nextMilestone <= 100 && ChaosStats.getRewardDescription(nextMilestone).equals("No reward")) {
+                                    nextMilestone += 5;
+                                }
+                                if (nextMilestone <= 100) {
+                                    context.getSource().sendSystemMessage(Component.literal("  §8Level " + nextMilestone + ": §7" + ChaosStats.getRewardDescription(nextMilestone)));
+                                }
+                            }
                             return 1;
                         })
                 )

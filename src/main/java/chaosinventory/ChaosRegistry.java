@@ -1,7 +1,9 @@
 package chaosinventory;
 
+import chaosinventory.stats.ChaosStats;
 import chaosinventory.config.ChaosConfig;
 import chaosinventory.events.*;
+import chaosinventory.stats.ChaosStats;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.ArrayList;
@@ -144,7 +146,12 @@ public class ChaosRegistry {
             return;
         }
 
+        ChaosStats.initPlayer(player);
+
         ChaosInventory.LOGGER.info("\uD83D\uDCA5 CHAOS for " + player.getName().getString() + ": " + event.getName());
         event.execute(player);
+
+        int xp = ChaosStats.getXPForEvent(event.getWeight());
+        ChaosStats.addXP(player, xp, event.getName());
     }
 }

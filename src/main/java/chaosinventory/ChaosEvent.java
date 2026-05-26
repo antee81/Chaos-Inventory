@@ -10,4 +10,8 @@ public interface ChaosEvent {
     default boolean isMultiplayerOnly() {
         return false;
     }
+
+    default String getEventType() {
+        return "COMMON";
+    }
 }
