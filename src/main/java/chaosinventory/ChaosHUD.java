@@ -1,6 +1,6 @@
 package chaosinventory;
 
-import com.mojang.blaze3d.systems.RenderSystem;
+import chaosinventory.ChaosTimer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -9,12 +9,13 @@ import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.apache.logging.log4j.core.config.AppenderRef;
 
 import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = ChaosInventory.MODID, value = Dist.CLIENT)
-
 public class ChaosHUD {
+
     @SubscribeEvent
     public static void onRenderHUD(RenderGuiOverlayEvent.Post event) {
         if (event.getOverlay() != VanillaGuiOverlay.EXPERIENCE_BAR.type()) return;
@@ -45,14 +46,13 @@ public class ChaosHUD {
             timerColor = 0xFFFFFFFF;
         }
 
-        int labelColor = 0xFFFFFFFF;
-
-
         int screenWidth = mc.getWindow().getGuiScaledWidth();
         int screenHeight = mc.getWindow().getGuiScaledHeight();
-        int totalWidth = font.width(time);
-        int x = (screenWidth - totalWidth) / 2;
+        int textWidth = font.width(time);
+
+        int x = (screenWidth - textWidth) / 2;
         int y = screenHeight - 75;
+
 
         graphics.drawString(font, time, x, y, timerColor, true);
     }

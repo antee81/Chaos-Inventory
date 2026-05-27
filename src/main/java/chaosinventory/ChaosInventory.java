@@ -1,5 +1,9 @@
 package chaosinventory;
 
+import chaosinventory.config.ChaosConfig;
+import chaosinventory.config.HUDConfig;
+import chaosinventory.data.DataManager;
+import chaosinventory.sound.ModSounds;
 import com.mojang.logging.LogUtils;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -16,11 +20,13 @@ public class ChaosInventory {
     public ChaosInventory(FMLJavaModLoadingContext context) {
         IEventBus modEventBus = context.getModEventBus();
 
-        // Registra eventi
+        ModSounds.register(modEventBus);
         modEventBus.addListener(this::commonSetup);
-
-        // Registra il bus di Forge
         MinecraftForge.EVENT_BUS.register(this);
+
+        ChaosConfig.load();
+        HUDConfig.load();
+        DataManager.load();
 
         LOGGER.info("🌀 Chaos Inventory loaded!");
     }

@@ -1,6 +1,7 @@
 package chaosinventory.stats;
 
 import chaosinventory.ChaosInventory;
+import chaosinventory.data.DataManager;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.HashMap;
@@ -110,7 +111,7 @@ public class ChaosStats {
     }
 
     public static void removePlayer(UUID uuid) {
-
+        DataManager.removePlayer(uuid);
     }
 
     public static int getProgressPercent(ServerPlayer player) {

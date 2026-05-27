@@ -1,5 +1,6 @@
 package chaosinventory;
 
+import chaosinventory.ChaosRegistry;
 import chaosinventory.config.ChaosConfig;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -109,9 +110,9 @@ public class ChaosTimer {
 
 
             if (remaining <= 0) {
-                ChaosEvent event = ChaosRegistry.getRandomEvent();
+                ChaosRegistry.triggerRandomEventForPlayer(player);
                 resetPlayer(uuid);
-                ChaosInventory.LOGGER.info("⏰ Timer expired! New cycle of " + getDurationTicks() / 20 + " seconds for " + player.getName().getString());
+                ChaosInventory.LOGGER.info("⏰ Timer expired! Chaos event triggered for " + player.getName().getString());
             }
         }
     }

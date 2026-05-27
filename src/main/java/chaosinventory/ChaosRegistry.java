@@ -142,12 +142,12 @@ public class ChaosRegistry {
     public static void triggerRandomEventForPlayer(ServerPlayer player) {
         ChaosEvent event = getRandomEvent();
         if (event == null) return;
+
         if (player.server.isSingleplayer() && event.isMultiplayerOnly()) {
             return;
         }
 
         ChaosStats.initPlayer(player);
-
         ChaosInventory.LOGGER.info("\uD83D\uDCA5 CHAOS for " + player.getName().getString() + ": " + event.getName());
         event.execute(player);
 
