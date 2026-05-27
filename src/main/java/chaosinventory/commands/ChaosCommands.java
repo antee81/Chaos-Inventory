@@ -19,8 +19,9 @@ public class ChaosCommands {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("chaos")
-                .requires(source -> source.hasPermission(1)) // OP necessario
+                .requires(source -> source.hasPermission(0)) // NO OP
                 .then(Commands.literal("reload")
+                        .requires(source -> source.hasPermission(1))
                         .executes(context -> {
                             ChaosConfig.load();
                             context.getSource().sendSystemMessage(Component.literal("§a✅ ChaosConfig reloaded!"));
@@ -55,6 +56,7 @@ public class ChaosCommands {
                         )
                 )
                 .then(Commands.literal("toggle")
+                        .requires(source -> source.hasPermission(1))
                         .executes(context -> {
                             if (context.getSource().getEntity() instanceof ServerPlayer player) {
                                 boolean current = ChaosTimer.isGlobalEnabled();
@@ -66,6 +68,7 @@ public class ChaosCommands {
                         })
                 )
                 .then(Commands.literal("list")
+                        .requires(source -> source.hasPermission(0))
                         .executes(context -> {
                             context.getSource().sendSystemMessage(Component.literal("§6📋 Chaos Event available: §e" + ChaosRegistry.getEventCount()));
                             context.getSource().sendSystemMessage(Component.literal("§7Usa §f/chaos trigger <name> §7 to trigger an event"));
@@ -73,6 +76,7 @@ public class ChaosCommands {
                         })
                 )
                 .then(Commands.literal("stats")
+                        .requires(source -> source.hasPermission(0))
                         .executes(context -> {
                             if (context.getSource().getEntity() instanceof ServerPlayer player) {
                                 int xp = ChaosStats.getPlayerXP(player);
@@ -100,6 +104,7 @@ public class ChaosCommands {
                         })
                 )
                 .then(Commands.literal("rewards")
+                        .requires(source -> source.hasPermission(0))
                         .executes(context -> {
                             if (context.getSource().getEntity() instanceof ServerPlayer player) {
                                 int level = ChaosStats.getPlayerLevel(player);

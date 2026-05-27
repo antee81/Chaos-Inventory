@@ -1,5 +1,6 @@
 package chaosinventory;
 
+import chaosinventory.client.ChaosStatsHUD;
 import chaosinventory.afk.AfkManager;
 import chaosinventory.stats.ChaosStats;
 import net.minecraft.server.MinecraftServer;
@@ -44,6 +45,7 @@ public class ChaosEventHandlers {
             ChaosStats.initPlayer(player);
             AfkManager.updateActivity(player);
             ChaosTimer.initPlayer(player.getUUID());
+            ChaosStatsHUD.showMessage(player.getUUID());
             ChaosInventory.LOGGER.info("\uD83C\uDF00 Player joined: " + player.getName().getString());
         }
     }

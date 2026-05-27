@@ -10,8 +10,19 @@ import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 @Mod.EventBusSubscriber(modid = ChaosInventory.MODID, value = Dist.CLIENT)
 public class ChaosStatsHUD {
+
+    private static final Map<UUID, Long> showuUntil = new HashMap<>();
+    private static final int DISPLAY_DURATION = 20 * 1000;
+
+    public static void showMessage(UUID playerUUID) {
+        showuUntil.put(playerUUID, System.currentTimeMillis() + DISPLAY_DURATION);
+    }
 
     @SubscribeEvent
     public static void onRenderHUD(RenderGuiOverlayEvent.Post event) {
