@@ -18,71 +18,25 @@ public class ChaosCommands {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("chaos")
                 .requires(source -> source.hasPermission(0))
-
-                // /chaos stats
-                .then(Commands.literal("stats")
-                        .executes(context -> {
-                            if (context.getSource().getEntity() instanceof ServerPlayer player) {
-                                int xp = ChaosStats.getPlayerXP(player);
-                                int level = ChaosStats.getPlayerLevel(player);
-                                int totalEvents = ChaosStats.getPlayerTotalEvents(player);
-                                int progress = ChaosStats.getProgressPercent(player);
-
-                                context.getSource().sendSystemMessage(Component.literal("§6§l📊 CHAOS STATISTICS"));
-                                context.getSource().sendSystemMessage(Component.literal("§7Level: §e" + level + " §7(§f" + progress + "%§7 to next)"));
-                                context.getSource().sendSystemMessage(Component.literal("§7Total XP: §e" + xp));
-                                context.getSource().sendSystemMessage(Component.literal("§7Events survived: §e" + totalEvents));
-                            }
-                            return 1;
-                        })
-                )
-
-                // /chaos rewards
-                .then(Commands.literal("rewards")
-                        .executes(context -> {
-                            if (context.getSource().getEntity() instanceof ServerPlayer player) {
-                                int level = ChaosStats.getPlayerLevel(player);
-                                context.getSource().sendSystemMessage(Component.literal("§6§l🎁 CHAOS REWARDS"));
-                                context.getSource().sendSystemMessage(Component.literal("§7Current level: §e" + level));
-                            }
-                            return 1;
-                        })
-                )
-
-                // /chaos list
-                .then(Commands.literal("list")
-                        .executes(context -> {
-                            context.getSource().sendSystemMessage(Component.literal("§6📋 Available Chaos events: §e" + ChaosRegistry.getEventCount()));
-                            return 1;
-                        })
-                )
-        );
-
-        // OP ONLY COMMANDS
-        dispatcher.register(Commands.literal("chaos")
-                .requires(source -> source.hasPermission(2))
-
                 .then(Commands.literal("reload")
                         .requires(source -> source.hasPermission(1))
                         .executes(context -> {
                             ChaosConfig.load();
-                            context.getSource().sendSystemMessage(Component.literal("§a✅ ChaosConfig reloaded!"));
+                            context.getSource().sendSystemMessage(Component.literal("[CHAOS] Config reloaded!"));
                             return 1;
                         })
                 )
-
                 .then(Commands.literal("timer")
                         .requires(source -> source.hasPermission(1))
                         .then(Commands.argument("seconds", IntegerArgumentType.integer(10, 7200))
                                 .executes(context -> {
                                     int seconds = IntegerArgumentType.getInteger(context, "seconds");
                                     ChaosConfig.setChaosDurationSeconds(seconds);
-                                    context.getSource().sendSystemMessage(Component.literal("§a⏰ Timer set to " + seconds + " seconds!"));
+                                    context.getSource().sendSystemMessage(Component.literal("[CHAOS] Timer set to " + seconds + " seconds!"));
                                     return 1;
                                 })
                         )
                 )
-
                 .then(Commands.literal("trigger")
                         .requires(source -> source.hasPermission(1))
                         .then(Commands.argument("event", StringArgumentType.string())
@@ -91,22 +45,91 @@ public class ChaosCommands {
                                     if (context.getSource().getEntity() instanceof ServerPlayer player) {
                                         boolean found = ChaosRegistry.triggerEventByName(player, eventName);
                                         if (found) {
-                                            context.getSource().sendSystemMessage(Component.literal("§a🌀 Event §e" + eventName + " §atriggered!"));
+                                            context.getSource().sendSystemMessage(Component.literal("[CHAOS] Event " + eventName + " triggered!"));
                                         } else {
-                                            context.getSource().sendSystemMessage(Component.literal("§c❌ Event §e" + eventName + " §cnot found!"));
+                                            context.getSource().sendSystemMessage(Component.literal("[CHAOS] Event " + eventName + " not found!"));
                                         }
                                     }
                                     return 1;
                                 })
                         )
                 )
-
                 .then(Commands.literal("toggle")
                         .requires(source -> source.hasPermission(1))
                         .executes(context -> {
-                            boolean current = ChaosTimer.isGlobalEnabled();
-                            ChaosTimer.setGlobalEnabled(!current);
-                            context.getSource().sendSystemMessage(Component.literal("§e🌀 Chaos " + (!current ? "§aenabled" : "§cdisabled") + "!"));
+                            if (context.getSource().getEntity() instanceof ServerPlayer player) {
+                                boolean current = ChaosTimer.isGlobalEnabled();
+                                ChaosTimer.setGlobalEnabled(!current);
+                                String status = !current ? "ENABLED" : "DISABLED";
+                                context.getSource().sendSystemMessage(Component.literal("[CHAOS] Chaos " + status + "!"));
+                            }
+                            return 1;
+                        })
+                )
+                .then(Commands.literal("list")
+                        .executes(context -> {
+                            context.getSource().sendSystemMessage(Component.literal("[CHAOS] Available events: " + ChaosRegistry.getEventCount()));
+                            context.getSource().sendSystemMessage(Component.literal("Use /chaos trigger <name> to activate an event"));
+                            return 1;
+                        })
+                )
+                .then(Commands.literal("stats")
+                        .executes(context -> {
+                            if (context.getSource().getEntity() instanceof ServerPlayer player) {
+                                int xp = ChaosStats.getPlayerXP(player);
+                                int level = ChaosStats.getPlayerLevel(player);
+                                int totalEvents = ChaosStats.getPlayerTotalEvents(player);
+                                int xpToNext = ChaosStats.getXPToNextLevel(player);
+                                int progress = ChaosStats.getProgressPercent(player);
+
+                                context.getSource().sendSystemMessage(Component.literal("=== CHAOS STATISTICS ==="));
+                                context.getSource().sendSystemMessage(Component.literal("Level: " + level + " (" + progress + "% to next)"));
+                                context.getSource().sendSystemMessage(Component.literal("Total XP: " + xp));
+                                context.getSource().sendSystemMessage(Component.literal("Events survived: " + totalEvents));
+                                context.getSource().sendSystemMessage(Component.literal("XP to next level: " + xpToNext));
+
+                                var counts = ChaosStats.getEventCounts(player);
+                                context.getSource().sendSystemMessage(Component.literal("Most frequent events:"));
+                                counts.entrySet().stream()
+                                        .sorted((a, b) -> b.getValue().compareTo(a.getValue()))
+                                        .limit(3)
+                                        .forEach(e -> context.getSource().sendSystemMessage(
+                                                Component.literal("  - " + e.getKey() + ": " + e.getValue())
+                                        ));
+                            }
+                            return 1;
+                        })
+                )
+                .then(Commands.literal("rewards")
+                        .executes(context -> {
+                            if (context.getSource().getEntity() instanceof ServerPlayer player) {
+                                int level = ChaosStats.getPlayerLevel(player);
+                                var unlocked = ChaosStats.getUnlockedRewards(player);
+
+                                context.getSource().sendSystemMessage(Component.literal("=== CHAOS REWARDS ==="));
+                                context.getSource().sendSystemMessage(Component.literal("Current level: " + level));
+                                context.getSource().sendSystemMessage(Component.literal(""));
+                                context.getSource().sendSystemMessage(Component.literal("Unlocked:"));
+
+                                if (unlocked.isEmpty()) {
+                                    context.getSource().sendSystemMessage(Component.literal("  None yet"));
+                                } else {
+                                    for (String rewardLevel : unlocked) {
+                                        context.getSource().sendSystemMessage(Component.literal("  - " + ChaosStats.getRewardDescription(Integer.parseInt(rewardLevel))));
+                                    }
+                                }
+
+                                context.getSource().sendSystemMessage(Component.literal(""));
+                                context.getSource().sendSystemMessage(Component.literal("Next rewards:"));
+
+                                int nextMilestone = ((level / 5) + 1) * 5;
+                                while (nextMilestone <= 100 && ChaosStats.getRewardDescription(nextMilestone).equals("Nessuna ricompensa")) {
+                                    nextMilestone += 5;
+                                }
+                                if (nextMilestone <= 100) {
+                                    context.getSource().sendSystemMessage(Component.literal("  Level " + nextMilestone + ": " + ChaosStats.getRewardDescription(nextMilestone)));
+                                }
+                            }
                             return 1;
                         })
                 )
