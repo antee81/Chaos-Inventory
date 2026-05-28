@@ -19,33 +19,11 @@ public class ChaosStatsHUD {
 
     private static final Map<UUID, Integer> showTicks = new HashMap<>();
     private static final int DISPLAY_TICKS = 20 * 20;
-    private static final int FADE_START_TICKS = 5 * 20;
+    private static final int FADE_START_SECONDS = 15 * 20; // Inizia fade 5 secondi prima della scadenza
 
     public static void showMessage(UUID playerUUID) {
         showTicks.put(playerUUID, DISPLAY_TICKS);
-        ChaosInventory.LOGGER.info("HUD message started for 20 seconds");
-    }
-
-    private static void tick() {
-        if (Minecraft.getInstance().player == null) return;
-        UUID uuid = Minecraft.getInstance().player.getUUID();
-
-        if (showTicks.containsKey(uuid)) {
-            int remaining = showTicks.get(uuid) - 1;
-            if (remaining <= 0) {
-                showTicks.remove(uuid);
-            } else {
-                showTicks.put(uuid, remaining);
-            }
-        }
-    }
-
-    private static int getAlpha(int ticksRemaining) {
-        if (ticksRemaining > FADE_START_TICKS) {
-            return 255;
-        }
-        float progress = (float) ticksRemaining / FADE_START_TICKS;
-        return (int) (255 * progress);
+        ChaosInventory.LOGGER.info("HUD message started for 20 seconds (fade last 5 seconds)");
     }
 
     @SubscribeEvent
@@ -55,16 +33,20 @@ public class ChaosStatsHUD {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null) return;
 
-        tick();
-
         UUID uuid = mc.player.getUUID();
         if (!showTicks.containsKey(uuid)) return;
 
         int ticksRemaining = showTicks.get(uuid);
 
+        if (ticksRemaining <= 0) {
+            showTicks.remove(uuid);
+            return;
+        }
+        showTicks.put(uuid, ticksRemaining - 1);
+
         int alpha = 255;
-        if (ticksRemaining <= FADE_START_TICKS) {
-            float progress = (float) ticksRemaining / FADE_START_TICKS;
+        if (ticksRemaining <= FADE_START_SECONDS) {
+            float progress = (float) ticksRemaining / FADE_START_SECONDS;
             alpha = (int) (255 * progress);
         }
 
@@ -76,12 +58,11 @@ public class ChaosStatsHUD {
         int screenWidth = mc.getWindow().getGuiScaledWidth();
         int screenHeight = mc.getWindow().getGuiScaledHeight();
 
-        String message = "\u00A77\uD83D\uDCCA📊 Use \u00A7e/chaos stats \u00A77to see your progress";
+        String message = "\u00A77\uD83D\uDCCA Use \u00A7e/chaos stats \u00A77to see your progress!";
         int x = (screenWidth - font.width(message)) / 2;
-        int y = screenHeight - 55;
+        int y = screenHeight - 52;
 
         int color = (alpha << 24) | 0xAAAAAA;
-
-        graphics.drawString(font, message, x, y, 0xAAAAAA, true);
+        graphics.drawString(font, message, x, y, color, true);
     }
 }

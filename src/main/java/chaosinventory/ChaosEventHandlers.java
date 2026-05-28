@@ -53,6 +53,7 @@ public class ChaosEventHandlers {
     @SubscribeEvent
     public static void onPlayerLeave(PlayerEvent.PlayerLoggedOutEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
+            ChaosStats.initPlayer(player);
             AfkManager.removePlayer(player.getUUID());
             ChaosTimer.removePlayer(player.getUUID());
             ChaosInventory.LOGGER.info("\uD83C\uDF00 Player left: " + player.getName().getString());
