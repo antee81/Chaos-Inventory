@@ -11,7 +11,7 @@ import net.minecraft.world.item.Items;
 public class ButtonEvent implements ChaosEvent {
     @Override
     public String getName() {
-        return "Birch Button";
+        return "Birch_Button";
     }
 
     @Override

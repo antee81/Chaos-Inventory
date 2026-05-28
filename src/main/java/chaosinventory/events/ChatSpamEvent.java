@@ -8,7 +8,7 @@ import net.minecraft.server.level.ServerPlayer;
 public class ChatSpamEvent implements ChaosEvent {
     @Override
     public String getName() {
-        return "Chat Spam";
+        return "Chat_Spam";
     }
 
     @Override

@@ -10,7 +10,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
 
 public class NetheriteSwordEvent implements ChaosEvent {
-    @Override public String getName() { return "Netherite Sword Sharp V"; }
+    @Override public String getName() { return "Netherite_Sword"; }
     @Override public int getWeight() { return 5; }
 
     @Override

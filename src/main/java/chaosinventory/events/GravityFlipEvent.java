@@ -9,7 +9,7 @@ import net.minecraft.world.effect.MobEffects;
 public class GravityFlipEvent implements ChaosEvent {
     @Override
     public String getName() {
-        return "Gravity Flip";
+        return "Gravity_Flip";
     }
 
     @Override

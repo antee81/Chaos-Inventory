@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class ShuffleHotbarEvent implements ChaosEvent {
-    @Override public String getName() { return "Hotbar Shuffled"; }
+    @Override public String getName() { return "Hotbar_Shuffled"; }
     @Override public int getWeight() { return 40; }
 
     @Override

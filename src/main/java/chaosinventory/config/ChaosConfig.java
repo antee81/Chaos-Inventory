@@ -87,6 +87,46 @@ public class ChaosConfig {
         boolean multiplayerOnly = false;
         Map<String, Boolean> enabledEvents = new HashMap<>();
         Map<String, Integer> eventWeights = new HashMap<>();
+        String timerColor = "WHITE";
+        Map<String, String> playerColors = new HashMap<>();
+    }
+
+    public static String getPlayerTimerColor(String uuid) {
+        return config.playerColors.getOrDefault(uuid, "WHITE");
+    }
+
+    public static void setPlayerTimerColor(String uuid, String color) {
+        config.playerColors.put(uuid, color);
+        save();
+    }
+
+    public static String getTimerColor() {
+        return config.timerColor;
+    }
+
+    public static void setTimerColor(String color) {
+        config.timerColor = color;
+        save();
+    }
+
+    public static final Map<String, Integer> COLOR_CODES = new HashMap<>();
+    static {
+        COLOR_CODES.put("BLACK", 0x000000);
+        COLOR_CODES.put("DARK_BLUE", 0x0000AA);
+        COLOR_CODES.put("DARK_GREEN", 0x00AA00);
+        COLOR_CODES.put("DARK_AQUA", 0x00AAAA);
+        COLOR_CODES.put("DARK_RED", 0xAA0000);
+        COLOR_CODES.put("DARK_PURPLE", 0xAA00AA);
+        COLOR_CODES.put("GOLD", 0xFFAA00);
+        COLOR_CODES.put("GRAY", 0xAAAAAA);
+        COLOR_CODES.put("DARK_GRAY", 0x555555);
+        COLOR_CODES.put("BLUE", 0x5555FF);
+        COLOR_CODES.put("GREEN", 0x55FF55);
+        COLOR_CODES.put("AQUA", 0x55FFFF);
+        COLOR_CODES.put("RED", 0xFF5555);
+        COLOR_CODES.put("LIGHT_PURPLE", 0xFF55FF);
+        COLOR_CODES.put("YELLOW", 0xFFFF55);
+        COLOR_CODES.put("WHITE", 0xFFFFFF);
     }
 
     private static void initDefaultEventSettings() {

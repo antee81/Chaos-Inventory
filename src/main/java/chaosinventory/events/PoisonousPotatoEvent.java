@@ -12,7 +12,7 @@ public class PoisonousPotatoEvent implements ChaosEvent {
 
     @Override
     public String getName() {
-        return "Poisonous Potato";
+        return "Poisonous_Potato";
     }
 
     @Override

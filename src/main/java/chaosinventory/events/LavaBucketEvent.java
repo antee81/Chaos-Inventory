@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 public class LavaBucketEvent implements ChaosEvent {
-    @Override public String getName() { return "Lava Bucket"; }
+    @Override public String getName() { return "Lava_Bucket"; }
     @Override public int getWeight() { return 5; }
 
     @Override

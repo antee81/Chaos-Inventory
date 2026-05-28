@@ -9,7 +9,7 @@ import net.minecraft.world.effect.MobEffects;
 public class TimeWarpEvent implements ChaosEvent {
     @Override
     public String getName() {
-        return "Time Warp";
+        return "Time_Warp";
     }
 
     @Override

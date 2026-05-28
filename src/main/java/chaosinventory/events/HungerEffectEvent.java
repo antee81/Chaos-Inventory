@@ -8,7 +8,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 
 public class HungerEffectEvent implements ChaosEvent {
-    @Override public String getName() { return "Hunger III"; }
+    @Override public String getName() { return "Hunger"; }
     @Override public int getWeight() { return 40; }
 
     @Override

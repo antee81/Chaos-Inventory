@@ -11,7 +11,7 @@ import net.minecraft.world.item.Items;
 public class DiamondRainEvent implements ChaosEvent {
     @Override
     public String getName() {
-        return "Diamond Rain";
+        return "Diamond_Rain";
     }
 
     @Override
@@ -22,7 +22,7 @@ public class DiamondRainEvent implements ChaosEvent {
     @Override
     public void execute(ServerPlayer player) {
         ItemStack item = new ItemStack(Items.DIAMOND, 10);
-        if (InventoryHelper.tryAddItem(player, item, "10 Diamonds")) {
+        if (InventoryHelper.tryAddItem(player, item, "Diamonds")) {
             EffectHelper.playEpicSound(player);
             EffectHelper.spawnEpicParticles(player);
             player.sendSystemMessage(Component.literal("§b\uD83D\uDC8E DIAMOND RAIN!! You received 10 diamonds!"));

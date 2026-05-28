@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 public class SpectralArrowsEvent implements ChaosEvent {
-    @Override public String getName() { return "Spectral Arrows"; }
+    @Override public String getName() { return "Spectral_Arrows"; }
     @Override public int getWeight() { return 40; }
 
     @Override

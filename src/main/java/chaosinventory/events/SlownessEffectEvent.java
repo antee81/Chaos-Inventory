@@ -8,7 +8,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 
 public class SlownessEffectEvent implements ChaosEvent {
-    @Override public String getName() { return "Slowness IV"; }
+    @Override public String getName() { return "Slowness"; }
     @Override public int getWeight() { return 40; }
 
     @Override

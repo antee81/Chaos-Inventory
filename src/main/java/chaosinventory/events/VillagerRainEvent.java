@@ -9,7 +9,7 @@ import net.minecraft.world.entity.npc.Villager;
 public class VillagerRainEvent implements ChaosEvent {
     @Override
     public String getName() {
-        return "Villager Rain";
+        return "Villager_Rain";
     }
 
     @Override

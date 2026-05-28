@@ -11,7 +11,7 @@ import net.minecraft.world.item.Items;
 public class BrokenCompassEvent implements ChaosEvent {
     @Override
     public String getName() {
-        return "Broken Compass";
+        return "Broken_Compass";
     }
 
     @Override

@@ -10,7 +10,7 @@ import net.minecraft.world.effect.MobEffects;
 public class LightningStrikeEvent implements ChaosEvent {
     @Override
     public String getName() {
-        return "Lightning Strike";
+        return "Lightning_Strike";
     }
 
     @Override

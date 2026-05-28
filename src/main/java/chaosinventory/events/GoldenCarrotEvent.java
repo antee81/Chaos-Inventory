@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 public class GoldenCarrotEvent implements ChaosEvent {
-    @Override public String getName() { return "Golden Carrot"; }
+    @Override public String getName() { return "Golden_Carrot"; }
     @Override public int getWeight() { return 40; }
 
     @Override

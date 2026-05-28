@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 public class GoldenAppleEvent implements ChaosEvent {
-    @Override public String getName() { return "Golden Apple";}
+    @Override public String getName() { return "Golden_Apple";}
     @Override public int getWeight() { return 25;}
 
     @Override

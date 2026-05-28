@@ -11,7 +11,7 @@ import net.minecraft.world.item.Items;
 public class NetheriteArmorEvent implements ChaosEvent {
     @Override
     public String getName() {
-        return "Complete Netherite Armor";
+        return "Netherite_Armor";
     }
 
     @Override

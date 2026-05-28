@@ -1,6 +1,6 @@
 package chaosinventory;
 
-import chaosinventory.ChaosTimer;
+import chaosinventory.config.ChaosConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -9,7 +9,6 @@ import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import org.apache.logging.log4j.core.config.AppenderRef;
 
 import java.util.UUID;
 
@@ -23,36 +22,39 @@ public class ChaosHUD {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null) return;
 
-        UUID uuid = mc.player.getUUID();
+        UUID uuidObj = mc.player.getUUID();
+
+        String uuidStr = mc.player.getStringUUID();
 
         if (mc.player.isDeadOrDying()) return;
-        if (!ChaosTimer.isRunning(uuid)) return;
+        if (!ChaosTimer.isRunning(uuidObj)) return;
 
         GuiGraphics graphics = event.getGuiGraphics();
         Font font = mc.font;
 
-        int ticksLeft = ChaosTimer.getTicksRemaining(uuid);
+        int ticksLeft = ChaosTimer.getTicksRemaining(uuidObj);
         int secondsLeft = ticksLeft / 20;
-        String time = ChaosTimer.getTimeFormatted(uuid);
+        String time = ChaosTimer.getTimeFormatted(uuidObj);
 
-        int timerColor;
+
+        String colorName = ChaosConfig.getPlayerTimerColor(uuidStr);
+        int timerColor = ChaosConfig.COLOR_CODES.getOrDefault(colorName, 0xFFFFFFFF);
+
+
         if (secondsLeft <= 10) {
-            timerColor = (System.currentTimeMillis() / 250) % 2 == 0 ? 0xFFFF0000 : 0xFFFFFFFF;
+
+            timerColor = (System.currentTimeMillis() / 250) % 2 == 0 ? 0xFFFF0000 : timerColor;
         } else if (secondsLeft <= 60) {
-            timerColor = 0xFFFF8800;
+            if ("WHITE".equals(colorName)) timerColor = 0xFFFF8800;
         } else if (secondsLeft <= 300) {
-            timerColor = 0xFFFFFF00;
-        } else {
-            timerColor = 0xFFFFFFFF;
+            if ("WHITE".equals(colorName)) timerColor = 0xFFFFFF00;
         }
 
         int screenWidth = mc.getWindow().getGuiScaledWidth();
         int screenHeight = mc.getWindow().getGuiScaledHeight();
-        int textWidth = font.width(time);
-
-        int x = (screenWidth - textWidth) / 2;
+        int totalWidth = font.width(time);
+        int x = (screenWidth - totalWidth) / 2;
         int y = screenHeight - 75;
-
 
         graphics.drawString(font, time, x, y, timerColor, true);
     }

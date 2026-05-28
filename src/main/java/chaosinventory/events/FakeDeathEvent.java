@@ -7,7 +7,7 @@ import net.minecraft.server.level.ServerPlayer;
 public class FakeDeathEvent implements ChaosEvent {
     @Override
     public String getName() {
-        return "Fake Death";
+        return "Fake_Death";
     }
 
     @Override

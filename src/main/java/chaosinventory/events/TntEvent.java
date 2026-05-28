@@ -12,7 +12,7 @@ public class TntEvent implements ChaosEvent {
 
     @Override
     public String getName() {
-        return "TNT Donated";
+        return "TNT_Donated";
     }
 
     @Override

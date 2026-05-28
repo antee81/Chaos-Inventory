@@ -10,7 +10,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
 
 public class InfinityBowEvent implements ChaosEvent {
-    @Override public String getName() { return "Infinity Bow"; }
+    @Override public String getName() { return "Infinity_Bow"; }
     @Override public int getWeight() { return 15; }
 
     @Override

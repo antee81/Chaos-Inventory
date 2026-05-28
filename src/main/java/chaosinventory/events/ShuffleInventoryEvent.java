@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class ShuffleInventoryEvent implements ChaosEvent {
-    @Override public String getName() { return "Inventario Mescolato"; }
+    @Override public String getName() { return "Shuffled_Inventory"; }
     @Override public int getWeight() { return 25; }
 
     @Override

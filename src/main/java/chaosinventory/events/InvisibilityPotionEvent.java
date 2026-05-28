@@ -11,7 +11,7 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 
 public class InvisibilityPotionEvent implements ChaosEvent {
-    @Override public String getName() { return "Invisibility Potion"; }
+    @Override public String getName() { return "Invisibility_Potion"; }
     @Override public int getWeight() { return 25; }
 
     @Override

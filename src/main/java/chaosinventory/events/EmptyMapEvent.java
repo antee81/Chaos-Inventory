@@ -22,7 +22,7 @@ public class EmptyMapEvent implements ChaosEvent {
     @Override
     public void execute(ServerPlayer player) {
         ItemStack item = new ItemStack(Items.MAP, 1);
-        if (InventoryHelper.tryAddItem(player, item, "Tropical Fish")) {
+        if (InventoryHelper.tryAddItem(player, item, "Tropical_Fish")) {
             EffectHelper.playTrollSound(player);
             EffectHelper.spawnTrollParticles(player);
             player.sendSystemMessage(Component.literal("§e\uD83D\uDDFA Chaos just donated you an empty map. Completely useless."));

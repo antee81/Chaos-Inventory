@@ -17,7 +17,7 @@ public class InventoryVoidEvent implements ChaosEvent {
 
     @Override
     public String getName() {
-        return "Inventory Void";
+        return "Inventory_Void";
     }
 
     @Override

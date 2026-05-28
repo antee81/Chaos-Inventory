@@ -11,7 +11,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import java.util.Random;
 
 public class RandomTeleportEvent implements ChaosEvent {
-    @Override public String getName() { return "Random Teleport"; }
+    @Override public String getName() { return "Random_Teleport"; }
     @Override public int getWeight() { return 5; }
 
     @Override

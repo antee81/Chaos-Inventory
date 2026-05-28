@@ -8,7 +8,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Cow;
 
 public class CowRainEvent implements ChaosEvent {
-    @Override public String getName() { return "Cow Rain"; }
+    @Override public String getName() { return "Cow_Rain"; }
     @Override public int getWeight() { return 15; }
 
     @Override

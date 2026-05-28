@@ -22,7 +22,7 @@ public class DiamondsEvent implements ChaosEvent {
     @Override
     public void execute(ServerPlayer player) {
         ItemStack item = new ItemStack(Items.DIAMOND, 5);
-        if (InventoryHelper.tryAddItem(player, item, "5 Diamonds")) {
+        if (InventoryHelper.tryAddItem(player, item, "Diamonds")) {
             EffectHelper.playGoodSound(player);
             EffectHelper.spawnGoodParticles(player);
             player.sendSystemMessage(Component.literal("§b\uD83D\uDC8E Chaos just donated you 5 diamonds!"));

@@ -11,7 +11,7 @@ import net.minecraft.world.item.Items;
 public class VexEggsEvent implements ChaosEvent {
     @Override
     public String getName() {
-        return "Vex Eggs x3";
+        return "Vex_Eggs";
     }
 
     @Override

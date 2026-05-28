@@ -13,7 +13,7 @@ import java.util.Random;
 public class ItemSwapperEvent implements ChaosEvent {
     @Override
     public String getName() {
-        return "Item Swapper";
+        return "Item_Swapper";
     }
 
     @Override

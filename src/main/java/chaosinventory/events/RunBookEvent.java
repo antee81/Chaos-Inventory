@@ -14,7 +14,7 @@ import net.minecraft.world.item.Items;
 public class RunBookEvent implements ChaosEvent {
     @Override
     public String getName() {
-        return "Book RUN";
+        return "Book_RUN";
     }
 
     @Override
@@ -29,7 +29,7 @@ public class RunBookEvent implements ChaosEvent {
         tag.putString("title", "RUN");
         tag.putString("author", "Chaos");
         ListTag pages = new ListTag();
-        pages.add(StringTag.valueOf("{\"text\":\"§4§lCORRI.\"}"));
+        pages.add(StringTag.valueOf("{\"text\":\"§4§lRUN.\"}"));
         tag.put("pages", pages);
         if (InventoryHelper.tryAddItem(player, book, "Mysterious Book")) {
             EffectHelper.playTrollSound(player);

@@ -11,7 +11,7 @@ import net.minecraft.world.item.Items;
 public class ZombieEggsEvent implements ChaosEvent {
     @Override
     public String getName() {
-        return "Zombie Egg x10";
+        return "Zombie_Eggs";
     }
 
     @Override

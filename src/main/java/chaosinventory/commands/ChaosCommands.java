@@ -24,7 +24,7 @@ public class ChaosCommands {
                         .requires(source -> source.hasPermission(1))
                         .executes(context -> {
                             ChaosConfig.load();
-                            context.getSource().sendSystemMessage(Component.literal("\u00A7a\u2705 Configurazione ricaricata con successo!"));
+                            context.getSource().sendSystemMessage(Component.literal("\u00A7a\u2705 Config reloaded successfully!"));
                             return 1;
                         })
                 )
@@ -36,7 +36,7 @@ public class ChaosCommands {
                                 .executes(context -> {
                                     int seconds = IntegerArgumentType.getInteger(context, "seconds");
                                     ChaosConfig.setChaosDurationSeconds(seconds);
-                                    context.getSource().sendSystemMessage(Component.literal("\u00A7a\u23F0 Timer impostato a \u00A7e" + seconds + "\u00A7a secondi!"));
+                                    context.getSource().sendSystemMessage(Component.literal("\u00A7a\u23F0 Timer set to \u00A7e" + seconds + "\u00A7a seconds!"));
                                     return 1;
                                 })
                         )
@@ -51,9 +51,9 @@ public class ChaosCommands {
                                     if (context.getSource().getEntity() instanceof ServerPlayer player) {
                                         boolean found = ChaosRegistry.triggerEventByName(player, eventName);
                                         if (found) {
-                                            context.getSource().sendSystemMessage(Component.literal("\u00A7a\uD83D\uDCA5 Evento \u00A7e" + eventName + "\u00A7a scatenato!"));
+                                            context.getSource().sendSystemMessage(Component.literal("\u00A7a\uD83D\uDCA5 Event \u00A7e" + eventName + "\u00A7a triggered!"));
                                         } else {
-                                            context.getSource().sendSystemMessage(Component.literal("\u00A7c\u274C Evento \u00A7e" + eventName + "\u00A7c non trovato!"));
+                                            context.getSource().sendSystemMessage(Component.literal("\u00A7c\u274C Evento \u00A7e" + eventName + "\u00A7c not found!"));
                                         }
                                     }
                                     return 1;
@@ -69,9 +69,9 @@ public class ChaosCommands {
                                 boolean current = ChaosTimer.isGlobalEnabled();
                                 ChaosTimer.setGlobalEnabled(!current);
                                 if (!current) {
-                                    context.getSource().sendSystemMessage(Component.literal("\u00A7a\u25B6\uFE0F Caos \u00A7aATTIVATO!"));
+                                    context.getSource().sendSystemMessage(Component.literal("\u00A7a\uD83C\uDF00 Chaos \u00A7aENABLED!"));
                                 } else {
-                                    context.getSource().sendSystemMessage(Component.literal("\u00A7c\u23F8\uFE0F Caos \u00A7cDISATTIVATO!"));
+                                    context.getSource().sendSystemMessage(Component.literal("\u00A7c\uD83C\uDF00 Chaos \u00A7cDISABLED!"));
                                 }
                             }
                             return 1;
@@ -81,8 +81,8 @@ public class ChaosCommands {
                 // /chaos list
                 .then(Commands.literal("list")
                         .executes(context -> {
-                            context.getSource().sendSystemMessage(Component.literal("\u00A7e\uD83D\uDCCB \u00A7eEventi disponibili: \u00A7a" + ChaosRegistry.getEventCount()));
-                            context.getSource().sendSystemMessage(Component.literal("\u00A77Usa \u00A7e/chaos trigger <nome> \u00A77per attivare un evento!"));
+                            context.getSource().sendSystemMessage(Component.literal("\u00A7e\uD83D\uDCCB \u00A7eEvent available: \u00A7a" + ChaosRegistry.getEventCount()));
+                            context.getSource().sendSystemMessage(Component.literal("\u00A77Use \u00A7e/chaos trigger <name> \u00A77to enable an event!"));
                             return 1;
                         })
                 )
@@ -97,14 +97,14 @@ public class ChaosCommands {
                                 int xpToNext = ChaosStats.getXPToNextLevel(player);
                                 int progress = ChaosStats.getProgressPercent(player);
 
-                                context.getSource().sendSystemMessage(Component.literal("\u00A76\u00A7l\uD83D\uDCCA STATISTICHE CHAOS"));
-                                context.getSource().sendSystemMessage(Component.literal("\u00A77Livello: \u00A7e" + level + " \u00A77(\u00A7f" + progress + "%\u00A77 al prossimo)"));
-                                context.getSource().sendSystemMessage(Component.literal("\u00A77XP totali: \u00A7e" + xp));
-                                context.getSource().sendSystemMessage(Component.literal("\u00A77Eventi subiti: \u00A7e" + totalEvents));
-                                context.getSource().sendSystemMessage(Component.literal("\u00A77XP al prossimo livello: \u00A7e" + xpToNext));
+                                context.getSource().sendSystemMessage(Component.literal("\u00A76\u00A7l\uD83D\uDCCA CHAOS STATISTICS"));
+                                context.getSource().sendSystemMessage(Component.literal("\u00A77Level: \u00A7e" + level + " \u00A77(\u00A7f" + progress + "%\u00A77 al prossimo)"));
+                                context.getSource().sendSystemMessage(Component.literal("\u00A7aXP totali: \u00A7e" + xp));
+                                context.getSource().sendSystemMessage(Component.literal("\u00A78Event experienced: \u00A7e" + totalEvents));
+                                context.getSource().sendSystemMessage(Component.literal("\u00A77XP to the next level: \u00A7e" + xpToNext));
 
                                 var counts = ChaosStats.getEventCounts(player);
-                                context.getSource().sendSystemMessage(Component.literal("\u00A77Eventi pi\u00F9 frequenti:"));
+                                context.getSource().sendSystemMessage(Component.literal("\u00A7cMost frequent event:"));
                                 counts.entrySet().stream()
                                         .sorted((a, b) -> b.getValue().compareTo(a.getValue()))
                                         .limit(3)
@@ -123,13 +123,13 @@ public class ChaosCommands {
                                 int level = ChaosStats.getPlayerLevel(player);
                                 var unlocked = ChaosStats.getUnlockedRewards(player);
 
-                                context.getSource().sendSystemMessage(Component.literal("\u00A76\u00A7l\uD83C\uDF81 RICOMPENSE CHAOS"));
-                                context.getSource().sendSystemMessage(Component.literal("\u00A77Livello attuale: \u00A7e" + level));
+                                context.getSource().sendSystemMessage(Component.literal("\u00A76\u00A7l\uD83C\uDF81 CHAOS REWARD"));
+                                context.getSource().sendSystemMessage(Component.literal("\u00A77Level : \u00A7e" + level));
                                 context.getSource().sendSystemMessage(Component.literal(""));
-                                context.getSource().sendSystemMessage(Component.literal("\u00A77\u00A7lSbloccate:"));
+                                context.getSource().sendSystemMessage(Component.literal("\u00A77\u00A7lUnlocked:"));
 
                                 if (unlocked.isEmpty()) {
-                                    context.getSource().sendSystemMessage(Component.literal("\u00A78  Nessuna ricompensa ancora sbloccata"));
+                                    context.getSource().sendSystemMessage(Component.literal("\u00A78  No rewards unlocked yet"));
                                 } else {
                                     for (String rewardLevel : unlocked) {
                                         context.getSource().sendSystemMessage(Component.literal("\u00A7a  \u2713 " + ChaosStats.getRewardDescription(Integer.parseInt(rewardLevel))));
@@ -137,19 +137,80 @@ public class ChaosCommands {
                                 }
 
                                 context.getSource().sendSystemMessage(Component.literal(""));
-                                context.getSource().sendSystemMessage(Component.literal("\u00A77\u00A7lProssime ricompense:"));
+                                context.getSource().sendSystemMessage(Component.literal("\u00A77\u00A7lNext rewards:"));
 
                                 int nextMilestone = ((level / 5) + 1) * 5;
-                                while (nextMilestone <= 100 && ChaosStats.getRewardDescription(nextMilestone).equals("Nessuna ricompensa")) {
+                                while (nextMilestone <= 100 && ChaosStats.getRewardDescription(nextMilestone).equals("No Rewards")) {
                                     nextMilestone += 5;
                                 }
                                 if (nextMilestone <= 100) {
-                                    context.getSource().sendSystemMessage(Component.literal("\u00A78  Livello " + nextMilestone + ": \u00A77" + ChaosStats.getRewardDescription(nextMilestone)));
+                                    context.getSource().sendSystemMessage(Component.literal("\u00A78  Level " + nextMilestone + ": \u00A77" + ChaosStats.getRewardDescription(nextMilestone)));
                                 }
                             }
                             return 1;
                         })
                 )
+                .then(Commands.literal("color")
+                        .requires(source -> source.hasPermission(0))
+                        .then(Commands.argument("color", StringArgumentType.string())
+                                .suggests((context, builder) -> {
+                                    for (String c : ChaosConfig.COLOR_CODES.keySet()) builder.suggest(c);
+                                    return builder.buildFuture();
+                                })
+                                .executes(context -> {
+                                    String color = StringArgumentType.getString(context, "color").toUpperCase();
+                                    if (!ChaosConfig.COLOR_CODES.containsKey(color)) {
+                                        context.getSource().sendSystemMessage(Component.literal("\u00A7cInvalid color"));
+                                        return 0;
+                                    }
+                                    if (context.getSource().getEntity() instanceof ServerPlayer player) {
+                                        String uuid = player.getStringUUID();
+                                        ChaosConfig.setPlayerTimerColor(uuid, color);
+                                        ChaosConfig.save();
+                                        context.getSource().sendSystemMessage(Component.literal("\u00A7a\u2705 Timer color set to \u00A7" + getColorCode(color) + color));
+                                    } else {
+                                        context.getSource().sendSystemMessage(Component.literal("\u00A7cOnly players can use this"));
+                                    }
+                                    return 1;
+                                })
+                        )
+                )
         );
     }
+
+
+    private static String getColorCode(String color) {
+        switch (color) {
+            case "WHITE":
+                return "f";
+            case "RED":
+                return "c";
+            case "GREEN":
+                return "a";
+            case "BLUE":
+                return "9";
+            case "YELLOW":
+                return "e";
+            case "GOLD":
+                return "6";
+            case "AQUA":
+                return "b";
+            case "LIGHT_PURPLE":
+                return "d";
+            case "DARK_RED":
+                return "4";
+            case "DARK_GREEN":
+                return "2";
+            case "DARK_BLUE":
+                return "1";
+            case "GRAY":
+                return "7";
+            case "DARK_GRAY":
+                return "8";
+            default:
+                return "f";
+        }
+    }
 }
+
+

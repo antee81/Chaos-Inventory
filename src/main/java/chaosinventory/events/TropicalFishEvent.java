@@ -11,7 +11,7 @@ import net.minecraft.world.item.Items;
 public class TropicalFishEvent implements ChaosEvent {
     @Override
     public String getName() {
-        return "Tropical Fish";
+        return "Tropical_Fish";
     }
 
     @Override

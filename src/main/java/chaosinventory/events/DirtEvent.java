@@ -22,7 +22,7 @@ public class DirtEvent implements ChaosEvent {
     @Override
     public void execute(ServerPlayer player) {
         ItemStack item = new ItemStack(Items.DIRT, 16);
-        if (InventoryHelper.tryAddItem(player, item, "16 Dirt")) {
+        if (InventoryHelper.tryAddItem(player, item, "Dirt")) {
             EffectHelper.playTrollSound(player);
             EffectHelper.spawnTrollParticles(player);
             player.sendSystemMessage(Component.literal("§8⛰ Chaos donated you 16 blocks of dirt.. thank you?"));

@@ -11,7 +11,7 @@ import net.minecraft.world.item.Items;
 public class CreeperEggsEvent implements ChaosEvent {
     @Override
     public String getName() {
-        return "Creeper Eggs x3";
+        return "Creeper_Eggs";
     }
 
     @Override

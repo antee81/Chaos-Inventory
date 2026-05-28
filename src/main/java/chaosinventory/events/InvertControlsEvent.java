@@ -9,7 +9,7 @@ import net.minecraft.world.effect.MobEffects;
 public class InvertControlsEvent implements ChaosEvent {
     @Override
     public String getName() {
-        return "Invert Controls";
+        return "Invert_Controls";
     }
 
     @Override

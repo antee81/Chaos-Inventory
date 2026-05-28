@@ -15,7 +15,7 @@ public class EnderPearlEvent implements ChaosEvent {
     @Override
     public void execute(ServerPlayer player) {
         ItemStack item = new ItemStack(Items.ENDER_PEARL, 1);
-        if (InventoryHelper.tryAddItem(player, item, "Ender Pearl")) {
+        if (InventoryHelper.tryAddItem(player, item, "Ender_Pearl")) {
             EffectHelper.playGoodSound(player);
             EffectHelper.spawnGoodParticles(player);
             player.sendSystemMessage(Component.literal("§5\uD83D\uDFE3 Chaos donated you 1 Ender Pearl!"));

@@ -11,7 +11,7 @@ import net.minecraft.world.item.Items;
 public class WitherSkeletonEggsEvent implements ChaosEvent {
     @Override
     public String getName() {
-        return "Wither Skeleton Eggs";
+        return "Wither_Skeleton_Eggs";
     }
 
     @Override

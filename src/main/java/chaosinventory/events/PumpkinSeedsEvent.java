@@ -11,7 +11,7 @@ import net.minecraft.world.item.Items;
 public class PumpkinSeedsEvent implements ChaosEvent {
     @Override
     public String getName() {
-        return "Pumpkin Seeds";
+        return "Pumpkin_Seeds";
     }
 
     @Override

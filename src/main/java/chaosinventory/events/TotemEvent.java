@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 public class TotemEvent implements ChaosEvent {
-    @Override public String getName() { return "Totem of Undying"; }
+    @Override public String getName() { return "Totem"; }
     @Override public int getWeight() {  return 5; }
 
     @Override

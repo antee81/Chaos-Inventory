@@ -7,7 +7,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 
 public class RandomExplosionEvent implements ChaosEvent {
-    @Override public String getName() { return "Random Explosion"; }
+    @Override public String getName() { return "Random_Explosion"; }
     @Override public int getWeight() { return 15; }
 
     @Override

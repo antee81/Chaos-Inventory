@@ -28,7 +28,7 @@ public class RandomPotionEvent implements ChaosEvent {
 
     @Override
     public String getName() {
-        return "Random Potion";
+        return "Random_Potion";
     }
 
     @Override

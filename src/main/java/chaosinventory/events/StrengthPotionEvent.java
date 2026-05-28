@@ -11,7 +11,7 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 
 public class StrengthPotionEvent implements ChaosEvent {
-    @Override public String getName() { return "Strength Potion II"; }
+    @Override public String getName() { return "Strength_Potion"; }
     @Override public int getWeight() { return 25; }
 
     @Override

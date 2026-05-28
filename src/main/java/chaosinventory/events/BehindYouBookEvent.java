@@ -14,7 +14,7 @@ import net.minecraft.world.item.Items;
 public class BehindYouBookEvent implements ChaosEvent {
     @Override
     public String getName() {
-        return "Book Behind You";
+        return "Book_Behind_You";
     }
 
     @Override
