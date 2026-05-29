@@ -89,14 +89,14 @@ public class ChaosRegistry {
         EVENTS.add(new LightningStrikeEvent());
         EVENTS.add(new InventoryVoidEvent());
 
-        ChaosInventory.LOGGER.info("🌀 Registered " + EVENTS.size() + " Chaos events");
+        System.out.println("🌀 Registered " + EVENTS.size() + " Chaos events");
     }
 
     public static boolean triggerEventByName(ServerPlayer player, String eventName) {
         for (ChaosEvent event : EVENTS) {
             if (event.getName().equalsIgnoreCase(eventName)) {
                 event.execute(player);
-                ChaosInventory.LOGGER.info("\uD83D\uDCA5 Manual CHAOS for " + player.getName().getString() + ": " + event.getName());
+                System.out.println("\uD83D\uDCA5 Manual CHAOS for " + player.getName().getString() + ": " + event.getName());
                 return true;
             }
         }
@@ -148,7 +148,7 @@ public class ChaosRegistry {
         }
 
         ChaosStats.initPlayer(player);
-        ChaosInventory.LOGGER.info("\uD83D\uDCA5 CHAOS for " + player.getName().getString() + ": " + event.getName());
+        System.out.println("\uD83D\uDCA5 CHAOS for " + player.getName().getString() + ": " + event.getName());
         event.execute(player);
 
         int xp = ChaosStats.getXPForEvent(event.getWeight());

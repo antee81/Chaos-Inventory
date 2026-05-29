@@ -24,7 +24,7 @@ public class ChaosTimer {
     public static void initPlayer(UUID uuid) {
         playerTimers.put(uuid, getDurationTicks());
         playerActive.put(uuid, true);
-        ChaosInventory.LOGGER.info("✅ Timer initialized for player: " + uuid + " length: " + getDurationTicks() / 20 + " secondi");
+        System.out.println("✅ Timer initialized for player: " + uuid + " length: " + getDurationTicks() / 20 + " secondi");
     }
 
     public static void removePlayer(UUID uuid) {
@@ -112,7 +112,7 @@ public class ChaosTimer {
             if (remaining <= 0) {
                 ChaosRegistry.triggerRandomEventForPlayer(player);
                 resetPlayer(uuid);
-                ChaosInventory.LOGGER.info("⏰ Timer expired! Chaos event triggered for " + player.getName().getString());
+                System.out.println("⏰ Timer expired! Chaos event triggered for " + player.getName().getString());
             }
         }
     }

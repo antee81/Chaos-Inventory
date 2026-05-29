@@ -23,7 +23,7 @@ public class ChaosStatsHUD {
 
     public static void showMessage(UUID playerUUID) {
         showTicks.put(playerUUID, DISPLAY_TICKS);
-        ChaosInventory.LOGGER.info("HUD message started for 20 seconds (fade last 5 seconds)");
+        System.out.println("HUD message started for 20 seconds (fade last 5 seconds)");
     }
 
     @SubscribeEvent

@@ -11,6 +11,6 @@ public class CommandHandler {
     @SubscribeEvent
     public static void onRegisterCommands(RegisterCommandsEvent event) {
         ChaosCommands.register(event.getDispatcher());
-        ChaosInventory.LOGGER.info("✅ Chaos Commands registered!");
+        System.out.println("✅ Chaos Commands registered!");
     }
 }

@@ -29,6 +29,6 @@ public class ModSounds {
 
     public static void register(IEventBus eventBus) {
         SOUND_EVENTS.register(eventBus);
-        ChaosInventory.LOGGER.info("🔊 Sounds registered!");
+        System.out.println("🔊 Sounds registered!");
     }
 }

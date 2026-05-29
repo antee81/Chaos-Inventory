@@ -23,14 +23,15 @@ public class ChaosConfig {
             if (Files.exists(configPath)) {
                 String json = Files.readString(configPath);
                 config = GSON.fromJson(json, ConfigData.class);
-                ChaosInventory.LOGGER.info("✅ ChaosConfig loaded from file");
+                System.out.println("✅ ChaosConfig loaded from file");
             } else {
                 initDefaultEventSettings();
                 save();
-                ChaosInventory.LOGGER.info("✅ ChaosConfig created with default values");
+                System.out.println("✅ ChaosConfig created with default values");
             }
         } catch (IOException e) {
-            ChaosInventory.LOGGER.error("❌ Failed to load ChaosConfig", e);
+            System.err.println("❌ Failed to load ChaosConfig" + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -41,9 +42,9 @@ public class ChaosConfig {
             }
             String json = GSON.toJson(config);
             Files.writeString(configPath, json);
-            ChaosInventory.LOGGER.info("\uD83D\uDCBE ChaosConfig saved");
+            System.out.println("\uD83D\uDCBE ChaosConfig saved");
         } catch (IOException e) {
-            ChaosInventory.LOGGER.error("❌ Failed to save ChaosConfig", e);
+            System.err.println("❌ Failed to save ChaosConfig" + e.getMessage());
         }
     }
 

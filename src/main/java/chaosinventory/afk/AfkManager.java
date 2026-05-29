@@ -43,7 +43,7 @@ public class AfkManager {
             wasAfk.put(uuid, true);
             ChaosTimer.pausePlayer(uuid);
             player.sendSystemMessage(net.minecraft.network.chat.Component.literal("§c⏸️ You're AFK! Timer will resume when you start moving."));
-            ChaosInventory.LOGGER.info(player.getName().getString() + " is now AFK - timer paused");
+            System.out.println("[CHAOS] " + player.getName().getString() + " is now AFK - timer paused");
         }
     }  // ← CHIUSURA CORRETTA di checkPlayer
 

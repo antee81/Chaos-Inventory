@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 @Mod(ChaosInventory.MODID)
 public class ChaosInventory {
     public static final String MODID = "chaosinventory";
-    public static final Logger LOGGER = LogUtils.getLogger();
 
     public ChaosInventory(FMLJavaModLoadingContext context) {
         IEventBus modEventBus = context.getModEventBus();
@@ -26,13 +25,14 @@ public class ChaosInventory {
 
         ChaosConfig.load();
         HUDConfig.load();
-        DataManager.load();
+        DataManager.init();
 
-        LOGGER.info("🌀 Chaos Inventory loaded!");
+        System.out.println("🌀 Chaos Inventory loaded!");
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-        LOGGER.info("🌀 Chaos Inventory - Setup completed");
+        System.out.println("🌀 Chaos Inventory - Setup completed");
+        DataManager.init();
         ChaosRegistry.registerAll();
     }
 }

@@ -2,11 +2,13 @@ package chaosinventory;
 
 import chaosinventory.client.ChaosStatsHUD;
 import chaosinventory.afk.AfkManager;
+import chaosinventory.data.DataManager;
 import chaosinventory.stats.ChaosStats;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import chaosinventory.afk.AfkManager;
@@ -46,7 +48,7 @@ public class ChaosEventHandlers {
             AfkManager.updateActivity(player);
             ChaosTimer.initPlayer(player.getUUID());
             ChaosStatsHUD.showMessage(player.getUUID());
-            ChaosInventory.LOGGER.info("\uD83C\uDF00 Player joined: " + player.getName().getString());
+            System.out.println("\uD83C\uDF00 Player joined: " + player.getName().getString());
         }
     }
 
@@ -56,8 +58,14 @@ public class ChaosEventHandlers {
             ChaosStats.initPlayer(player);
             AfkManager.removePlayer(player.getUUID());
             ChaosTimer.removePlayer(player.getUUID());
-            ChaosInventory.LOGGER.info("\uD83C\uDF00 Player left: " + player.getName().getString());
+            System.out.println("\uD83C\uDF00 Player left: " + player.getName().getString());
         }
+    }
+
+    @SubscribeEvent
+    public static void onServerStopping(ServerStoppingEvent event) {
+        DataManager.saveAll();
+        System.out.println("All player data saved on server stop");
     }
 
     @SubscribeEvent
@@ -65,7 +73,7 @@ public class ChaosEventHandlers {
         if (event.getEntity() instanceof ServerPlayer player) {
             AfkManager.updateActivity(player);
             ChaosTimer.resumePlayer(player.getUUID());
-            ChaosInventory.LOGGER.info("\uD83C\uDF00 Player respawned, timer resumed: " + player.getName().getString());
+            System.out.println("\uD83C\uDF00 Player respawned, timer resumed: " + player.getName().getString());
         }
     }
 }

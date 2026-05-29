@@ -1,9 +1,8 @@
 package chaosinventory.data;
 
+import chaosinventory.ChaosInventory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import chaosinventory.ChaosInventory;
-import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -13,10 +12,10 @@ import java.util.Map;
 import java.util.UUID;
 
 public class DataManager {
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static Path dataPath;
 
-    private static Map<UUID, PlayerData> playerData = new HashMap<>();
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private static Path dataFolder;
+    private static final Map<UUID, PlayerData> playerDataCache = new HashMap<>();
 
     public static class PlayerData {
         public int xp = 0;
@@ -24,50 +23,75 @@ public class DataManager {
         public int totalEvents = 0;
         public Map<String, Integer> eventCounts = new HashMap<>();
         public Map<String, Boolean> unlockedRewards = new HashMap<>();
+
+        public PlayerData() {}
     }
 
-    public static void load() {
+    public static void init() {
         try {
-            dataPath = FMLPaths.CONFIGDIR.get().resolve("chaosinventory_data.json");
-
-            if (Files.exists(dataPath)) {
-                String json = Files.readString(dataPath);
-                playerData = GSON.fromJson(json, Map.class);
-                if (playerData == null) playerData = new HashMap<>();
-                ChaosInventory.LOGGER.info("✅ Player data loaded from disk");
-            } else {
-                playerData = new HashMap<>();
-                save();
-                ChaosInventory.LOGGER.info("✅ New player data file created");
+            dataFolder = Path.of("chaos_data");
+            if (!Files.exists(dataFolder)) {
+                Files.createDirectories(dataFolder);
+                System.out.println("Created chaos_data folder");
             }
         } catch (IOException e) {
-            ChaosInventory.LOGGER.error("❌ Failed to load player data", e);
-            playerData = new HashMap<>();
+            System.err.println("Failed to create chaos_data folder" + e.getMessage());
         }
     }
 
-    public static void save() {
+    public static void savePlayerData(UUID uuid, PlayerData data) {
+        if (dataFolder == null) init();
         try {
-            if (dataPath == null) {
-                dataPath = FMLPaths.CONFIGDIR.get().resolve("chaosinventory_data.json");
-            }
-            String json = GSON.toJson(playerData);
-            Files.writeString(dataPath, json);
+            Path playerFile = dataFolder.resolve(uuid.toString() + ".json");
+            String json = GSON.toJson(data);
+            Files.writeString(playerFile, json);
+            playerDataCache.put(uuid, data);
         } catch (IOException e) {
-            ChaosInventory.LOGGER.error("❌ Failed to save player data", e);
+            System.err.println("Failed to save data for player: " + uuid + e.getMessage());
         }
     }
 
-    public static PlayerData getPlayerData(UUID uuid) {
-        return playerData.computeIfAbsent(uuid, k -> new PlayerData());
+    public static PlayerData loadPlayerData(UUID uuid) {
+        if (dataFolder == null) init();
+
+        if (playerDataCache.containsKey(uuid)) {
+            return playerDataCache.get(uuid);
+        }
+
+        try {
+            Path playerFile = dataFolder.resolve(uuid.toString() + ".json");
+            if (Files.exists(playerFile)) {
+                String json = Files.readString(playerFile);
+                PlayerData data = GSON.fromJson(json, PlayerData.class);
+                playerDataCache.put(uuid, data);
+                System.out.println("Loaded data for player: " + uuid);
+                return data;
+            }
+        } catch (IOException e) {
+            System.err.println("Failed to load data for player: " + uuid + e.getMessage());
+        }
+
+        PlayerData newData = new PlayerData();
+        playerDataCache.put(uuid, newData);
+        return newData;
     }
 
-    public static void savePlayerData(UUID uuid) {
-        save();
+    public static void saveAll() {
+        for (Map.Entry<UUID, PlayerData> entry : playerDataCache.entrySet()) {
+            savePlayerData(entry.getKey(), entry.getValue());
+        }
+        System.out.println("Saved all player data");
     }
 
-    public static void removePlayer(UUID uuid) {
-        playerData.remove(uuid);
-        save();
+    public static void removeFromCache(UUID uuid) {
+        if (playerDataCache.containsKey(uuid)) {
+            savePlayerData(uuid, playerDataCache.get(uuid));
+            playerDataCache.remove(uuid);
+        }
+    }
+
+    public static void updatePlayerData(UUID uuid, PlayerData data) {
+        playerDataCache.put(uuid, data);
+        savePlayerData(uuid, data);
     }
 }

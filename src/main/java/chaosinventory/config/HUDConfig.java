@@ -58,14 +58,14 @@ public class HUDConfig {
             if (Files.exists(configPath)) {
                 String json = Files.readString(configPath);
                 preferences = GSON.fromJson(json, Map.class);
-                ChaosInventory.LOGGER.info("✅ HUDConfig loaded");
+                System.out.println("✅ HUDConfig loaded");
             } else {
                 preferences = new HashMap<>();
                 save();
-                ChaosInventory.LOGGER.info("✅ HUDConfig created with default values.");
+                System.out.println("✅ HUDConfig created with default values.");
             }
         } catch (IOException e) {
-            ChaosInventory.LOGGER.error("❌ Failed to load HUDConfig", e);
+            System.err.println("❌ Failed to load HUDConfig" + e.getMessage());
         }
     }
 
@@ -77,7 +77,7 @@ public class HUDConfig {
             String json = GSON.toJson(preferences);
             Files.writeString(configPath, json);
         } catch (IOException e) {
-            ChaosInventory.LOGGER.info("❌ Failed to save HUDConfig", e);
+            System.err.println("❌ Failed to save HUDConfig" + e.getMessage());
         }
     }
 
