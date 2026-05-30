@@ -90,6 +90,7 @@ public class ChaosConfig {
         Map<String, Integer> eventWeights = new HashMap<>();
         String timerColor = "WHITE";
         Map<String, String> playerColors = new HashMap<>();
+        String language = "en_us";
     }
 
     public static String getPlayerTimerColor(String uuid) {
@@ -107,6 +108,15 @@ public class ChaosConfig {
 
     public static void setTimerColor(String color) {
         config.timerColor = color;
+        save();
+    }
+
+    public static String getCurrentLanguage() {
+        return config.language;
+    }
+
+    public static void setCurrentLanguage(String lang) {
+        config.language = lang;
         save();
     }
 

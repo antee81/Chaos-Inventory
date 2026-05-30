@@ -42,5 +42,8 @@
 
   "chaos.level_up": "§a§l✨ LIVELLO SUCCESSIVO! §r§aHai raggiungo il livello %d§a! ✨",
   "chaos.milestone": "§6§l\uD83C\uDFC6 TRAGUARDO RAGGIUNGO! §r§6Hai raggiunto il livello %d§6",
-  "chaos.reward_unlocked": "§6§l\uD83C\uDFC6 RICOMPENSA SBLOCCATA! §r§6%s"
+  "chaos.reward_unlocked": "§6§l\uD83C\uDFC6 RICOMPENSA SBLOCCATA! §r§6%s",
+
+  "chaos.language.changed": "§aLingua cambiata in %s!",
+  "chaos.language.current": "§7Lingua attuale: §e%s"
 }

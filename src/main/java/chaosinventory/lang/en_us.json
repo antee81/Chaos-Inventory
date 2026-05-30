@@ -42,5 +42,8 @@
   "chaos.event.netherite_armor": "§4\uD83D\uDEE1\uFE0F CHAOS JUST DONATED YOU A FULL NETHERITE ARMOR!",
   "chaos.level_up": "§a§l✨ LEVEL UP! §r§aYou reached level %d§a! ✨",
   "chaos_milestone": "§6§l\uD83C\uDFC6 GOAL ACHIEVED! §r§6You reached level %d§6!",
-  "chaos.reward_unlocked": "§6§l\uD83C\uDFC6 REWARD UNLOCKED! §r§6%s"
+  "chaos.reward_unlocked": "§6§l\uD83C\uDFC6 REWARD UNLOCKED! §r§6%s",
+
+  "chaos.language.changed": "§aLanguage changed to %s!",
+  "chaos.language.current": "§7Current language: §e%s"
 }

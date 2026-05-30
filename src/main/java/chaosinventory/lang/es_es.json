@@ -42,5 +42,8 @@
 
   "chaos.level_up": "§a§l✨ SUBIDA DE NIVEL! §r§aHas alcanzado el nivel %d§a! ✨",
   "chaos.milestore": "§6§l\uD83C\uDFC6 LOGRO ALCANZADO! §R§6Has alcanzado el nivel %d§6",
-  "chaos.reward_unlocked": "§6§l\uD83C\uDFC6 RECOMPENSA DESBLOQUEADA! §r§6%s"
+  "chaos.reward_unlocked": "§6§l\uD83C\uDFC6 RECOMPENSA DESBLOQUEADA! §r§6%s",
+
+  "chaos.language.changed": "§aIdioma cambiado a %s!",
+  "chaos.language.current": "§7Idioma actual: §e%s"
 }

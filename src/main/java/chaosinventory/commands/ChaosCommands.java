@@ -97,14 +97,14 @@ public class ChaosCommands {
                                 int xpToNext = ChaosStats.getXPToNextLevel(player);
                                 int progress = ChaosStats.getProgressPercent(player);
 
-                                context.getSource().sendSystemMessage(Component.literal("\u00A76\u00A7l\uD83D\uDCCA CHAOS STATISTICS"));
-                                context.getSource().sendSystemMessage(Component.literal("\u00A77Level: \u00A7e" + level + " \u00A77(\u00A7f" + progress + "%\u00A77 al prossimo)"));
-                                context.getSource().sendSystemMessage(Component.literal("\u00A7aXP totali: \u00A7e" + xp));
-                                context.getSource().sendSystemMessage(Component.literal("\u00A78Event experienced: \u00A7e" + totalEvents));
-                                context.getSource().sendSystemMessage(Component.literal("\u00A77XP to the next level: \u00A7e" + xpToNext));
+                                context.getSource().sendSystemMessage(Component.translatable("chaos.command.stats"));
+                                context.getSource().sendSystemMessage(Component.translatable("chaos.command.level", progress));
+                                context.getSource().sendSystemMessage(Component.translatable("chaos.command.xp", xp));
+                                context.getSource().sendSystemMessage(Component.translatable("chaos.command.events", totalEvents));
+                                context.getSource().sendSystemMessage(Component.translatable("chaos.command.xp_next", xpToNext));
 
+                                context.getSource().sendSystemMessage(Component.translatable("chaos.command.frequent"));
                                 var counts = ChaosStats.getEventCounts(player);
-                                context.getSource().sendSystemMessage(Component.literal("\u00A7cMost frequent event:"));
                                 counts.entrySet().stream()
                                         .sorted((a, b) -> b.getValue().compareTo(a.getValue()))
                                         .limit(3)
@@ -174,6 +174,61 @@ public class ChaosCommands {
                                     return 1;
                                 })
                         )
+                )
+                .then(Commands.literal("language")
+                        .requires(source -> source.hasPermission(0))
+                        .then(Commands.literal("en_us")
+                                .executes(context -> {
+                                    if (context.getSource().getEntity() instanceof ServerPlayer player) {
+                                        ChaosConfig.setCurrentLanguage("en_us");
+                                        context.getSource().sendSystemMessage(Component.translatable("chaos.language.changed", "English"));
+                                    }
+                                    return 1;
+                                })
+                        )
+                        .then(Commands.literal("it_it")
+                                .executes(context -> {
+                                    if (context.getSource().getEntity() instanceof ServerPlayer player) {
+                                        ChaosConfig.setCurrentLanguage("it_it");
+                                        context.getSource().sendSystemMessage(Component.translatable("chaos.language.changed", "Italiano"));
+                                    }
+                                    return 1;
+                                })
+                        )
+                        .then(Commands.literal("es_es")
+                                .executes(context -> {
+                                    if (context.getSource().getEntity() instanceof ServerPlayer player) {
+                                        ChaosConfig.setCurrentLanguage("es_es");
+                                        context.getSource().sendSystemMessage(Component.translatable("chaos.language.changed", "Español"));
+                                    }
+                                    return 1;
+                                })
+                        )
+                        .then(Commands.literal("fr_fr")
+                                .executes(context -> {
+                                    if (context.getSource().getEntity() instanceof ServerPlayer player) {
+                                        ChaosConfig.setCurrentLanguage("fr_fr");
+                                        context.getSource().sendSystemMessage(Component.translatable("chaos.language.changed", "Français"));
+                                    }
+                                    return 1;
+                                })
+                        )
+                        .then(Commands.literal("de_de")
+                                .executes(context -> {
+                                    if (context.getSource().getEntity() instanceof ServerPlayer player) {
+                                        ChaosConfig.setCurrentLanguage("de_de");
+                                        context.getSource().sendSystemMessage(Component.translatable("chaos.language.changed", "Deutsch"));
+                                    }
+                                    return 1;
+                                })
+                        )
+                        .executes(context -> {
+                            String current = ChaosConfig.getCurrentLanguage();
+                            context.getSource().sendSystemMessage(Component.translatable("chaos.language.current", current));
+                            context.getSource().sendSystemMessage(Component.literal("§7Available: en_us, it_it, es_es, fr_fr, de_de"));
+                            context.getSource().sendSystemMessage(Component.literal("§7Use §e/chaos language <code> §7to change"));
+                            return 1;
+                        })
                 )
         );
     }
