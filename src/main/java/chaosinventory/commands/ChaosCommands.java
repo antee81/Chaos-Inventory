@@ -5,6 +5,7 @@ import chaosinventory.ChaosRegistry;
 import chaosinventory.ChaosTimer;
 import chaosinventory.config.ChaosConfig;
 import chaosinventory.stats.ChaosStats;
+import chaosinventory.utils.LanguageManager;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -24,7 +25,7 @@ public class ChaosCommands {
                         .requires(source -> source.hasPermission(1))
                         .executes(context -> {
                             ChaosConfig.load();
-                            context.getSource().sendSystemMessage(Component.literal("\u00A7a\u2705 Config reloaded successfully!"));
+                            context.getSource().sendSystemMessage(Component.literal(LanguageManager.get("chaos.command.reload")));
                             return 1;
                         })
                 )
@@ -36,7 +37,7 @@ public class ChaosCommands {
                                 .executes(context -> {
                                     int seconds = IntegerArgumentType.getInteger(context, "seconds");
                                     ChaosConfig.setChaosDurationSeconds(seconds);
-                                    context.getSource().sendSystemMessage(Component.literal("\u00A7a\u23F0 Timer set to \u00A7e" + seconds + "\u00A7a seconds!"));
+                                    context.getSource().sendSystemMessage(Component.literal(LanguageManager.get("chaos.command.timer_set")));
                                     return 1;
                                 })
                         )
@@ -51,9 +52,9 @@ public class ChaosCommands {
                                     if (context.getSource().getEntity() instanceof ServerPlayer player) {
                                         boolean found = ChaosRegistry.triggerEventByName(player, eventName);
                                         if (found) {
-                                            context.getSource().sendSystemMessage(Component.literal("\u00A7a\uD83D\uDCA5 Event \u00A7e" + eventName + "\u00A7a triggered!"));
+                                            context.getSource().sendSystemMessage(Component.literal(LanguageManager.get("chaos.command.triggered", eventName)));
                                         } else {
-                                            context.getSource().sendSystemMessage(Component.literal("\u00A7c\u274C Evento \u00A7e" + eventName + "\u00A7c not found!"));
+                                            context.getSource().sendSystemMessage(Component.literal(LanguageManager.get("chaos.command.not_found", eventName)));
                                         }
                                     }
                                     return 1;
@@ -69,9 +70,9 @@ public class ChaosCommands {
                                 boolean current = ChaosTimer.isGlobalEnabled();
                                 ChaosTimer.setGlobalEnabled(!current);
                                 if (!current) {
-                                    context.getSource().sendSystemMessage(Component.literal("\u00A7a\uD83C\uDF00 Chaos \u00A7aENABLED!"));
+                                    context.getSource().sendSystemMessage(Component.literal(LanguageManager.get("chaos.command.enabled")));
                                 } else {
-                                    context.getSource().sendSystemMessage(Component.literal("\u00A7c\uD83C\uDF00 Chaos \u00A7cDISABLED!"));
+                                    context.getSource().sendSystemMessage(Component.literal(LanguageManager.get("chaos.command.disabled")));
                                 }
                             }
                             return 1;
@@ -81,8 +82,8 @@ public class ChaosCommands {
                 // /chaos list
                 .then(Commands.literal("list")
                         .executes(context -> {
-                            context.getSource().sendSystemMessage(Component.literal("\u00A7e\uD83D\uDCCB \u00A7eEvent available: \u00A7a" + ChaosRegistry.getEventCount()));
-                            context.getSource().sendSystemMessage(Component.literal("\u00A77Use \u00A7e/chaos trigger <name> \u00A77to enable an event!"));
+                            context.getSource().sendSystemMessage(Component.literal(LanguageManager.get("chaos.command.available", ChaosRegistry.getEventCount())));
+                            context.getSource().sendSystemMessage(Component.literal(LanguageManager.get("chaos.command.use_trigger")));
                             return 1;
                         })
                 )
@@ -97,19 +98,19 @@ public class ChaosCommands {
                                 int xpToNext = ChaosStats.getXPToNextLevel(player);
                                 int progress = ChaosStats.getProgressPercent(player);
 
-                                context.getSource().sendSystemMessage(Component.translatable("chaos.command.stats"));
-                                context.getSource().sendSystemMessage(Component.translatable("chaos.command.level", progress));
-                                context.getSource().sendSystemMessage(Component.translatable("chaos.command.xp", xp));
-                                context.getSource().sendSystemMessage(Component.translatable("chaos.command.events", totalEvents));
-                                context.getSource().sendSystemMessage(Component.translatable("chaos.command.xp_next", xpToNext));
+                                context.getSource().sendSystemMessage(Component.literal(LanguageManager.get("chaos.command.stats")));
+                                context.getSource().sendSystemMessage(Component.literal(LanguageManager.get("chaos.command.level", level, progress)));
+                                context.getSource().sendSystemMessage(Component.literal(LanguageManager.get("chaos.command.xp", xp)));
+                                context.getSource().sendSystemMessage(Component.literal(LanguageManager.get("chaos.command.events", totalEvents)));
+                                context.getSource().sendSystemMessage(Component.literal(LanguageManager.get("chaos.command.xp_next", xpToNext)));
+                                context.getSource().sendSystemMessage(Component.literal(LanguageManager.get("chaos.command.frequent")));
 
-                                context.getSource().sendSystemMessage(Component.translatable("chaos.command.frequent"));
                                 var counts = ChaosStats.getEventCounts(player);
                                 counts.entrySet().stream()
                                         .sorted((a, b) -> b.getValue().compareTo(a.getValue()))
                                         .limit(3)
                                         .forEach(e -> context.getSource().sendSystemMessage(
-                                                Component.literal("\u00A78  - \u00A7f" + e.getKey() + "\u00A77: \u00A7e" + e.getValue())
+                                                Component.literal("  §8- §f" + e.getKey() + "§7: §e" + e.getValue())
                                         ));
                             }
                             return 1;
@@ -123,10 +124,11 @@ public class ChaosCommands {
                                 int level = ChaosStats.getPlayerLevel(player);
                                 var unlocked = ChaosStats.getUnlockedRewards(player);
 
-                                context.getSource().sendSystemMessage(Component.literal("\u00A76\u00A7l\uD83C\uDF81 CHAOS REWARD"));
-                                context.getSource().sendSystemMessage(Component.literal("\u00A77Level : \u00A7e" + level));
-                                context.getSource().sendSystemMessage(Component.literal(""));
-                                context.getSource().sendSystemMessage(Component.literal("\u00A77\u00A7lUnlocked:"));
+                                context.getSource().sendSystemMessage(Component.literal(LanguageManager.get("chaos.command.rewards")));
+                                context.getSource().sendSystemMessage(Component.literal(LanguageManager.get("chaos.command.current_level", level)));
+                                context.getSource().sendSystemMessage(Component.literal(LanguageManager.get("chaos.command.unlocked")));
+                                context.getSource().sendSystemMessage(Component.literal(LanguageManager.get("chaos.command.none")));
+                                context.getSource().sendSystemMessage(Component.literal(LanguageManager.get("chaos.command.next")));
 
                                 if (unlocked.isEmpty()) {
                                     context.getSource().sendSystemMessage(Component.literal("\u00A78  No rewards unlocked yet"));
@@ -160,79 +162,68 @@ public class ChaosCommands {
                                 .executes(context -> {
                                     String color = StringArgumentType.getString(context, "color").toUpperCase();
                                     if (!ChaosConfig.COLOR_CODES.containsKey(color)) {
-                                        context.getSource().sendSystemMessage(Component.literal("\u00A7cInvalid color"));
+                                        context.getSource().sendSystemMessage(Component.literal("§cInvalid color"));
                                         return 0;
                                     }
                                     if (context.getSource().getEntity() instanceof ServerPlayer player) {
                                         String uuid = player.getStringUUID();
                                         ChaosConfig.setPlayerTimerColor(uuid, color);
                                         ChaosConfig.save();
-                                        context.getSource().sendSystemMessage(Component.literal("\u00A7a\u2705 Timer color set to \u00A7" + getColorCode(color) + color));
+                                        context.getSource().sendSystemMessage(Component.literal("§a✅ Timer color set to §" + getColorCode(color) + color));
                                     } else {
-                                        context.getSource().sendSystemMessage(Component.literal("\u00A7cOnly players can use this"));
+                                        context.getSource().sendSystemMessage(Component.literal("§cOnly players can use this"));
                                     }
                                     return 1;
                                 })
                         )
                 )
-                .then(Commands.literal("language")
-                        .requires(source -> source.hasPermission(0))
-                        .then(Commands.literal("en_us")
+                        .then(Commands.literal("language")
                                 .executes(context -> {
-                                    if (context.getSource().getEntity() instanceof ServerPlayer player) {
-                                        ChaosConfig.setCurrentLanguage("en_us");
-                                        context.getSource().sendSystemMessage(Component.translatable("chaos.language.changed", "English"));
-                                    }
+                                    String current = ChaosConfig.getCurrentLanguage();
+                                    context.getSource().sendSystemMessage(Component.literal(LanguageManager.get("chaos.language.current", current)));
+                                    context.getSource().sendSystemMessage(Component.literal("§7Available: en_us, it_it, es_es, fr_fr, de_de"));
+                                    context.getSource().sendSystemMessage(Component.literal("§7Use §e/chaos language <code> §7to change"));
                                     return 1;
                                 })
+                                .then(Commands.literal("en_us")
+                                        .executes(context -> {
+                                            ChaosConfig.setCurrentLanguage("en_us");
+                                            context.getSource().sendSystemMessage(Component.literal(LanguageManager.get("chaos.language.changed", "English")));
+                                            return 1;
+                                        })
+                                )
+                                .then(Commands.literal("it_it")
+                                        .executes(context -> {
+                                            ChaosConfig.setCurrentLanguage("it_it");
+                                            context.getSource().sendSystemMessage(Component.literal(LanguageManager.get("chaos.language.changed", "Italiano")));
+                                            return 1;
+                                        })
+                                )
+                                .then(Commands.literal("es_es")
+                                        .executes(context -> {
+                                            ChaosConfig.setCurrentLanguage("es_es");
+                                            context.getSource().sendSystemMessage(Component.literal(LanguageManager.get("chaos.language.changed", "Español")));
+                                            return 1;
+                                        })
+                                )
+                                .then(Commands.literal("fr_fr")
+                                        .executes(context -> {
+                                            ChaosConfig.setCurrentLanguage("fr_fr");
+                                            context.getSource().sendSystemMessage(Component.literal(LanguageManager.get("chaos.language.changed", "Français")));
+                                            return 1;
+                                        })
+                                )
+                                .then(Commands.literal("de_de")
+                                        .executes(context -> {
+                                            ChaosConfig.setCurrentLanguage("de_de");
+                                            context.getSource().sendSystemMessage(Component.literal(LanguageManager.get("chaos.language.changed", "Deutsch")));
+                                            return 1;
+                                        })
+                                )
                         )
-                        .then(Commands.literal("it_it")
-                                .executes(context -> {
-                                    if (context.getSource().getEntity() instanceof ServerPlayer player) {
-                                        ChaosConfig.setCurrentLanguage("it_it");
-                                        context.getSource().sendSystemMessage(Component.translatable("chaos.language.changed", "Italiano"));
-                                    }
-                                    return 1;
-                                })
-                        )
-                        .then(Commands.literal("es_es")
-                                .executes(context -> {
-                                    if (context.getSource().getEntity() instanceof ServerPlayer player) {
-                                        ChaosConfig.setCurrentLanguage("es_es");
-                                        context.getSource().sendSystemMessage(Component.translatable("chaos.language.changed", "Español"));
-                                    }
-                                    return 1;
-                                })
-                        )
-                        .then(Commands.literal("fr_fr")
-                                .executes(context -> {
-                                    if (context.getSource().getEntity() instanceof ServerPlayer player) {
-                                        ChaosConfig.setCurrentLanguage("fr_fr");
-                                        context.getSource().sendSystemMessage(Component.translatable("chaos.language.changed", "Français"));
-                                    }
-                                    return 1;
-                                })
-                        )
-                        .then(Commands.literal("de_de")
-                                .executes(context -> {
-                                    if (context.getSource().getEntity() instanceof ServerPlayer player) {
-                                        ChaosConfig.setCurrentLanguage("de_de");
-                                        context.getSource().sendSystemMessage(Component.translatable("chaos.language.changed", "Deutsch"));
-                                    }
-                                    return 1;
-                                })
-                        )
-                        .executes(context -> {
-                            String current = ChaosConfig.getCurrentLanguage();
-                            context.getSource().sendSystemMessage(Component.translatable("chaos.language.current", current));
-                            context.getSource().sendSystemMessage(Component.literal("§7Available: en_us, it_it, es_es, fr_fr, de_de"));
-                            context.getSource().sendSystemMessage(Component.literal("§7Use §e/chaos language <code> §7to change"));
-                            return 1;
-                        })
-                )
-        );
-    }
+                );
 
+    }
 
     private static String getColorCode(String color) {
         switch (color) {
