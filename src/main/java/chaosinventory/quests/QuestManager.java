@@ -38,13 +38,13 @@ public class QuestManager {
 
     static {
         DAILY_QUESTS.add(new Quest("event_5", "§eEvent Survivor", "§7Survive 5 chaos events", 5, 50, 10, new ItemStack(Items.DIAMOND, 1)));
-        DAILY_QUESTS.add(new Quest("event_10", "§aEvent Master", "§7Survive 10 chaos events", 10, 100, 20, new ItemStack(Items.DIAMOND_BLOCK,1)));
+        DAILY_QUESTS.add(new Quest("event_10", "§aEvent Master", "§7Survive 10 chaos events", 10, 100, 20, new ItemStack(Items.DIAMOND_BLOCK, 1)));
 
         DAILY_QUESTS.add(new Quest("xp_100", "§bXP Hunter", "§7Earn 100 XP", 100, 25, 5, new ItemStack(Items.EXPERIENCE_BOTTLE, 3)));
         DAILY_QUESTS.add(new Quest("xp_500", "§dXP Master", "§7Earn 500 XP", 500, 75, 15, new ItemStack(Items.EXPERIENCE_BOTTLE, 8)));
 
         DAILY_QUESTS.add(new Quest("diamonds", "§bDiamond Lover", "§7Receive the Diamonds event", 1, 30, 5, new ItemStack(Items.DIAMOND, 2)));
-        DAILY_QUESTS.add(new Quest("tnt", "§cTNT Enjoyer", "§7Receive the TNT event", 1, 20, 3, new ItemStack(Item.TNT, 2)));
+        DAILY_QUESTS.add(new Quest("tnt", "§cTNT Enjoyer", "§7Receive the TNT event", 1, 20, 3, new ItemStack(Items.TNT, 2)));  // ← Items.TNT, non Item.TNT
 
         DAILY_QUESTS.add(new Quest("teleport", "§5Lost Traveler", "§7Get teleported", 1, 25, 4, new ItemStack(Items.ENDER_PEARL, 2)));
     }
@@ -58,8 +58,8 @@ public class QuestManager {
             playerProgress.put(uuid, new HashMap<>());
             completedQuests.put(uuid, new HashSet<>());
             lastResetTime.put(uuid, now);
-            player.sendSystemMessage(net.minecraft.network.chat.Component.literal("§a\uD83D\uDCC5 Daily quests have been reset! Use §e/chaos quest§a to see your new challenges!"));
-            ChaosInventory.LOGGER.info("Daily quests reset for " + player.getName().getString());
+            player.sendSystemMessage(net.minecraft.network.chat.Component.literal("§a📅 Daily quests have been reset! Use §e/chaos quest§a to see your new challenges!"));
+            System.out.println("Daily quests reset for " + player.getName().getString());
         }
     }
 
@@ -84,7 +84,7 @@ public class QuestManager {
         if (quest == null) return;
 
         if (newProgress >= quest.target && current < quest.target) {
-            completedQuests(player, quest);
+            completeQuest(player, quest);  // ← era completedQuests, corretto in completeQuest
             progress.put(questId, quest.target);
         } else {
             progress.put(questId, newProgress);
@@ -100,13 +100,13 @@ public class QuestManager {
         ChaosStats.addXP(player, quest.rewardXP, "Quest: " + quest.name);
 
         if (quest.rewardItem != null && !quest.rewardItem.isEmpty()) {
-            if (!player.getInventory().add(quest.rewardItem.copyu())) {
+            if (!player.getInventory().add(quest.rewardItem.copy())) {  // ← era copyu(), corretto in copy()
                 player.drop(quest.rewardItem.copy(), false);
             }
         }
 
-        player.sendSystemMessage(net.minecraft.network.chat.Component.literal("§a§l✨ QUEST COMPLETED! §r§a" + quest.name + "\n§7Rewards: §e" + quest.rewardXP + " XP§7, §6+" + quest.rewardCoins + " coins§7, " quest.rewardItem.getHoverName().getString));
-        ChaosInventory.LOGGER.info(player.getName().getString() + " completed quest: " + quest.name);
+        player.sendSystemMessage(net.minecraft.network.chat.Component.literal("§a§l✨ QUEST COMPLETED! §r§a" + quest.name + "\n§7Rewards: §e+" + quest.rewardXP + " XP§7, §6+" + quest.rewardCoins + " coins§7, " + quest.rewardItem.getHoverName().getString()));
+        System.out.println(player.getName().getString() + " completed quest: " + quest.name);
     }
 
     public static Quest getQuestById(String id) {
@@ -134,7 +134,7 @@ public class QuestManager {
             }
             result.add("§7- " + quest.name + " §8(" + status + "§8)");
             result.add("§8  " + quest.description);
-            result.add("§8  §7Rewards: §e+" + quest.rewardXP + " XP§7, §6+" + quest.rewardCoins + "coins");
+            result.add("§8  §7Rewards: §e+" + quest.rewardXP + " XP§7, §6+" + quest.rewardCoins + " coins");
             result.add("");
         }
 
@@ -152,7 +152,7 @@ public class QuestManager {
 
     public static void loadPlayerQuests(ServerPlayer player) {
         UUID uuid = player.getUUID();
-        DataManager.QuestData questData = DataManager.loadPlayerData(uuid);
+        DataManager.QuestData questData = DataManager.loadQuestData(uuid);  // ← era loadPlayerData, corretto in loadQuestData
         if (questData != null) {
             playerProgress.put(uuid, questData.progress);
             completedQuests.put(uuid, questData.completed);

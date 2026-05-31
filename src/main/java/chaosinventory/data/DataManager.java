@@ -120,6 +120,6 @@ public class DataManager {
         } catch (IOException e) {
             System.err.println("Failed to load quest data for: " + uuid);
         }
+        return new QuestData();
     }
-    return new QuestData();
 }

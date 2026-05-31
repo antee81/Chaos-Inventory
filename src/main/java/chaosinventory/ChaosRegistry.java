@@ -124,7 +124,7 @@ public class ChaosRegistry {
             QuestManager.updateProgress(player, "teleport", 1);
         }
 
-        ChaosInventory.LOGGER.info("\uD83D\uDCA5 CHAOS for " + player.getName().getString() + ": " + event.getName());
+        System.out.println("\uD83D\uDCA5 CHAOS for " + player.getName().getString() + ": " + event.getName());
         event.execute(player);
 
         int xp = ChaosStats.getXPForEvent(event.getWeight());
@@ -157,8 +157,8 @@ public class ChaosRegistry {
         }
 
         int random = RANDOM.nextInt(totalWeight);
-            int current = 0;
-            for (ChaosEvent event : enabledEvents) {
+        int current = 0;
+        for (ChaosEvent event : enabledEvents) {
             int weight = ChaosConfig.getEventWeight(event.getName(), event.getWeight());
             current += weight;
             if (random < current) {
@@ -167,22 +167,5 @@ public class ChaosRegistry {
         }
 
         return enabledEvents.get(0);
-    }
-
-
-    public static void triggerRandomEventForPlayer(ServerPlayer player) {
-        ChaosEvent event = getRandomEvent();
-        if (event == null) return;
-
-        if (player.server.isSingleplayer() && event.isMultiplayerOnly()) {
-            return;
-        }
-
-        ChaosStats.initPlayer(player);
-        System.out.println("\uD83D\uDCA5 CHAOS for " + player.getName().getString() + ": " + event.getName());
-        event.execute(player);
-
-        int xp = ChaosStats.getXPForEvent(event.getWeight());
-        ChaosStats.addXP(player, xp, event.getName());
     }
 }
