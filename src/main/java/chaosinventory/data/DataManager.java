@@ -122,4 +122,21 @@ public class DataManager {
         }
         return new QuestData();
     }
+
+    public int coins = 0;
+
+    public static int getCoins(UUID uuid) {
+        PlayerData data = loadPlayerData(uuid);
+        return data.coins;
+    }
+
+    public static void setCoins(UUID uuid, int amount) {
+        PlayerData data = loadPlayerData(uuid);
+        data.coins = amount;
+        updatePlayerData(uuid, data);
+    }
+
+    public static void addCoins(UUID uuid, int amount) {
+        setCoins(uuid, getCoins(uuid) + amount);
+    }
 }

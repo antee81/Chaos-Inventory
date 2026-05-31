@@ -1,5 +1,6 @@
 package chaosinventory;
 
+import chaosinventory.economy.ChaosEconomy;
 import chaosinventory.quests.QuestManager;
 import chaosinventory.stats.ChaosStats;
 import chaosinventory.config.ChaosConfig;
@@ -7,6 +8,7 @@ import chaosinventory.events.*;
 import chaosinventory.stats.ChaosStats;
 import net.minecraft.server.level.ServerPlayer;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -132,6 +134,9 @@ public class ChaosRegistry {
 
         QuestManager.updateProgress(player, "xp_100", xp);
         QuestManager.updateProgress(player, "xp_500", xp);
+
+        int coins = 5 + (event.getWeight() / 5);
+        ChaosEconomy.addCoins(player, coins);
     }
 
     public static int getEventCount() {

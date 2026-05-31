@@ -2,6 +2,7 @@ package chaosinventory.stats;
 
 import chaosinventory.ChaosInventory;
 import chaosinventory.data.DataManager;
+import chaosinventory.economy.ChaosEconomy;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.HashMap;
@@ -39,7 +40,6 @@ public class ChaosStats {
         System.out.println("Player data loaded for: " + player.getName().getString());
     }
 
-    // Metodo addXP - MANCAVA COMPLETAMENTE!
     public static void addXP(ServerPlayer player, int xp, String eventName) {
         UUID uuid = player.getUUID();
         DataManager.PlayerData data = DataManager.loadPlayerData(uuid);
@@ -68,6 +68,10 @@ public class ChaosStats {
 
     public static void onLevelUp(ServerPlayer player, int level, DataManager.PlayerData data) {
         checkUnlocks(player, level, data);
+
+        if (level %10 == 0) {
+            ChaosEconomy.addCoins(player, 100);
+        }
 
         if (level % 10 == 0) {
             player.sendSystemMessage(net.minecraft.network.chat.Component.literal("§6§l🏆 GOAL ACHIEVED! §r§6You reached level §e" + level + "§6!"));

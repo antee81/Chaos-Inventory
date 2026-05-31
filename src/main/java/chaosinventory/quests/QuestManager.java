@@ -2,6 +2,7 @@ package chaosinventory.quests;
 
 import chaosinventory.ChaosInventory;
 import chaosinventory.data.DataManager;
+import chaosinventory.economy.ChaosEconomy;
 import chaosinventory.stats.ChaosStats;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -107,6 +108,8 @@ public class QuestManager {
 
         player.sendSystemMessage(net.minecraft.network.chat.Component.literal("§a§l✨ QUEST COMPLETED! §r§a" + quest.name + "\n§7Rewards: §e+" + quest.rewardXP + " XP§7, §6+" + quest.rewardCoins + " coins§7, " + quest.rewardItem.getHoverName().getString()));
         System.out.println(player.getName().getString() + " completed quest: " + quest.name);
+
+        ChaosEconomy.addCoins(player, quest.rewardCoins);
     }
 
     public static Quest getQuestById(String id) {
@@ -159,4 +162,6 @@ public class QuestManager {
             lastResetTime.put(uuid, questData.lastReset);
         }
     }
+
+    ChaosEconomy.addCoins(player, quest.rewardCoins);
 }
