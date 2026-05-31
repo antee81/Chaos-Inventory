@@ -4,12 +4,11 @@ import chaosinventory.ChaosInventory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import javax.imageio.plugins.tiff.TIFFDirectory;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class DataManager {
 
@@ -94,4 +93,33 @@ public class DataManager {
         playerDataCache.put(uuid, data);
         savePlayerData(uuid, data);
     }
+
+    public static class QuestData {
+        public Map<String, Integer> progress = new HashMap<>();
+        public Set<String> completed = new HashSet<>();
+        public long lastReset = System.currentTimeMillis();
+    }
+
+    public static void saveQuestData(UUID uuid, QuestData data) {
+        try {
+            Path playerFile = dataFolder.resolve(uuid + "_quests.json");
+            String json = GSON.toJson(data);
+            Files.writeString(playerFile, json);
+        } catch (IOException e) {
+            System.err.println("Failed to save quest data for: " + uuid);
+        }
+    }
+
+    public static QuestData loadQuestData(UUID uuid) {
+        try {
+            Path playerFile = dataFolder.resolve(uuid + "_quests.json");
+            if (Files.exists(playerFile)) {
+                String json = Files.readString(playerFile);
+                return GSON.fromJson(json, QuestData.class);
+            }
+        } catch (IOException e) {
+            System.err.println("Failed to load quest data for: " + uuid);
+        }
+    }
+    return new QuestData();
 }

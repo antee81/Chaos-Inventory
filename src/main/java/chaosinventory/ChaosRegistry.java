@@ -1,5 +1,6 @@
 package chaosinventory;
 
+import chaosinventory.quests.QuestManager;
 import chaosinventory.stats.ChaosStats;
 import chaosinventory.config.ChaosConfig;
 import chaosinventory.events.*;
@@ -101,6 +102,36 @@ public class ChaosRegistry {
             }
         }
         return false;
+    }
+
+    public static void triggerRandomEventForPlayer(ServerPlayer player) {
+        ChaosEvent event = getRandomEvent();
+        if (event == null) return;
+        if (player.server.isSingleplayer() && event.isMultiplayerOnly()) return;
+
+        ChaosStats.initPlayer(player);
+
+        QuestManager.updateProgress(player, "event_5", 1);
+        QuestManager.updateProgress(player, "event_10", 1);
+
+        if (event.getName().equals("Diamonds")) {
+            QuestManager.updateProgress(player, "diamonds", 1);
+        }
+        if (event.getName().equals("TNT Donated")) {
+            QuestManager.updateProgress(player, "tnt", 1);
+        }
+        if (event.getName().equals("Random Teleport")) {
+            QuestManager.updateProgress(player, "teleport", 1);
+        }
+
+        ChaosInventory.LOGGER.info("\uD83D\uDCA5 CHAOS for " + player.getName().getString() + ": " + event.getName());
+        event.execute(player);
+
+        int xp = ChaosStats.getXPForEvent(event.getWeight());
+        ChaosStats.addXP(player, xp, event.getName());
+
+        QuestManager.updateProgress(player, "xp_100", xp);
+        QuestManager.updateProgress(player, "xp_500", xp);
     }
 
     public static int getEventCount() {

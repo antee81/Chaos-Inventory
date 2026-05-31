@@ -3,6 +3,7 @@ package chaosinventory;
 import chaosinventory.client.ChaosStatsHUD;
 import chaosinventory.afk.AfkManager;
 import chaosinventory.data.DataManager;
+import chaosinventory.quests.QuestManager;
 import chaosinventory.stats.ChaosStats;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -45,6 +46,8 @@ public class ChaosEventHandlers {
     public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
             ChaosStats.initPlayer(player);
+            QuestManager.initPlayer(player);
+            QuestManager.loadPlayerQuests(player);
             AfkManager.updateActivity(player);
             ChaosTimer.initPlayer(player.getUUID());
             ChaosStatsHUD.showMessage(player.getUUID());

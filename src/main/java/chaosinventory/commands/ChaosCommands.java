@@ -4,6 +4,7 @@ import chaosinventory.ChaosInventory;
 import chaosinventory.ChaosRegistry;
 import chaosinventory.ChaosTimer;
 import chaosinventory.config.ChaosConfig;
+import chaosinventory.quests.QuestManager;
 import chaosinventory.stats.ChaosStats;
 import chaosinventory.utils.LanguageManager;
 import com.mojang.brigadier.CommandDispatcher;
@@ -221,6 +222,20 @@ public class ChaosCommands {
                                         })
                                 )
                         )
+                )
+                .then(Commands.literal("quest")
+                        .executes(context -> {
+                            if (context.getSource().getEntity() instanceof ServerPlayer player) {
+                                context.getSource().sendSystemMessage(Component.literal("§6§l\uD83D\uDCCB DAILY QUESTS"));
+                                context.getSource().sendSystemMessage(Component.literal("§7Complete these challenges today!"));
+                                context.getSource().sendSystemMessage(Component.literal(""));
+
+                                for (String line : QuestManager.getQuestList(player)) {
+                                    context.getSource().sendSystemMessage(Component.literal(line));
+                                }
+                            }
+                            return 1;
+                        })
                 );
 
     }
