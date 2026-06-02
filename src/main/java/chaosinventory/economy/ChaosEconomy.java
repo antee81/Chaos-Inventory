@@ -1,6 +1,7 @@
 package chaosinventory.economy;
 
 import chaosinventory.ChaosInventory;
+import chaosinventory.achievements.AchievementManager;
 import chaosinventory.data.DataManager;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -35,15 +36,15 @@ public class ChaosEconomy {
         SHOP_ITEMS.add(new ShopItem("enchanted_gapple", "§dEnchanted Golden Apple", 300, new ItemStack(Items.ENCHANTED_GOLDEN_APPLE, 1), "§Powerful apple"));
         SHOP_ITEMS.add(new ShopItem("elytra", "§dElytra", 1000, new ItemStack(Items.ELYTRA, 1), "§Glide through the air"));
         SHOP_ITEMS.add(new ShopItem("totem", "§eTotem of Undying", 500, new ItemStack(Items.TOTEM_OF_UNDYING, 1), "§7Save you from death"));
-
         SHOP_ITEMS.add(new ShopItem("xp_bottle", "§aXP Bottle", 30, new ItemStack(Items.EXPERIENCE_BOTTLE, 3), "§7Gain 10-30 XP"));
-
         SHOP_ITEMS.add(new ShopItem("speed_boost", "§bSpeed Boost", 100, new ItemStack(Items.SUGAR, 1), "§7Speed II for 2 minutes"));
         SHOP_ITEMS.add(new ShopItem("chaos_token", "§5Chaos Token", 5000, new ItemStack(Items.NETHER_STAR, 1), "§7Redeem for a legendary event"));
         SHOP_ITEMS.add(new ShopItem("timer_freeze", "§3Timer Freeze", 200, new ItemStack(Items.CLOCK, 1), "§7Freeze chaos timer for 5 minutes"));
         SHOP_ITEMS.add(new ShopItem("double_xp", "§eDouble XP", 300, new ItemStack(Items.GOLDEN_CARROT, 1), "§7Double XP for 30 minutes"));
+        SHOP_ITEMS.add(new ShopItem("shield", "§7Shield", 40, new ItemStack(Items.SHIELD, 1), "§7Block incoming attacks"));
     }
 
+    // ========== METODI CHE ACCETTANO SERVERPLAYER ==========
     public static int getCoins(ServerPlayer player) {
         return DataManager.getCoins(player.getUUID());
     }
@@ -53,8 +54,12 @@ public class ChaosEconomy {
         UUID uuid = player.getUUID();
         int current = DataManager.getCoins(uuid);
         DataManager.setCoins(uuid, current + amount);
-        player.sendSystemMessage(net.minecraft.network.chat.Component.literal("§6\uD83D\uDCB0 +" + amount + " Chaos Coins! §7Total: §e" + (current + amount)));
-        ChaosInventory.LOGGER.info(player.getName().getString() + " gained " + amount + " coins");
+        player.sendSystemMessage(net.minecraft.network.chat.Component.literal("§6💰 +" + amount + " Chaos Coins! §7Total: §e" + (current + amount)));
+
+        // Check achievements
+        AchievementManager.checkAndUnlock(player, "coins", current + amount);
+
+        System.out.println(player.getName().getString() + " gained " + amount + " coins");
     }
 
     public static boolean removeCoins(ServerPlayer player, int amount) {
@@ -66,10 +71,24 @@ public class ChaosEconomy {
             return false;
         }
         DataManager.setCoins(uuid, current - amount);
-        player.sendSystemMessage(net.minecraft.network.chat.Component.literal("§6\uD83D\uDCB0 -" + amount + " Chaos Coins! §7Remaining: §e" + (current - amount)));
+        player.sendSystemMessage(net.minecraft.network.chat.Component.literal("§6💰 -" + amount + " Chaos Coins! §7Remaining: §e" + (current - amount)));
         return true;
     }
 
+    // ========== METODI CHE ACCETTANO UUID (PER LA GUI CLIENT) ==========
+    public static int getCoins(UUID uuid) {
+        return DataManager.getCoins(uuid);
+    }
+
+    public static boolean removeCoins(UUID uuid, int amount) {
+        if (amount <= 0) return true;
+        int current = DataManager.getCoins(uuid);
+        if (current < amount) return false;
+        DataManager.setCoins(uuid, current - amount);
+        return true;
+    }
+
+    // ========== SHOP METHODS ==========
     public static boolean buyItem(ServerPlayer player, String itemId, int amount) {
         ShopItem shopItem = getShopItem(itemId);
         if (shopItem == null) {
@@ -81,9 +100,9 @@ public class ChaosEconomy {
         if (!removeCoins(player, totalPrice)) return false;
 
         ItemStack itemStack = shopItem.item.copy();
-        ItemStack.setCount(amount);
+        itemStack.setCount(amount);
 
-        if (!player.getInventory().add(ItemStack)) {
+        if (!player.getInventory().add(itemStack)) {
             player.drop(itemStack, false);
         }
 

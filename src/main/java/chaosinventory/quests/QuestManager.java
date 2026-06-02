@@ -1,6 +1,7 @@
 package chaosinventory.quests;
 
 import chaosinventory.ChaosInventory;
+import chaosinventory.achievements.AchievementsManager;
 import chaosinventory.data.DataManager;
 import chaosinventory.economy.ChaosEconomy;
 import chaosinventory.stats.ChaosStats;
@@ -100,6 +101,8 @@ public class QuestManager {
 
         ChaosStats.addXP(player, quest.rewardXP, "Quest: " + quest.name);
 
+        ChaosEconomy.addCoins(player, quest.rewardCoins);
+
         if (quest.rewardItem != null && !quest.rewardItem.isEmpty()) {
             if (!player.getInventory().add(quest.rewardItem.copy())) {  // ← era copyu(), corretto in copy()
                 player.drop(quest.rewardItem.copy(), false);
@@ -160,8 +163,9 @@ public class QuestManager {
             playerProgress.put(uuid, questData.progress);
             completedQuests.put(uuid, questData.completed);
             lastResetTime.put(uuid, questData.lastReset);
+
+            int completedCount = completedQuests.get(uuid).size();
+            AchievementsManager.checkAndUnlock(player, "quest", completedCount);
         }
     }
-
-    ChaosEconomy.addCoins(player, quest.rewardCoins);
 }

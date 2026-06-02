@@ -19,12 +19,16 @@ public class RandomTeleportEvent implements ChaosEvent {
         Random r = new Random();
         ServerLevel level = player.serverLevel();
 
-        int x = (int) player.getX() + (r.nextInt(1000) - 500);
-        int z = (int) player.getZ() + (r.nextInt(1000) - 500);
+        int x = (int) player.getX() + (r.nextInt(500) - 250);
+        int z = (int) player.getZ() + (r.nextInt(500) - 250);
 
-        int y = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z);
+        int y = level.getHeight(Heightmap.Types.WORLD_SURFACE, x, z);
 
-        level.getChunk(new BlockPos(x, y, z));
+        if (y < 62) y = 62;
+
+        while (y > 60 && level.getBlockState(new BlockPos(x, y - 1, z)).isAir()) {
+            y--;
+        }
 
         player.teleportTo(x + 0.5, y + 1, z + 0.5);
 

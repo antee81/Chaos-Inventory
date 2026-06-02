@@ -1,5 +1,7 @@
 package chaosinventory;
 
+import chaosinventory.achievements.AchievementsManager;
+import chaosinventory.data.DataManager;
 import chaosinventory.economy.ChaosEconomy;
 import chaosinventory.quests.QuestManager;
 import chaosinventory.stats.ChaosStats;
@@ -129,14 +131,44 @@ public class ChaosRegistry {
         System.out.println("\uD83D\uDCA5 CHAOS for " + player.getName().getString() + ": " + event.getName());
         event.execute(player);
 
+        AchievementsManager.checkAndUnlock(player, "events", ChaosStats.getPlayerTotalEvents(player));
+
+        if (event.getName().equals("Diamonds")) {
+            int diamondCount = DataManager.getDiamondEventCount(player.getUUID()) + 1;
+            DataManager.setDiamondEventCount(player.getUUID(), diamondCount);
+            AchievementsManager.checkAndUnlock(player, "diamond_event", diamondCount);
+        }
+        if (event.getName().equals("TNT Donated")) {
+            int tntCount = DataManager.getTNTEventCount(player.getUUID()) + 1;
+            DataManager.setTNTEventCount(player.getUUID(), tntCount);
+            AchievementsManager.checkAndUnlock(player, "tnt_event", tntCount);
+        }
+        if (event.getName().equals("Random Teleport")) {
+            int teleportCount = DataManager.getTeleportCount(player.getUUID()) + 1;
+            DataManager.setTeleportCount(player.getUUID(), teleportCount);
+            AchievementsManager.checkAndUnlock(player, "teleport", teleportCount);
+        }
+
         int xp = ChaosStats.getXPForEvent(event.getWeight());
         ChaosStats.addXP(player, xp, event.getName());
 
         QuestManager.updateProgress(player, "xp_100", xp);
         QuestManager.updateProgress(player, "xp_500", xp);
 
-        int coins = 5 + (event.getWeight() / 5);
-        ChaosEconomy.addCoins(player, coins);
+        boolean hasFreeSlots = false;
+        for (int i = 0; i < 36; i++) {
+            if (player.getInventory().getItem(i).isEmpty()) {
+                hasFreeSlots = true;
+                break;
+            }
+        }
+
+        if (hasFreeSlots) {
+            int coins = 5 + (event.getWeight() / 5);
+            ChaosEconomy.addCoins(player, coins);
+        } else {
+            System.out.println("§c⚠\uFE0F Your inventory is full! No Chaos Coins for you today.");
+        }
     }
 
     public static int getEventCount() {

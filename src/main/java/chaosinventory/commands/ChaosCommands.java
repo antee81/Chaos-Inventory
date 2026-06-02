@@ -1,5 +1,6 @@
 package chaosinventory.commands;
 
+import chaosinventory.economy.ChaosEconomy;
 import net.minecraft.commands.Commands;
 import chaosinventory.ChaosInventory;
 import chaosinventory.ChaosRegistry;
@@ -225,7 +226,7 @@ public class ChaosCommands {
                         )
                 )
 
-                // /chaos quest (AGGIUNTO QUI, DENTRO dispatcher.register, PRIMA della parentesi finale)
+                // /chaos quest
                 .then(Commands.literal("quest")
                         .executes(context -> {
                             if (context.getSource().getEntity() instanceof ServerPlayer player) {
@@ -240,7 +241,24 @@ public class ChaosCommands {
                             return 1;
                         })
                 )
-        );  // ← QUI chiude dispatcher.register
+                .then(Commands.literal("shop")
+                        .executes(context -> {
+                            if (context.getSource().getEntity() instanceof ServerPlayer player) {
+                                context.getSource().sendSystemMessage(Component.literal("§6§l\uD83D\uDED2 CHAOS SHOP"));
+                                context.getSource().sendSystemMessage(Component.literal("§7Buy items with Chaos Coins!"));
+                                context.getSource().sendSystemMessage(Component.literal(""));
+
+                                for (var item : ChaosEconomy.getShopItems()) {
+                                    context.getSource().sendSystemMessage(Component.literal("§e/" + item.id + " §7- " + item.name + " §6[" + item.price + " coins§6]"));
+                                    context.getSource().sendSystemMessage(Component.literal("    §8" + item.description));
+                                }
+                                context.getSource().sendSystemMessage(Component.literal(""));
+                                context.getSource().sendSystemMessage(Component.literal("§7Use §e/chaos buy <item> [amount] §7to purchase"));
+                            }
+                            return 1;
+                        })
+                )
+        );
     }
 
     private static String getColorCode(String color) {

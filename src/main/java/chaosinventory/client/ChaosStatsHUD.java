@@ -60,7 +60,7 @@ public class ChaosStatsHUD {
 
         String message = "\u00A77\uD83D\uDCCA Use \u00A7e/chaos stats \u00A77to see your progress!";
         int x = (screenWidth - font.width(message)) / 2;
-        int y = screenHeight - 52;
+        int y = screenHeight - 55;
 
         int color = (alpha << 24) | 0xAAAAAA;
         graphics.drawString(font, message, x, y, color, true);

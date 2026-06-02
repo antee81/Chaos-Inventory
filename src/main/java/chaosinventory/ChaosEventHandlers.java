@@ -1,5 +1,6 @@
 package chaosinventory;
 
+import chaosinventory.achievements.AchievementsManager;
 import chaosinventory.client.ChaosStatsHUD;
 import chaosinventory.afk.AfkManager;
 import chaosinventory.data.DataManager;
@@ -48,6 +49,8 @@ public class ChaosEventHandlers {
             ChaosStats.initPlayer(player);
             QuestManager.initPlayer(player);
             QuestManager.loadPlayerQuests(player);
+            AchievementsManager.initPlayer(player);
+            AchievementsManager.loadAchievements(player);
             AfkManager.updateActivity(player);
             ChaosTimer.initPlayer(player.getUUID());
             ChaosStatsHUD.showMessage(player.getUUID());

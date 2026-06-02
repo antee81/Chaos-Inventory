@@ -20,6 +20,10 @@ public class DataManager {
         public int xp = 0;
         public int level = 1;
         public int totalEvents = 0;
+        public int coins = 0;
+        public int diamondEvents = 0;
+        public int tntEvents = 0;
+        public int teleportEvents = 0;
         public Map<String, Integer> eventCounts = new HashMap<>();
         public Map<String, Boolean> unlockedRewards = new HashMap<>();
 
@@ -69,7 +73,6 @@ public class DataManager {
         } catch (IOException e) {
             System.err.println("Failed to load data for player: " + uuid + e.getMessage());
         }
-
         PlayerData newData = new PlayerData();
         playerDataCache.put(uuid, newData);
         return newData;
@@ -136,7 +139,60 @@ public class DataManager {
         updatePlayerData(uuid, data);
     }
 
-    public static void addCoins(UUID uuid, int amount) {
-        setCoins(uuid, getCoins(uuid) + amount);
+    public static int getDiamondEventCount(UUID uuid) {
+        return loadPlayerData(uuid).diamondEvents;
+    }
+
+    public static void setDiamondEventCount(UUID uuid, int count) {
+        PlayerData data = loadPlayerData(uuid);
+        data.diamondEvents = count;
+        updatePlayerData(uuid, data);
+    }
+
+    public static int getTNTEventCount(UUID uuid) {
+        return loadPlayerData(uuid).tntEvents;
+    }
+
+    public static void setTNTEventCount(UUID uuid, int count) {
+        PlayerData data = loadPlayerData(uuid);
+        data.tntEvents = count;
+        updatePlayerData(uuid, data);
+    }
+
+    public static int getTeleportCount(UUID uuid) {
+        return loadPlayerData(uuid).teleportEvents;
+    }
+
+    public static void setTeleportCount(UUID uuid, int count) {
+        PlayerData data = loadPlayerData(uuid);
+        data.teleportEvents = count;
+        updatePlayerData(uuid, data);
+    }
+
+    public static void saveAchievements(UUID uuid, Set<String> achievements) {
+        if (dataFolder == null) init();
+        try {
+            Path achFile = dataFolder.resolve(uuid.toString() + "_achievements.json");
+            String json = GSON.toJson(achievements);
+            Files.writeString(achFile, json);
+        } catch (IOException e) {
+            System.err.println("Failed to save achievements for: " + uuid);
+        }
+    }
+
+    public static Set<String> loadAchievements(UUID uuid) {
+        if (dataFolder == null) init();
+        try {
+            Path achFile = dataFolder.resolve(uuid.toString() + "_achievements.json");
+
+            if (Files.exists(achFile)) {
+                String json = Files.readString(achFile);
+                List<String> list = GSON.fromJson(json, new com.google.gson.reflect.TypeToken<List<String>>(){}.getType());
+                return new HashSet<>();
+            }
+        } catch (IOException e) {
+            System.err.println("Failed to load achievements for: " + uuid);
+        }
+        return new HashSet<>();
     }
 }

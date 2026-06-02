@@ -1,6 +1,7 @@
 package chaosinventory.stats;
 
 import chaosinventory.ChaosInventory;
+import chaosinventory.achievements.AchievementsManager;
 import chaosinventory.data.DataManager;
 import chaosinventory.economy.ChaosEconomy;
 import net.minecraft.server.level.ServerPlayer;
@@ -55,6 +56,9 @@ public class ChaosStats {
 
         int newLevel = 1 + (newXP / XP_PER_LEVEL);
         if (newLevel > MAX_LEVEL) newLevel = MAX_LEVEL;
+
+        AchievementsManager.checkAndUnlock(player, "xp", newXP);
+        AchievementsManager.checkAndUnlock(player, "level", newLevel);
 
         if (newLevel > currentLevel) {
             data.level = newLevel;
