@@ -1,16 +1,14 @@
 package chaosinventory;
 
-import chaosinventory.achievements.AchievementsManager;
+import chaosinventory.achievements.AchievementManager;
 import chaosinventory.data.DataManager;
 import chaosinventory.economy.ChaosEconomy;
 import chaosinventory.quests.QuestManager;
 import chaosinventory.stats.ChaosStats;
 import chaosinventory.config.ChaosConfig;
 import chaosinventory.events.*;
-import chaosinventory.stats.ChaosStats;
 import net.minecraft.server.level.ServerPlayer;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -131,22 +129,22 @@ public class ChaosRegistry {
         System.out.println("\uD83D\uDCA5 CHAOS for " + player.getName().getString() + ": " + event.getName());
         event.execute(player);
 
-        AchievementsManager.checkAndUnlock(player, "events", ChaosStats.getPlayerTotalEvents(player));
+        AchievementManager.checkAndUnlock(player, "events", ChaosStats.getPlayerTotalEvents(player));
 
         if (event.getName().equals("Diamonds")) {
             int diamondCount = DataManager.getDiamondEventCount(player.getUUID()) + 1;
             DataManager.setDiamondEventCount(player.getUUID(), diamondCount);
-            AchievementsManager.checkAndUnlock(player, "diamond_event", diamondCount);
+            AchievementManager.checkAndUnlock(player, "diamond_event", diamondCount);
         }
         if (event.getName().equals("TNT Donated")) {
             int tntCount = DataManager.getTNTEventCount(player.getUUID()) + 1;
             DataManager.setTNTEventCount(player.getUUID(), tntCount);
-            AchievementsManager.checkAndUnlock(player, "tnt_event", tntCount);
+            AchievementManager.checkAndUnlock(player, "tnt_event", tntCount);
         }
         if (event.getName().equals("Random Teleport")) {
             int teleportCount = DataManager.getTeleportCount(player.getUUID()) + 1;
             DataManager.setTeleportCount(player.getUUID(), teleportCount);
-            AchievementsManager.checkAndUnlock(player, "teleport", teleportCount);
+            AchievementManager.checkAndUnlock(player, "teleport", teleportCount);
         }
 
         int xp = ChaosStats.getXPForEvent(event.getWeight());

@@ -1,14 +1,14 @@
 package chaosinventory.achievements;
 
-import chaosinventory.ChaosInventory;
 import chaosinventory.data.DataManager;
 import chaosinventory.stats.ChaosStats;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
 
 import java.util.*;
 
-public class AchievementsManager {
+public class AchievementManager {
 
     private static final List<Achievement> ACHIEVEMENTS = new ArrayList<>();
     private static final Map<UUID, Set<String>> unlockedAchievements = new HashMap<>();
@@ -87,9 +87,10 @@ public class AchievementsManager {
 
         player.displayClientMessage(Component.literal(
                 "§6§l🏆 " + ach.name + "§r§7 - " + ach.description
-        ), true);
+        ), false);
 
-        System.out.println(player.getName().getString() + " unlocked achievement: " + ach.name);
+        System.playNotifySound(SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, net.minecraft.sounds.SoundSource.PLAYERS, 1.0f, 1.0f);
+        System.out.println("[ACHIEVEMENT] " + player.getName().getString() + " unlocked: " + ach.name);
     }
 
     public static List<String> getAchievementList(ServerPlayer player) {

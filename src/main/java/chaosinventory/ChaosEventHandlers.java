@@ -1,6 +1,6 @@
 package chaosinventory;
 
-import chaosinventory.achievements.AchievementsManager;
+import chaosinventory.achievements.AchievementManager;
 import chaosinventory.client.ChaosStatsHUD;
 import chaosinventory.afk.AfkManager;
 import chaosinventory.data.DataManager;
@@ -13,10 +13,6 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import chaosinventory.afk.AfkManager;
-import net.minecraftforge.event.TickEvent;
-
-import java.util.Optional;
 
 @Mod.EventBusSubscriber(modid = ChaosInventory.MODID)
 public class ChaosEventHandlers {
@@ -49,8 +45,8 @@ public class ChaosEventHandlers {
             ChaosStats.initPlayer(player);
             QuestManager.initPlayer(player);
             QuestManager.loadPlayerQuests(player);
-            AchievementsManager.initPlayer(player);
-            AchievementsManager.loadAchievements(player);
+            AchievementManager.initPlayer(player);
+            AchievementManager.loadAchievements(player);
             AfkManager.updateActivity(player);
             ChaosTimer.initPlayer(player.getUUID());
             ChaosStatsHUD.showMessage(player.getUUID());

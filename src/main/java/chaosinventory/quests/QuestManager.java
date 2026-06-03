@@ -1,7 +1,6 @@
 package chaosinventory.quests;
 
-import chaosinventory.ChaosInventory;
-import chaosinventory.achievements.AchievementsManager;
+import chaosinventory.achievements.AchievementManager;
 import chaosinventory.data.DataManager;
 import chaosinventory.economy.ChaosEconomy;
 import chaosinventory.stats.ChaosStats;
@@ -165,7 +164,7 @@ public class QuestManager {
             lastResetTime.put(uuid, questData.lastReset);
 
             int completedCount = completedQuests.get(uuid).size();
-            AchievementsManager.checkAndUnlock(player, "quest", completedCount);
+            AchievementManager.checkAndUnlock(player, "quest", completedCount);
         }
     }
 }
