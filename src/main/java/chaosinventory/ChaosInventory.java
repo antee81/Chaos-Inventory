@@ -1,5 +1,6 @@
 package chaosinventory;
 
+import chaosinventory.achievements.AchievementManager;
 import chaosinventory.config.ChaosConfig;
 import chaosinventory.config.HUDConfig;
 import chaosinventory.data.DataManager;
@@ -33,6 +34,7 @@ public class ChaosInventory {
     private void commonSetup(final FMLCommonSetupEvent event) {
         System.out.println("🌀 Chaos Inventory - Setup completed");
         DataManager.init();
+        AchievementManager.init();
         ChaosRegistry.registerAll();
     }
 }
