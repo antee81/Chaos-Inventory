@@ -17,34 +17,33 @@ public class ChaosEconomy {
         public String id;
         public String name;
         public int price;
-        public ItemStack item;
+        public String itemId;
         public String description;
 
-        public ShopItem(String id, String name, int price, ItemStack item, String description) {
+        public ShopItem(String id, String name, int price, String itemId, String description) {
             this.id = id;
             this.name = name;
             this.price = price;
-            this.item = item;
+            this.itemId = itemId;
             this.description = description;
         }
     }
 
     static {
-        SHOP_ITEMS.add(new ShopItem("diamond", "§bDiamond", 50, new ItemStack(Items.DIAMOND, 1), "§7A precious diamond"));
-        SHOP_ITEMS.add(new ShopItem("diamond_block", "§bDiamond Block", 450, new ItemStack(Items.DIAMOND_BLOCK, 1), "§7A block of diamonds"));
-        SHOP_ITEMS.add(new ShopItem("golden_apple", "§6Golden Apple", 75, new ItemStack(Items.GOLDEN_APPLE, 1), "§7Restores 4 hearts"));
-        SHOP_ITEMS.add(new ShopItem("enchanted_gapple", "§dEnchanted Golden Apple", 300, new ItemStack(Items.ENCHANTED_GOLDEN_APPLE, 1), "§Powerful apple"));
-        SHOP_ITEMS.add(new ShopItem("elytra", "§dElytra", 1000, new ItemStack(Items.ELYTRA, 1), "§Glide through the air"));
-        SHOP_ITEMS.add(new ShopItem("totem", "§eTotem of Undying", 500, new ItemStack(Items.TOTEM_OF_UNDYING, 1), "§7Save you from death"));
-        SHOP_ITEMS.add(new ShopItem("xp_bottle", "§aXP Bottle", 30, new ItemStack(Items.EXPERIENCE_BOTTLE, 3), "§7Gain 10-30 XP"));
-        SHOP_ITEMS.add(new ShopItem("speed_boost", "§bSpeed Boost", 100, new ItemStack(Items.SUGAR, 1), "§7Speed II for 2 minutes"));
-        SHOP_ITEMS.add(new ShopItem("chaos_token", "§5Chaos Token", 5000, new ItemStack(Items.NETHER_STAR, 1), "§7Redeem for a legendary event"));
-        SHOP_ITEMS.add(new ShopItem("timer_freeze", "§3Timer Freeze", 200, new ItemStack(Items.CLOCK, 1), "§7Freeze chaos timer for 5 minutes"));
-        SHOP_ITEMS.add(new ShopItem("double_xp", "§eDouble XP", 300, new ItemStack(Items.GOLDEN_CARROT, 1), "§7Double XP for 30 minutes"));
-        SHOP_ITEMS.add(new ShopItem("shield", "§7Shield", 40, new ItemStack(Items.SHIELD, 1), "§7Block incoming attacks"));
+        SHOP_ITEMS.add(new ShopItem("diamond", "§bDiamond", 50, "minecraft:diamond", "§7A precious diamond"));
+        SHOP_ITEMS.add(new ShopItem("diamond_block", "§bDiamond Block", 450, "minecraft:diamond_block", "§7A block of diamonds"));
+        SHOP_ITEMS.add(new ShopItem("golden_apple", "§6Golden Apple", 75, "minecraft:golden_apple", "§7Restores 4 hearts"));
+        SHOP_ITEMS.add(new ShopItem("enchanted_gapple", "§dEnchanted Golden Apple", 300, "minecraft:enchanted_golden_apple", "§Powerful apple"));
+        SHOP_ITEMS.add(new ShopItem("elytra", "§dElytra", 1000, "minecraft:elytra", "§Glide through the air"));
+        SHOP_ITEMS.add(new ShopItem("totem", "§eTotem of Undying", 500, "minecraft:totem_of_undying", "§7Save you from death"));
+        SHOP_ITEMS.add(new ShopItem("xp_bottle", "§aXP Bottle", 30, "minecraft:experience_bottle", "§7Gain 10-30 XP"));
+        SHOP_ITEMS.add(new ShopItem("speed_boost", "§bSpeed Boost", 100, "minecraft:sugar", "§7Speed II for 2 minutes"));
+        SHOP_ITEMS.add(new ShopItem("chaos_token", "§5Chaos Token", 5000, "minecraft:nether_star", "§7Redeem for a legendary event"));
+        SHOP_ITEMS.add(new ShopItem("timer_freeze", "§3Timer Freeze", 200, "minecraft:clock", "§7Freeze chaos timer for 5 minutes"));
+        SHOP_ITEMS.add(new ShopItem("double_xp", "§eDouble XP", 300, "minecraft:golden_carrot", "§7Double XP for 30 minutes"));
+        SHOP_ITEMS.add(new ShopItem("shield", "§7Shield", 40, "minecraft_shield", "§7Block incoming attacks"));
     }
 
-    // ========== METODI CHE ACCETTANO SERVERPLAYER ==========
     public static int getCoins(ServerPlayer player) {
         return DataManager.getCoins(player.getUUID());
     }
@@ -75,7 +74,6 @@ public class ChaosEconomy {
         return true;
     }
 
-    // ========== METODI CHE ACCETTANO UUID (PER LA GUI CLIENT) ==========
     public static int getCoins(UUID uuid) {
         return DataManager.getCoins(uuid);
     }
@@ -88,7 +86,16 @@ public class ChaosEconomy {
         return true;
     }
 
-    // ========== SHOP METHODS ==========
+    public static ItemStack createItemFromItemId(String itemId, int amount) {
+        net.minecraft.resources.ResourceLocation location = new net.minecraft.resources.ResourceLocation(itemId);
+        net.minecraft.world.item.Item item = net.minecraftforge.registries.ForgeRegistries.ITEMS.getValue(location);
+
+        if (item != null && item != net.minecraft.world.item.Items.AIR) {
+            return new ItemStack(item, amount);
+        }
+        return null;
+    }
+
     public static boolean buyItem(ServerPlayer player, String itemId, int amount) {
         ShopItem shopItem = getShopItem(itemId);
         if (shopItem == null) {
@@ -99,8 +106,12 @@ public class ChaosEconomy {
         int totalPrice = shopItem.price * amount;
         if (!removeCoins(player, totalPrice)) return false;
 
-        ItemStack itemStack = shopItem.item.copy();
-        itemStack.setCount(amount);
+        ItemStack itemStack = createItemFromItemId(shopItem.itemId, amount);
+
+        if (itemStack == null) {
+            player.sendSystemMessage(net.minecraft.network.chat.Component.literal("§c❌ Error creating item!"));
+            return false;
+        }
 
         if (!player.getInventory().add(itemStack)) {
             player.drop(itemStack, false);
