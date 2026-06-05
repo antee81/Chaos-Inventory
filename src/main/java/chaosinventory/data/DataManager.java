@@ -24,6 +24,7 @@ public class DataManager {
         public int diamondEvents = 0;
         public int tntEvents = 0;
         public int teleportEvents = 0;
+        public String playerName = "";
         public Map<String, Integer> eventCounts = new HashMap<>();
         public Map<String, Boolean> unlockedRewards = new HashMap<>();
 
@@ -194,5 +195,19 @@ public class DataManager {
             System.err.println("Failed to load achievements for: " + uuid);
         }
         return new HashSet<>();
+    }
+
+    public static Map<UUID, PlayerData> getAllPlayerData() {
+        return new HashMap<>(playerDataCache);
+    }
+
+    public static String getPlayerName(UUID uuid) {
+        return loadPlayerData(uuid).playerName;
+    }
+
+    public static void setPlayerName(UUID uuid, String name) {
+        PlayerData data = loadPlayerData(uuid);
+        data.playerName = name;
+        updatePlayerData(uuid, data);
     }
 }

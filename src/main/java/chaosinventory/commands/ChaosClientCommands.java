@@ -1,6 +1,7 @@
 package chaosinventory.commands;
 
 import chaosinventory.gui.ChaosShopScreen;
+import chaosinventory.gui.LeaderboardScreen;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandSourceStack;
@@ -21,6 +22,14 @@ public class ChaosClientCommands {
                 .then(Commands.literal("shop")
                         .executes(context -> {
                             Minecraft.getInstance().setScreen(new ChaosShopScreen());
+                            return 1;
+                        })
+                )
+        );
+        dispatcher.register(Commands.literal("chaos")
+                .then(Commands.literal("leaderboard")
+                        .executes(context -> {
+                            Minecraft.getInstance().setScreen(new LeaderboardScreen());
                             return 1;
                         })
                 )

@@ -50,6 +50,7 @@ public class ChaosEventHandlers {
             AfkManager.updateActivity(player);
             ChaosTimer.initPlayer(player.getUUID());
             ChaosStatsHUD.showMessage(player.getUUID());
+            DataManager.setPlayerName(player.getUUID(), player.getName().getString());
             System.out.println("\uD83C\uDF00 Player joined: " + player.getName().getString());
         }
     }

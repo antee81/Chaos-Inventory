@@ -1,6 +1,7 @@
 package chaosinventory.commands;
 
 import chaosinventory.economy.ChaosEconomy;
+import chaosinventory.leaderboard.LeaderboardManager;
 import net.minecraft.commands.Commands;
 import chaosinventory.ChaosInventory;
 import chaosinventory.ChaosRegistry;
@@ -254,6 +255,16 @@ public class ChaosCommands {
                                 }
                                 context.getSource().sendSystemMessage(Component.literal(""));
                                 context.getSource().sendSystemMessage(Component.literal("§7Use §e/chaos buy <item> [amount] §7to purchase"));
+                            }
+                            return 1;
+                        })
+                )
+                .then(Commands.literal("leaderboard")
+                        .executes(context -> {
+                            if (context.getSource().getEntity() instanceof ServerPlayer player) {
+                                for (String line : LeaderboardManager.getLeaderboard(player)) {
+                                    context.getSource().sendSystemMessage(Component.literal(line));
+                                }
                             }
                             return 1;
                         })
