@@ -1,6 +1,7 @@
 package chaosinventory.gui;
 
 import chaosinventory.economy.ChaosEconomy;
+import chaosinventory.utils.LanguageManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -60,7 +61,7 @@ public class ChaosShopScreen extends Screen {
         graphics.fill(guiLeft, guiTop, guiLeft + GUI_WIDTH, guiTop + GUI_HEIGHT, 0xC0000000);
         graphics.fill(guiLeft + 5, guiTop + 5, guiLeft + GUI_WIDTH - 5, guiTop + GUI_HEIGHT - 5, 0xFF111111);
 
-        graphics.drawCenteredString(font, Component.literal("§6§lCHAOS SHOP"), guiLeft + GUI_WIDTH / 2, guiTop + 12, 0xFFFFFF);
+        graphics.drawCenteredString(font, Component.literal(LanguageManager.get("chaos.shop.title")), guiLeft + GUI_WIDTH / 2, guiTop + 12, 0xFFFFFF);
 
         String coinText = "💰 " + coins + " coins";
         graphics.drawString(font, Component.literal("§6" + coinText), guiLeft + GUI_WIDTH - font.width(coinText) - 10, guiTop + 14, 0xFFFFFF);
@@ -90,7 +91,7 @@ public class ChaosShopScreen extends Screen {
             graphics.drawString(font, Component.literal(priceText), guiLeft + GUI_WIDTH - priceWidth - 12, y + 6, 0xFFFFFF);
 
             if (mouseX >= guiLeft + 8 && mouseX < guiLeft + GUI_WIDTH - 8 && mouseY >= y && mouseY < y + slotHeight) {
-                graphics.drawString(font, Component.literal("§7Click to buy"), guiLeft + 32, y + 14, 0xAAAAAA);
+                graphics.drawString(font, Component.literal(LanguageManager.get("chaos.shop.click_to_buy")), guiLeft + 32, y + 14, 0xAAAAAA);
             }
         }
 
@@ -99,31 +100,38 @@ public class ChaosShopScreen extends Screen {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        Player player = Minecraft.getInstance().player;
-        if (player == null) return false;
+        @Override
+        public boolean mouseClicked(double mouseX, double mouseY, int button) {
+            Player player = Minecraft.getInstance().player;
+            if (player == null) return false;
 
-        int yOffset = 38;
-        int slotHeight = 22;
+            int yOffset = 38;
+            int slotHeight = 22;
 
-        for (int i = 0; i < items.length; i++) {
-            ShopItem shopItem = items[i];
-            int y = guiTop + yOffset + (i * slotHeight);
+            for (int i = 0; i < items.length; i++) {
+                ShopItem shopItem = items[i];
+                int y = guiTop + yOffset + (i * slotHeight);
 
-            if (mouseX >= guiLeft + 8 && mouseX < guiLeft + GUI_WIDTH - 8 && mouseY >= y && mouseY < y + slotHeight) {
-                int coins = ChaosEconomy.getCoins(player.getUUID());
+                if (mouseX >= guiLeft + 8 && mouseX < guiLeft + GUI_WIDTH - 8 && mouseY >= y && mouseY < y + slotHeight) {
+                    int coins = ChaosEconomy.getCoins(player.getUUID());
 
-                if (coins >= shopItem.price) {
-                    chaosinventory.network.ChaosNetwork.INSTANCE.sendToServer(
-                            new chaosinventory.network.BuyItemPacket(shopItem.id)
-                    );
-                } else {
-                    player.sendSystemMessage(Component.literal("§c❌ You need §e" + (shopItem.price - coins) + "§c more coins!"));
+                    if (coins >= shopItem.price) {
+                        ChaosEconomy.removeCoins(player.getUUID(), shopItem.price);
+                        ItemStack bought = getItemStack(shopItem.itemId);
+                        bought.setCount(1);
+                        if (!player.getInventory().add(bought)) {
+                            player.drop(bought, false);
+                        }
+                        player.sendSystemMessage(Component.literal(LanguageManager.get("chaos.shop.bought", shopItem.name, shopItem.price)));
+                        Minecraft.getInstance().setScreen(this);
+                    } else {
+                        player.sendSystemMessage(Component.literal(LanguageManager.get("chaos.shop.not_enough", shopItem.price - coins)));
+                    }
+                    return true;
                 }
-                return true;
             }
+            return super.mouseClicked(mouseX, mouseY, button);
         }
-
-        return super.mouseClicked(mouseX, mouseY, button);
     }
 
     @Override

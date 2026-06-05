@@ -33,6 +33,29 @@ public class LanguageManager {
                 case "chaos.command.use_trigger": return "§7Usa §e/chaos trigger <nome> §7per attivare un evento";
                 case "chaos.language.changed": return "§aLingua cambiata in %s!";
                 case "chaos.language.current": return "§7Lingua attuale: §e%s";
+
+                case "chaos.leaderboard.title": return "§6§l\uD83C\uDFC6 CLASSIFICA";
+                case "chaos.leaderboard.empty": return "§7Nessun giocatore trovato!";
+                case "chaos.leaderboard.your_position": return "§7La tua posizione:";
+                case "chaos.leaderboard.xp": return "XP: §e%d";
+                case "chaos.leaderboard.level": return "Livello: §a%d";
+                case "chaos.leaderboard.coins": return "Monete: §6%d";
+                case "chaos.leaderboard.events": return "Eventi: §c%d";
+                case "chaos.leaderboard.separator": return "§7━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
+                case "chaos.leaderboard.rank": return "#%d";
+
+                case "chaos.shop.title": return "§6§lNEGOZIO CHAOS";
+                case "chaos.shop.click_to_buy": return "§7Clicca per comprare";
+                case "chaos.shop.bought": return "§a✅ Hai comprato §e%s§a per §6%d monete§a!";
+                case "chaos.shop.not_enough": return "§c❌ Ti servono §e%d§c monete in più!";
+
+                case "chaos.achievement.unlocked": return "§6§l\uD83C\uDFC6 OBIETTIVO SBLOCCO! §r§6%s\n§7%s";
+
+                case "chaos.afk.paused": return "§c⏸\uFE0F Sei AFK! Il timer riprenderà quando ti muovi.";
+                case "chaos.afk.resumed": return "§a✅ Non sei più AFK! Timer chaos ripreso.";
+
+                case "chaos.coins.gained": return "§6\uD83D\uDCB0 +%d Chaos Coins! §7Totale: §e%d";
+                case "chaos.coins.spent": return "§6\uD83D\uDCB0 -%d Chaos Coins! §7Rimaste: §e%d";
                 default: return key;
             }
         }
@@ -139,6 +162,28 @@ public class LanguageManager {
             case "chaos.command.available": return "§7Use §e/chaos trigger <name> §7 to activate an event";
             case "chaos.language.changed": return "§aLanguage changed to %s!";
             case "chaos.language.current": return "§7Current language: §e%s";
+
+            case "chaos.leaderboard.title": return "§6§l\uD83C\uDFC6 LEADERBOARD";
+            case "chaos.leaderboard.empty": return "§7No players found!";
+            case "chaos.leaderboard.your_position": return "§7Your position:";
+            case "chaos.leaderboard.xp": return "XP: §e%d";
+            case "chaos.leaderboard.level": return "Level: §a%d";
+            case "chaos.leaderboard.coins": return "Coins: §6%d";
+            case "chaos.leaderboard.events": return "Events: §c%d";
+            case "chaos.leaderboard.rank": return "#%d";
+
+            case "chaos.shop.title": return "§6§lCHAOS SHOP";
+            case "chaos.shop.click_to_buy": return "§7Click to buy";
+            case "chaos.shop.bought": return "§a✅ You bought §e%s§a for §6%d coins§a!";
+            case "chaos.shop.not_enough": return "§c❌ You need §e%d§c more coins";
+
+            case "chaos.achievement.unlocked": return "§6§l\uD83C\uDFC6 ACHIEVEMENT UNLOCKED! §r§6%s\n§7%s";
+
+            case "chaos.afk.paused": return "§c⏸\uFE0F You're AFK! Timer will resume when you start moving.";
+            case "chaos.afk.resumed": return "§a✅ You are no longer AFK! Chaos Timer resumed.";
+
+            case "chaos.coins.gained": return "§6\uD83D\uDCB0 +%d Chaos Coins! §7Total: §e%d";
+            case "chaos.coins.spent": return "§6\uD83D\uDCB0 -%d Chaos Coins! §7Remaining: §e%d";
             default: return key;
         }
     }

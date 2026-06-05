@@ -3,6 +3,7 @@ package chaosinventory.economy;
 import chaosinventory.ChaosInventory;
 import chaosinventory.achievements.AchievementManager;
 import chaosinventory.data.DataManager;
+import chaosinventory.utils.LanguageManager;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -53,7 +54,7 @@ public class ChaosEconomy {
         UUID uuid = player.getUUID();
         int current = DataManager.getCoins(uuid);
         DataManager.setCoins(uuid, current + amount);
-        player.sendSystemMessage(net.minecraft.network.chat.Component.literal("§6💰 +" + amount + " Chaos Coins! §7Total: §e" + (current + amount)));
+        player.sendSystemMessage(Component.literal(LanguageManager.get("chaos.coins.gained", amount, current + amount)));
 
         // Check achievements
         AchievementManager.checkAndUnlock(player, "coins", current + amount);
@@ -83,6 +84,7 @@ public class ChaosEconomy {
         int current = DataManager.getCoins(uuid);
         if (current < amount) return false;
         DataManager.setCoins(uuid, current - amount);
+        player.sendSystemMessage(net.minecraft.network.chat.Component.literal(LanguageManager.get("chaos.coins.spent", amount, current - amount)));
         return true;
     }
 

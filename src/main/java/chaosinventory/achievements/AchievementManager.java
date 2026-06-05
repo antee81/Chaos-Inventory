@@ -3,6 +3,7 @@ package chaosinventory.achievements;
 import chaosinventory.advancements.AdvancementHelper;
 import chaosinventory.data.DataManager;
 import chaosinventory.stats.ChaosStats;
+import chaosinventory.utils.LanguageManager;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -87,6 +88,10 @@ public class AchievementManager {
 
     private static void unlockAchievement(ServerPlayer player, Achievement ach) {
         AdvancementHelper.unlock(player, ach.id, ach.name, ach.description);
+
+        player.sendSystemMessage(Component.litera(LanguageManager.get("chaos.achievement.unlocked", ach.name, ach.description)));
+
+        player.displayClientMessage(Component.literal(LanguageManager.get("chaos.achievement.unlocked", ach.name, ach.description)), true);
 
         player.playNotifySound(SoundEvents.UI_TOAST_CHALLENGE_COMPLETE,
                 net.minecraft.sounds.SoundSource.PLAYERS, 1.0f, 1.0f);

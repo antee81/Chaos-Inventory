@@ -2,6 +2,7 @@ package chaosinventory.afk;
 
 import chaosinventory.ChaosInventory;
 import chaosinventory.ChaosTimer;
+import chaosinventory.utils.LanguageManager;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.HashMap;
@@ -21,7 +22,7 @@ public class AfkManager {
         if (wasAfk.getOrDefault(uuid, false)) {
             wasAfk.put(uuid, false);
             ChaosTimer.resumePlayer(uuid);
-            player.sendSystemMessage(net.minecraft.network.chat.Component.literal("§a✅ You are no longer AFK! Chaos Timer resumed."));
+            player.sendSystemMessage(net.minecraft.network.chat.Component.literal(LanguageManager.get("chaos.afk.resumed")));
         }
     }
 
@@ -42,10 +43,9 @@ public class AfkManager {
         if (isAfk && !wasAfkBefore) {
             wasAfk.put(uuid, true);
             ChaosTimer.pausePlayer(uuid);
-            player.sendSystemMessage(net.minecraft.network.chat.Component.literal("§c⏸️ You're AFK! Timer will resume when you start moving."));
-            System.out.println("[CHAOS] " + player.getName().getString() + " is now AFK - timer paused");
+            player.sendSystemMessage(net.minecraft.network.chat.Component.literal(LanguageManager.get("chaos.afk.paused")));
         }
-    }  // ← CHIUSURA CORRETTA di checkPlayer
+    }
 
     public static void removePlayer(UUID uuid) {
         lastActionTime.remove(uuid);

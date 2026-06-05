@@ -1,6 +1,7 @@
 package chaosinventory.gui;
 
 import chaosinventory.leaderboard.LeaderboardManager;
+import chaosinventory.utils.LanguageManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -42,22 +43,22 @@ public class LeaderboardScreen extends Screen {
 
         graphics.fill(guiLeft, guiTop, guiLeft + GUI_WIDTH, guiTop + GUI_HEIGHT, 0xC0000000);
         graphics.fill(guiLeft + 5, guiTop + 5, guiLeft + GUI_WIDTH - 5, guiTop + GUI_HEIGHT - 5, 0xFF111111);
-        graphics.drawCenteredString(font, Component.literal("§6§l LEADERBOARD"), guiLeft + GUI_WIDTH / 2, guiTop + 12, 0xFFFFFF);
+        graphics.drawCenteredString(font, Component.literal(LanguageManager.get("chaos.leaderboard.title")), guiLeft + GUI_WIDTH / 2, guiTop + 12, 0xFFFFFF);
         graphics.fill(guiLeft + 10, guiTop + 28, guiLeft + GUI_WIDTH - 10, guiTop + 29, 0x444444);
 
         int yOffset = guiTop + 38;
-        int lineHeight = 12;
+        int lineHeight = 10;
 
         if (leaderboardLines != null) {
             for (int i = 0; i < leaderboardLines.size(); i++) {
                 int y = yOffset + (i * lineHeight) - scrollOffset;
-                if (y >= guiTop + 38 && y < guiTop + GUI_HEIGHT - 15) {
+                if (y >= guiTop + 35 && y < guiTop + GUI_HEIGHT - 15) {
                     graphics.drawString(font, Component.literal(leaderboardLines.get(i)), guiLeft + 12, y, 0xFFFFFF);
                 }
             }
         }
 
-        graphics.drawString(font, Component.literal("§7Scroll mouse to scroll"), guiLeft + 12, guiTop + GUI_HEIGHT - 12, 0x444444);
+        // graphics.drawString(font, Component.literal("§7Scroll mouse to scroll"), guiLeft + 12, guiTop + GUI_HEIGHT - 12, 0x444444);
 
         super.render(graphics, mouseX, mouseY, delta);
     }
