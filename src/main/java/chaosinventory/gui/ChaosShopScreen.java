@@ -113,20 +113,9 @@ public class ChaosShopScreen extends Screen {
                 int coins = ChaosEconomy.getCoins(player.getUUID());
 
                 if (coins >= shopItem.price) {
-
-                    ChaosEconomy.removeCoins(player.getUUID(), shopItem.price);
-
-
-                    ItemStack bought = getItemStack(shopItem.itemId);
-                    bought.setCount(1);
-
-
-                    if (!player.getInventory().add(bought)) {
-                        player.drop(bought, false);
-                    }
-
-                    player.sendSystemMessage(Component.literal("§a✅ You bought §e" + shopItem.name + "§a for §6" + shopItem.price + " coins§a!"));
-                    Minecraft.getInstance().setScreen(this);
+                    chaosinventory.network.ChaosNetwork.INSTANCE.sendToServer(
+                            new chaosinventory.network.BuyItemPacket(shopItem.id)
+                    );
                 } else {
                     player.sendSystemMessage(Component.literal("§c❌ You need §e" + (shopItem.price - coins) + "§c more coins!"));
                 }

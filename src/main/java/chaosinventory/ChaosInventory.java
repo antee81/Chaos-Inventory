@@ -36,5 +36,8 @@ public class ChaosInventory {
         DataManager.init();
         AchievementManager.init();
         ChaosRegistry.registerAll();
+        event.enqueueWork(() -> {
+            chaosinventory.network.ChaosNetwork.register();
+        });
     }
 }
