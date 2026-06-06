@@ -56,7 +56,7 @@ public class AdvancementHelper {
                 new ItemStack(Items.GOLD_INGOT), FrameType.TASK);
         registerAdvancement("coins_2000", "§eMillionaire", "§7Accumulate 2000 coins",
                 new ItemStack(Items.GOLD_BLOCK), FrameType.GOAL);
-        registerAdvancement("coins_10000", "§6§lChaos Tycoon", "§7Accumulate 10000 coins",
+        registerAdvancement("coins_10000.json", "§6§lChaos Tycoon", "§7Accumulate 10000 coins",
                 new ItemStack(Items.EMERALD_BLOCK), FrameType.CHALLENGE);
 
         registerAdvancement("quest_5", "§aQuest Starter", "§7Complete 5 quests",
@@ -100,6 +100,11 @@ public class AdvancementHelper {
                 markUnlocked(uuid, id);
 
                 player.playNotifySound(net.minecraft.sounds.SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, net.minecraft.sounds.SoundSource.PLAYERS, 1.0f, 1.0f);
+
+                if (!silent) {
+                    String name = Component.translatable(nameKey).getString();
+                    player.sendSystemMessage(Component.literal("§a" + player.getName().getString() + " has made the achievement [" + name + "]"));
+                }
 
                 System.out.println(player.getName().getString() + " unlocked advancement: " + name);
             }

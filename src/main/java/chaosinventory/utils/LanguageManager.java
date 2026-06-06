@@ -83,6 +83,28 @@ public class LanguageManager {
                 case "chaos.command.use_trigger": return "§7Usa §e/chaos trigger <nombre> §7para activar un evento";
                 case "chaos.language.changed": return "§aIdioma cambiado a %s!";
                 case "chaos.language.current": return "§7Idioma actual: §e%s";
+
+                case "chaos.leaderboard.title": return "§6§l🏆 CLASIFICACIÓN";
+                case "chaos.leaderboard.empty": return "§7¡No se encontraron jugadores!";
+                case "chaos.leaderboard.your_position": return "§7Tu posición:";
+                case "chaos.leaderboard.xp": return "XP: §e%d";
+                case "chaos.leaderboard.level": return "Nivel: §a%d";
+                case "chaos.leaderboard.coins": return "Monedas: §6%d";
+                case "chaos.leaderboard.events": return "Eventos: §c%d";
+                case "chaos.leaderboard.rank": return "#%d";
+
+                case "chaos.shop.title": return "§6§lTIENDA CHAOS";
+                case "chaos.shop.click_to_buy": return "§7Clic para comprar";
+                case "chaos.shop.bought": return "§a✅ Compraste §e%s§a por §6%d monedas§a!";
+                case "chaos.shop.not_enough": return "§c❌ Necesitas §e%d§c monedas más";
+
+                case "chaos.achievement.unlocked": return "§6§l🏆 LOGRO DESBLOQUEADO! §r§6%s\n§7%s";
+
+                case "chaos.afk.paused": return "§c⏸️ ¡Estás AFK! El temporizador se reanudará cuando te muevas.";
+                case "chaos.afk.resumed": return "§a✅ Ya no estás AFK! Temporizador Chaos reanudado.";
+
+                case "chaos.coins.gained": return "§6💰 +%d Monedas Chaos! §7Total: §e%d";
+                case "chaos.coins.spent": return "§6💰 -%d Monedas Chaos! §7Restantes: §e%d";
                 default: return key;
             }
         }
@@ -110,6 +132,28 @@ public class LanguageManager {
                 case "chaos.command.use_trigger": return "§7Utilise §e/chaos trigger <nom> §7pour activer un événement";
                 case "chaos.language.changed": return "§aLangue changée en %s!";
                 case "chaos.language.current": return "§7Langue actuelle: §e%s";
+
+                case "chaos.leaderboard.title": return "§6§l🏆 CLASSEMENT";
+                case "chaos.leaderboard.empty": return "§7Aucun joueur trouvé !";
+                case "chaos.leaderboard.your_position": return "§7Ta position :";
+                case "chaos.leaderboard.xp": return "XP : §e%d";
+                case "chaos.leaderboard.level": return "Niveau : §a%d";
+                case "chaos.leaderboard.coins": return "Pièces : §6%d";
+                case "chaos.leaderboard.events": return "Événements : §c%d";
+                case "chaos.leaderboard.rank": return "#%d";
+
+                case "chaos.shop.title": return "§6§lBOUTIQUE CHAOS";
+                case "chaos.shop.click_to_buy": return "§7Cliquez pour acheter";
+                case "chaos.shop.bought": return "§a✅ Tu as acheté §e%s§a pour §6%d pièces§a !";
+                case "chaos.shop.not_enough": return "§c❌ Il te faut §e%d§c pièces de plus";
+
+                case "chaos.achievement.unlocked": return "§6§l🏆 SUCCÈS DÉBLOQUÉ ! §r§6%s\n§7%s";
+
+                case "chaos.afk.paused": return "§c⏸️ Tu es AFK ! La minuterie reprendra quand tu bougeras.";
+                case "chaos.afk.resumed": return "§a✅ Tu n'es plus AFK ! Minuterie Chaos reprise.";
+
+                case "chaos.coins.gained": return "§6💰 +%d Pièces Chaos ! §7Total : §e%d";
+                case "chaos.coins.spent": return "§6💰 -%d Pièces Chaos ! §7Restant : §e%d";
                 default: return key;
             }
         }
@@ -137,6 +181,28 @@ public class LanguageManager {
                 case "chaos.command.use_trigger": return "§7Benutze §e/chaos trigger <name> §7um ein Ereignis auszulösen";
                 case "chaos.language.changed": return "§aSprache geändert zu %s!";
                 case "chaos.language.current": return "§7Aktuelle Sprache: §e%s";
+
+                case "chaos.leaderboard.title": return "§6§l🏆 BESTENLISTE";
+                case "chaos.leaderboard.empty": return "§7Keine Spieler gefunden!";
+                case "chaos.leaderboard.your_position": return "§7Deine Position:";
+                case "chaos.leaderboard.xp": return "XP: §e%d";
+                case "chaos.leaderboard.level": return "Level: §a%d";
+                case "chaos.leaderboard.coins": return "Münzen: §6%d";
+                case "chaos.leaderboard.events": return "Ereignisse: §c%d";
+                case "chaos.leaderboard.rank": return "#%d";
+
+                case "chaos.shop.title": return "§6§lCHAOS LADEN";
+                case "chaos.shop.click_to_buy": return "§7Zum Kaufen klicken";
+                case "chaos.shop.bought": return "§a✅ Du hast §e%s§a für §6%d Münzen§a gekauft!";
+                case "chaos.shop.not_enough": return "§c❌ Du benötigst §e%d§c Münzen mehr";
+
+                case "chaos.achievement.unlocked": return "§6§l🏆 ERFOLG FREIGESCHALTET! §r§6%s\n§7%s";
+
+                case "chaos.afk.paused": return "§c⏸️ Du bist AFK! Der Timer wird fortgesetzt, wenn du dich bewegst.";
+                case "chaos.afk.resumed": return "§a✅ Du bist nicht mehr AFK! Chaos Timer fortgesetzt.";
+
+                case "chaos.coins.gained": return "§6💰 +%d Chaos Münzen! §7Gesamt: §e%d";
+                case "chaos.coins.spent": return "§6💰 -%d Chaos Münzen! §7Verbleibend: §e%d";
                 default: return key;
             }
         }

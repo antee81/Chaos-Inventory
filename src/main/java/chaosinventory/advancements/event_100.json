@@ -4,16 +4,17 @@
       "item": "minecraft:nether_star"
     },
     "title": {
-      "text": "Chaos Inventory"
+      "translate": "advancement.chaos.event_100"
     },
     "description": {
-      "text": "Embrance the Chaos!"
+      "translate": "advancement.chaos.event_100.desc"
     },
-    "background": "chaosinventory:textures/gui/advancement/background.png",
-    "show_toast": false,
-    "announce_to_chat": false,
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
     "hidden": false
   },
+  "parent": "chaosinventory:root",
   "criteria": {
     "tick": {
       "trigger": "minecraft:tick"

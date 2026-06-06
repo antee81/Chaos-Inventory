@@ -49,7 +49,7 @@ public class AchievementManager {
 
         ACHIEVEMENTS.add(new Achievement("coins_500", "§aRich", "Accumulate 500 coins", "gold_ingot", 500, "coins"));
         ACHIEVEMENTS.add(new Achievement("coins_2000", "§aMillionaire", "Accumulate 2000 coins", "gold_block", 2000, "coins"));
-        ACHIEVEMENTS.add(new Achievement("coins_10000", "§aChaos Tycoon", "Accumulate 10000 coins", "emerald_block", 10000, "coins"));
+        ACHIEVEMENTS.add(new Achievement("coins_10000.json", "§aChaos Tycoon", "Accumulate 10000 coins", "emerald_block", 10000, "coins"));
 
         ACHIEVEMENTS.add(new Achievement("quest_5", "§aQuest Starter", "Complete 5 quests", "book", 5, "quest"));
         ACHIEVEMENTS.add(new Achievement("quest_20", "§aQuest Hero", "Complete 20 quests", "written_book", 20, "quest"));
@@ -87,11 +87,12 @@ public class AchievementManager {
     }
 
     private static void unlockAchievement(ServerPlayer player, Achievement ach) {
-        AdvancementHelper.unlock(player, ach.id, ach.name, ach.description);
+        AdvancementHelper.unlock(player, ach.id, ach.keyName, ach.keyDesc, true);
 
-        player.sendSystemMessage(Component.litera(LanguageManager.get("chaos.achievement.unlocked", ach.name, ach.description)));
+        // player.sendSystemMessage(Component.literal(LanguageManager.get("chaos.achievement.unlocked", ach.name, ach.description)));
 
-        player.displayClientMessage(Component.literal(LanguageManager.get("chaos.achievement.unlocked", ach.name, ach.description)), true);
+        String name = LanguageManager.get(ach.keyName);
+        player.sendSystemMessage(Component.literal("§a" + player.getName().getString() + " has made the advancement [" + name + "]"));
 
         player.playNotifySound(SoundEvents.UI_TOAST_CHALLENGE_COMPLETE,
                 net.minecraft.sounds.SoundSource.PLAYERS, 1.0f, 1.0f);

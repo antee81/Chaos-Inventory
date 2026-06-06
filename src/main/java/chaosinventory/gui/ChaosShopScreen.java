@@ -13,7 +13,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class ChaosShopScreen extends Screen {
 
     private static final int GUI_WIDTH = 220;
-    private static final int GUI_HEIGHT = 285;
+    private static final int GUI_HEIGHT = 280;
 
     private int guiLeft;
     private int guiTop;
@@ -83,7 +83,6 @@ public class ChaosShopScreen extends Screen {
 
             graphics.renderItem(icon, guiLeft + 12, y + 3);
             graphics.renderItemDecorations(font, icon, guiLeft + 12, y + 3);
-
             graphics.drawString(font, Component.literal(shopItem.name), guiLeft + 32, y + 5, 0xFFFFFF);
 
             String priceText = "§6" + shopItem.price + " coins";
@@ -100,38 +99,35 @@ public class ChaosShopScreen extends Screen {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        @Override
-        public boolean mouseClicked(double mouseX, double mouseY, int button) {
-            Player player = Minecraft.getInstance().player;
-            if (player == null) return false;
+        Player player = Minecraft.getInstance().player;
+        if (player == null) return false;
 
-            int yOffset = 38;
-            int slotHeight = 22;
+        int yOffset = 38;
+        int slotHeight = 22;
 
-            for (int i = 0; i < items.length; i++) {
-                ShopItem shopItem = items[i];
-                int y = guiTop + yOffset + (i * slotHeight);
+        for (int i = 0; i < items.length; i++) {
+            ShopItem shopItem = items[i];
+            int y = guiTop + yOffset + (i * slotHeight);
 
-                if (mouseX >= guiLeft + 8 && mouseX < guiLeft + GUI_WIDTH - 8 && mouseY >= y && mouseY < y + slotHeight) {
-                    int coins = ChaosEconomy.getCoins(player.getUUID());
+            if (mouseX >= guiLeft + 8 && mouseX < guiLeft + GUI_WIDTH - 8 && mouseY >= y && mouseY < y + slotHeight) {
+                int coins = ChaosEconomy.getCoins(player.getUUID());
 
-                    if (coins >= shopItem.price) {
-                        ChaosEconomy.removeCoins(player.getUUID(), shopItem.price);
-                        ItemStack bought = getItemStack(shopItem.itemId);
-                        bought.setCount(1);
-                        if (!player.getInventory().add(bought)) {
-                            player.drop(bought, false);
-                        }
-                        player.sendSystemMessage(Component.literal(LanguageManager.get("chaos.shop.bought", shopItem.name, shopItem.price)));
-                        Minecraft.getInstance().setScreen(this);
-                    } else {
-                        player.sendSystemMessage(Component.literal(LanguageManager.get("chaos.shop.not_enough", shopItem.price - coins)));
+                if (coins >= shopItem.price) {
+                    ChaosEconomy.removeCoins(player.getUUID(), shopItem.price);
+                    ItemStack bought = getItemStack(shopItem.itemId);
+                    bought.setCount(1);
+                    if (!player.getInventory().add(bought)) {
+                        player.drop(bought, false);
                     }
-                    return true;
+                    player.sendSystemMessage(Component.literal(LanguageManager.get("chaos.shop.bought", shopItem.name, shopItem.price)));
+                    Minecraft.getInstance().setScreen(this);
+                } else {
+                    player.sendSystemMessage(Component.literal(LanguageManager.get("chaos.shop.not_enough", shopItem.price - coins)));
                 }
+                return true;
             }
-            return super.mouseClicked(mouseX, mouseY, button);
         }
+        return super.mouseClicked(mouseX, mouseY, button);
     }
 
     @Override

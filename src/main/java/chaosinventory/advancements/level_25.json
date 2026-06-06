@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:enchanting_table"
+    },
+    "title": {
+      "translate": "advancement.chaos.level_25"
+    },
+    "description": {
+      "translate": "advancement.chaos.level_25.desc"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "chaosinventory:root",
+  "criteria": {
+    "tick": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}
